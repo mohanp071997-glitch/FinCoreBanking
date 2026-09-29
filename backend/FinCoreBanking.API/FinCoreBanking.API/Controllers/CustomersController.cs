@@ -97,24 +97,77 @@ namespace FinCoreBanking.API.Controllers
         [HttpGet("current")]
         public async Task<IActionResult> GetCurrentCustomer()
         {
-            // Gets the logged-in user ID from the JWT token.
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // Gets the logged-in user ID from JWT.
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (!int.TryParse(userIdClaim, out var userId))
+            if (userIdClaim == null)
             {
                 return Unauthorized();
             }
 
-            // Gets the customer linked to the logged-in user.
+            var userId = int.Parse(userIdClaim.Value);
+
             var customer = await _context.Customers
-                .FirstOrDefaultAsync(x => x.UserId == userId && x.IsActive);
+                .FirstOrDefaultAsync(x => x.UserId == userId);
 
             if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(customer);
+        }
+
+        // Updates the customer profile.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCustomer(int id, Customer customer)
+        {
+            // Gets the logged-in user ID from JWT.
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            // Finds the customer's own record.
+            var existingCustomer = await _context.Customers
+                .FirstOrDefaultAsync(x =>
+                    x.CustomerId == id &&
+                    x.UserId == userId &&
+                    x.IsActive);
+
+            if (existingCustomer == null)
             {
                 return NotFound("Customer not found.");
             }
 
-            return Ok(customer);
+            // Updates the customer name.
+            existingCustomer.FirstName = customer.FirstName;
+            existingCustomer.LastName = customer.LastName;
+
+            // Updates the customer contact details.
+            existingCustomer.Email = customer.Email;
+            existingCustomer.PhoneNumber = customer.PhoneNumber;
+            existingCustomer.EmergencyContactNumber = customer.EmergencyContactNumber;
+
+            // Updates the customer address details.
+            existingCustomer.AddressLine1 = customer.AddressLine1;
+            existingCustomer.AddressLine2 = customer.AddressLine2;
+            existingCustomer.City = customer.City;
+            existingCustomer.State = customer.State;
+            existingCustomer.PostalCode = customer.PostalCode;
+
+            // Updates the modified date.
+            existingCustomer.ModifiedDate = DateTime.UtcNow;
+
+            // Saves the changes to the database.
+            await _context.SaveChangesAsync();
+
+            // Returns the updated customer.
+            return Ok(existingCustomer);
         }
     }
 }

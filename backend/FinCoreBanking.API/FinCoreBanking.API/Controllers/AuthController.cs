@@ -129,6 +129,12 @@ namespace FinCoreBanking.API.Controllers
                 )
                 .FirstOrDefaultAsync();
 
+            // Updates the user's last successful login time.
+            user.LastLoginDate = DateTime.UtcNow;
+
+            // Saves the last successful login time.
+            await _context.SaveChangesAsync();
+
             // Generates a JWT token for the user.
             var token = GenerateJwtToken(user, role);
 
@@ -139,6 +145,7 @@ namespace FinCoreBanking.API.Controllers
                 user.UserId,
                 user.UserName,
                 user.Email,
+                user.LastLoginDate,
                 Role = role,
                 Token = token
             });

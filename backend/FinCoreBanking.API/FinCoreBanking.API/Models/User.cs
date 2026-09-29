@@ -12,6 +12,8 @@
         public string PasswordHash { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
+        // Stores the user's last successful login time.
+        public DateTime? LastLoginDate { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

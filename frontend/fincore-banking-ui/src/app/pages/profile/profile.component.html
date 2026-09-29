@@ -1,0 +1,538 @@
+<div class="profile-page">
+
+  <!-- Success toast -->
+  <div
+    *ngIf="successMessage"
+    class="profile-toast success-toast"
+  >
+    <span class="toast-icon">✓</span>
+
+    <div class="toast-content">
+      <strong>Success</strong>
+      <span>{{ successMessage }}</span>
+    </div>
+
+    <button
+      type="button"
+      class="toast-close"
+      (click)="successMessage = ''"
+    >
+      ×
+    </button>
+  </div>
+
+  <!-- Error toast -->
+  <div
+    *ngIf="errorMessage"
+    class="profile-toast error-toast"
+  >
+    <span class="toast-icon">!</span>
+
+    <div class="toast-content">
+      <strong>Error</strong>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <button
+      type="button"
+      class="toast-close"
+      (click)="errorMessage = ''"
+    >
+      ×
+    </button>
+  </div>
+
+  <!-- Back to dashboard -->
+
+  <!-- Back to dashboard -->
+  <button
+    type="button"
+    class="back-button"
+    (click)="goBack()"
+  >
+    <span class="back-icon">←</span>
+    <span>Back</span>
+  </button>
+
+  <!-- Page header -->
+
+    <div class="page-header">
+
+    <div>
+        <h1>My Profile</h1>
+        <p>View and manage your personal and account information</p>
+    </div>
+
+    </div>
+
+    <!-- Profile overview -->
+    <div class="profile-overview">
+
+    <!-- Customer summary -->
+    <div class="profile-summary">
+
+        <div class="profile-avatar">
+        👤
+        </div>
+
+        <div class="profile-user-info">
+
+        <h2>
+            {{ customer?.firstName }} {{ customer?.lastName }}
+        </h2>
+
+        <span class="profile-status">
+            Active Customer
+        </span>
+
+        </div>
+
+    </div>
+
+    <!-- Last login -->
+    <div class="last-login">
+
+        <div class="last-login-icon">
+        🕒
+        </div>
+
+        <div class="last-login-info">
+
+        <span class="last-login-label">
+            Last Login
+        </span>
+
+        <span class="last-login-value">
+            {{ lastLoginDate
+            ? (lastLoginDate | date:'dd MMM yyyy, hh:mm a')
+            : '-' }}
+        </span>
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+    <!-- Personal information -->
+    <div class="profile-card">
+
+    <!-- Personal information header -->
+    <div class="profile-card-header">
+
+    <div>
+        <h2>Personal Information</h2>
+        <p>Your registered customer information</p>
+    </div>
+
+    <!-- Enables profile editing. -->
+    <button
+        *ngIf="!isEditMode"
+        type="button"
+        class="edit-profile-button"
+        (click)="enableEdit()"
+    >
+        ✏️ Edit
+    </button>
+
+    </div>
+
+    <div class="profile-grid">
+
+        <!-- First Name -->
+        <div class="profile-field">
+        <span class="field-label">First Name</span>
+
+        <input
+            *ngIf="isEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.firstName"
+        />
+
+        <span
+            *ngIf="!isEditMode"
+            class="field-value"
+        >
+            {{ customer?.firstName || '-' }}
+        </span>
+        </div>
+
+        <!-- Last Name -->
+        <div class="profile-field">
+        <span class="field-label">Last Name</span>
+
+        <input
+            *ngIf="isEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.lastName"
+        />
+
+        <span
+            *ngIf="!isEditMode"
+            class="field-value"
+        >
+            {{ customer?.lastName || '-' }}
+        </span>
+        </div>
+
+        <!-- Customer Number -->
+        <div class="profile-field">
+        <span class="field-label">Customer Number</span>
+
+        <span class="field-value">
+            {{ customer?.customerNumber || '-' }}
+        </span>
+        </div>
+
+        <!-- Email -->
+        <div class="profile-field">
+        <span class="field-label">Email Address</span>
+
+        <input
+            *ngIf="isEditMode"
+            type="email"
+            class="profile-input"
+            [(ngModel)]="customer!.email"
+        />
+
+        <span
+            *ngIf="!isEditMode"
+            class="field-value"
+        >
+            {{ customer?.email || '-' }}
+        </span>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="profile-field">
+        <span class="field-label">Phone Number</span>
+
+        <input
+            *ngIf="isEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.phoneNumber"
+        />
+
+        <span
+            *ngIf="!isEditMode"
+            class="field-value"
+        >
+            {{ customer?.phoneNumber || '-' }}
+        </span>
+        </div>
+
+        <!-- Emergency Contact -->
+        <div class="profile-field">
+        <span class="field-label">Emergency Contact</span>
+
+        <input
+            *ngIf="isEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.emergencyContactNumber"
+        />
+
+        <span
+            *ngIf="!isEditMode"
+            class="field-value"
+        >
+            {{ customer?.emergencyContactNumber || '-' }}
+        </span>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="profile-field">
+        <span class="field-label">Date of Birth</span>
+
+        <span class="field-value">
+            {{ customer?.dateOfBirth | date:'dd MMM yyyy' }}
+        </span>
+        </div>
+
+        <!-- Blood Group -->
+        <div class="profile-field">
+        <span class="field-label">Blood Group</span>
+
+        <span class="field-value">
+            {{ customer?.bloodGroup || '-' }}
+        </span>
+        </div>
+
+    </div>
+
+    <!-- Edit actions -->
+        <div
+        class="profile-actions"
+        *ngIf="isEditMode"
+        >
+        <!-- Cancels profile editing. -->
+        <button
+            type="button"
+            class="cancel-button"
+            (click)="cancelEdit()"
+        >
+            Cancel
+        </button>
+
+        <!-- Saves profile changes. -->
+        <button
+            type="button"
+            class="save-button"
+            (click)="confirmSave()"
+        >
+            Save Changes
+        </button>
+        </div>
+
+        <!-- Save confirmation popup -->
+        <div
+        class="confirmation-overlay"
+        *ngIf="showSaveConfirmation"
+        >
+        <div class="confirmation-popup">
+
+            <div class="confirmation-icon">
+            ?
+            </div>
+
+            <h3>Save Changes?</h3>
+
+            <p>
+            Are you sure you want to save the changes to your profile?
+            </p>
+
+            <div class="confirmation-actions">
+
+            <!-- Cancels the confirmation. -->
+            <button
+                type="button"
+                class="confirmation-cancel"
+                (click)="cancelSaveConfirmation()"
+            >
+                Cancel
+            </button>
+
+            <!-- Confirms and saves the profile. -->
+            <button
+                type="button"
+                class="confirmation-confirm"
+                (click)="saveChanges()"
+            >
+                Confirm
+            </button>
+
+            </div>
+
+        </div>
+        </div>
+
+    </div>
+
+    <!-- Account information -->
+    <div class="profile-card">
+
+    <div class="profile-card-header">
+        <div>
+        <h2>Account Information</h2>
+        <p>Your banking account details</p>
+        </div>
+    </div>
+
+    <div class="profile-grid">
+
+        <div class="profile-field">
+        <span class="field-label">Account Type</span>
+        <span class="field-value">
+            {{ selectedAccount?.accountTypeName || '-' }}
+        </span>
+        </div>
+
+        <div class="profile-field">
+        <span class="field-label">Account Number</span>
+        <span class="field-value">
+            {{ selectedAccount?.accountNumber || '-' }}
+        </span>
+        </div>
+
+        <div class="profile-field">
+        <span class="field-label">IFSC Code</span>
+        <span class="field-value">
+            {{ selectedAccount?.ifscCode || '-' }}
+        </span>
+        </div>
+
+        <div class="profile-field">
+        <span class="field-label">Available Balance</span>
+        <span class="field-value balance-value">
+            ₹{{ selectedAccount?.currentBalance | number:'1.2-2' }}
+        </span>
+        </div>
+
+    </div>
+
+    </div>
+
+
+    <!-- Address Information -->
+    <div class="profile-card">
+
+    <!-- Address header -->
+    <div class="profile-card-header">
+        <div>
+        <h2>Address Information</h2>
+        <p>Your registered residential address</p>
+        </div>
+
+        <!-- Edit button -->
+        <button
+        *ngIf="!isAddressEditMode"
+        type="button"
+        class="edit-profile-button"
+        (click)="enableAddressEdit()">
+        ✏️ Edit
+        </button>
+    </div>
+
+    <!-- Address fields -->
+    <div class="profile-grid">
+
+        <!-- Address Line 1 -->
+        <div class="profile-field">
+        <span class="field-label">Address Line 1</span>
+
+        <input
+            *ngIf="isAddressEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.addressLine1" />
+
+        <span *ngIf="!isAddressEditMode" class="field-value">
+            {{ customer?.addressLine1 || '-' }}
+        </span>
+        </div>
+
+        <!-- Address Line 2 -->
+        <div class="profile-field">
+        <span class="field-label">Address Line 2</span>
+
+        <input
+            *ngIf="isAddressEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.addressLine2" />
+
+        <span *ngIf="!isAddressEditMode" class="field-value">
+            {{ customer?.addressLine2 || '-' }}
+        </span>
+        </div>
+
+        <!-- City -->
+        <div class="profile-field">
+        <span class="field-label">City</span>
+
+        <input
+            *ngIf="isAddressEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.city" />
+
+        <span *ngIf="!isAddressEditMode" class="field-value">
+            {{ customer?.city || '-' }}
+        </span>
+        </div>
+
+        <!-- State -->
+        <div class="profile-field">
+        <span class="field-label">State</span>
+
+        <input
+            *ngIf="isAddressEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.state" />
+
+        <span *ngIf="!isAddressEditMode" class="field-value">
+            {{ customer?.state || '-' }}
+        </span>
+        </div>
+
+        <!-- Postal Code -->
+        <div class="profile-field">
+        <span class="field-label">Postal Code</span>
+
+        <input
+            *ngIf="isAddressEditMode"
+            type="text"
+            class="profile-input"
+            [(ngModel)]="customer!.postalCode" />
+
+        <span *ngIf="!isAddressEditMode" class="field-value">
+            {{ customer?.postalCode || '-' }}
+        </span>
+        </div>
+
+    </div>
+
+    <!-- Address edit actions -->
+    <div class="profile-actions" *ngIf="isAddressEditMode">
+
+        <button
+        type="button"
+        class="cancel-button"
+        (click)="cancelAddressEdit()">
+        Cancel
+        </button>
+
+        <button
+        type="button"
+        class="save-button"
+        (click)="confirmAddressSave()">
+        Save Changes
+        </button>
+
+    </div>
+
+    <!-- Address save confirmation popup -->
+    <div
+        class="confirmation-overlay"
+        *ngIf="showAddressSaveConfirmation">
+
+        <div class="confirmation-popup">
+
+        <div class="confirmation-icon">?</div>
+
+        <h3>Save Address Changes?</h3>
+
+        <p>
+            Are you sure you want to save the changes to your address?
+        </p>
+
+        <div class="confirmation-actions">
+
+            <button
+            type="button"
+            class="confirmation-cancel"
+            (click)="cancelAddressSaveConfirmation()">
+            Cancel
+            </button>
+
+            <button
+            type="button"
+            class="confirmation-confirm"
+            (click)="saveAddress()">
+            Confirm
+            </button>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,282 @@
+<div class="transactions-page">
+
+  <!-- Back to dashboard -->
+  <button
+    type="button"
+    class="back-button"
+    (click)="goBack()"
+  >
+    <span class="back-icon">←</span>
+    <span>Back</span>
+  </button>
+
+  <!-- Page header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Transaction History</h1>
+      <p>View and track your account transactions</p>
+    </div>
+
+  </div>
+
+    <!-- Account selection -->
+    <div class="account-selector">
+
+    <label for="accountSelect">
+        Select Account
+    </label>
+
+    <select
+        id="accountSelect"
+        [(ngModel)]="selectedAccount"
+        (change)="loadTransactions(selectedAccount!.accountId)"
+    >
+        <option
+        *ngFor="let account of accounts"
+        [ngValue]="account"
+        >
+        {{ account.accountTypeName }} -
+        {{ account.accountNumber }}
+        </option>
+    </select>
+
+    </div>
+
+
+  <!-- Account summary -->
+  <div class="account-summary">
+
+    <div class="account-info">
+
+      <span class="account-label">
+        {{ selectedAccount?.accountTypeName }} Account
+        </span>
+
+        <span class="account-number">
+        {{ selectedAccount?.accountNumber }}
+      </span>
+
+    </div>
+
+    <div class="account-balance">
+
+      <small>
+        Available Balance
+      </small>
+
+      <strong>
+        ₹{{ selectedAccount?.currentBalance | number:'1.2-2' }}
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- Transaction card -->
+  <div class="transaction-card">
+
+    <!-- Card header -->
+    <div class="card-header">
+
+      <div>
+        <h2>Recent Transactions</h2>
+        <p>View your latest account activity</p>
+      </div>
+
+    </div>
+
+
+    <!-- Search and filter -->
+    <div class="transaction-filters">
+
+      <!-- Global search -->
+      <div class="global-search">
+
+        <span class="search-icon"></span>
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search transactions"
+        />
+
+      </div>
+
+
+      <!-- Transaction type -->
+      <select
+        class="transaction-type-filter"
+        [(ngModel)]="selectedTransactionType"
+        (change)="onTransactionTypeChange()"
+        >
+        <option value="">All Transactions</option>
+
+        <option value="Credit">Credit</option>
+
+        <option value="Debit">Debit</option>
+      </select>
+
+    </div>
+
+
+    <!-- Transaction table -->
+    <div class="transaction-table">
+
+      <div class="table-header">
+        <span>Date</span>
+        <span>Description</span>
+        <span>Reference</span>
+        <span>Type</span>
+        <span>Amount</span>
+        <span>Balance</span>
+      </div>
+
+      <!-- Loading indicator -->
+        <div
+        class="transaction-loading"
+        *ngIf="isLoading"
+        >
+        <div class="loading-spinner"></div>
+        </div>
+
+        <!-- Transaction content -->
+        <div *ngIf="!isLoading">
+        <!-- Transaction list -->
+        <div
+        class="transaction-row"
+        *ngFor="let transaction of paginatedTransactions"
+        >
+        <!-- Transaction date -->
+        <div>
+            {{ transaction.transactionDate | date:'dd MMM yyyy' }}
+        </div>
+
+        <!-- Description -->
+        <div>
+            {{ transaction.description || 'Transaction' }}
+        </div>
+
+        <!-- Reference -->
+        <div>
+            {{ transaction.transactionReference }}
+        </div>
+
+        <!-- Transaction type -->
+        <div>
+            <span
+            class="transaction-status"
+            [ngClass]="{
+                'credit': transaction.transactionType === 'Credit',
+                'debit': transaction.transactionType === 'Debit'
+            }"
+            >
+            {{ transaction.transactionType }}
+            </span>
+        </div>
+
+        <!-- Amount -->
+        <div
+            class="amount"
+            [ngClass]="{
+            'credit-amount': transaction.transactionType === 'Credit',
+            'debit-amount': transaction.transactionType === 'Debit'
+            }"
+        >
+            {{ transaction.transactionType === 'Credit' ? '+' : '-' }}
+            ₹{{ transaction.amount | number:'1.2-2' }}
+        </div>
+
+        <!-- Balance -->
+        <div>
+            ₹{{ transaction.balanceAfterTransaction | number:'1.2-2' }}
+        </div>
+
+        </div>
+
+        <!-- No transaction results -->
+        <div
+          class="empty-transaction-state"
+          *ngIf="filteredTransactions.length === 0"
+        >
+          <div class="empty-transaction-icon">
+            ⌕
+          </div>
+
+          <h3>
+            {{
+              searchText
+                ? 'No Matching Transactions'
+                : 'No Transactions Found'
+            }}
+          </h3>
+
+          <p>
+            {{
+              searchText
+                ? 'No transactions match your search criteria.'
+                : 'There are no transactions available for this account.'
+            }}
+          </p>
+        </div>
+
+    </div>
+
+
+    <!-- Pagination -->
+    <div class="pagination-container"
+     *ngIf="!isLoading && filteredTransactions.length > 0">
+
+    <div class="page-size-container">
+
+        <label>
+        Show Results
+        </label>
+
+        <select
+        [(ngModel)]="pageSize"
+        (change)="changePageSize()"
+        >
+        <option [ngValue]="5">5</option>
+        <option [ngValue]="10">10</option>
+        <option [ngValue]="20">20</option>
+        </select>
+
+    </div>
+
+    <div class="page-navigation">
+
+        <button
+        type="button"
+        [disabled]="currentPage === 1"
+        (click)="goToPage(currentPage - 1)"
+        >
+        Previous
+        </button>
+
+        <button
+        type="button"
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+        [class.active-page]="currentPage === i + 1"
+        (click)="goToPage(i + 1)"
+        >
+        {{ i + 1 }}
+        </button>
+
+        <button
+        type="button"
+        [disabled]="currentPage >= totalPages"
+        (click)="goToPage(currentPage + 1)"
+        >
+        Next
+        </button>
+
+    </div>
+
+    </div>
+
+  </div>
+
+</div>

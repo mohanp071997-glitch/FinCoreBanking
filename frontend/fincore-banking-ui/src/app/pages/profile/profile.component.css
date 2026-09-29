@@ -1,0 +1,571 @@
+/* Profile page */
+
+.profile-page {
+  min-height: 100vh;
+  padding: 30px 40px;
+
+  background: #f5f7fb;
+}
+
+
+/* Back button */
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 22px;
+
+  padding: 8px 14px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+  color: #475569;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.back-icon {
+  font-size: 18px;
+}
+
+
+/* Page header */
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* Profile overview */
+
+/* Displays customer summary and last login on the same row. */
+.profile-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+  padding: 24px 30px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+/* Groups the avatar and customer information. */
+.profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Displays the last login section on the right. */
+.last-login {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* Displays the last login icon. */
+.last-login-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f1f5f9;
+  font-size: 18px;
+}
+
+/* Arranges the last login details vertically. */
+.last-login-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Displays the last login label. */
+.last-login-label {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Displays the last login value. */
+.last-login-value {
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eef2ff;
+
+  font-size: 30px;
+}
+
+.profile-user-info h2 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 20px;
+  font-weight: 650;
+}
+
+.profile-user-info p {
+  margin: 5px 0 9px;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 11px;
+
+  border-radius: 20px;
+
+  background: #dcfce7;
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* Profile card */
+
+.profile-card {
+  margin-bottom: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+/* Aligns the card title and edit button. */
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.profile-card-header h2 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.profile-card-header p {
+  margin: 5px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* Profile fields */
+
+.profile-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 0;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  min-height: 76px;
+
+  padding: 18px 24px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.profile-field:nth-child(odd) {
+  border-right: 1px solid #f1f5f9;
+}
+
+.field-label {
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.field-value {
+  color: #334155;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.balance-value {
+  color: #15803d;
+  font-weight: 650;
+}
+
+
+/* Adjusts the profile overview for smaller screens. */
+@media (max-width: 768px) {
+
+  .profile-page {
+    padding: 20px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-field:nth-child(odd) {
+    border-right: none;
+  }
+
+  .profile-overview {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .last-login {
+    margin-left: 82px;
+  }
+}
+
+/* Aligns the page title and edit button. */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+/* Styles the edit profile button. */
+.edit-profile-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Highlights the edit profile button on hover. */
+.edit-profile-button:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+/* Adjusts the header for smaller screens. */
+@media (max-width: 768px) {
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .edit-profile-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Styles editable profile fields. */
+.profile-input {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #334155;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Highlights the active profile input. */
+.profile-input:focus {
+  border-color: #64748b;
+  box-shadow: 0 0 0 2px #e2e8f0;
+}
+
+/* Aligns profile action buttons. */
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #eef2f7;
+}
+
+/* Styles the cancel button. */
+.cancel-button {
+  padding: 9px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Styles the save button. */
+.save-button {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #1e293b;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Highlights the cancel button. */
+.cancel-button:hover {
+  background: #f8fafc;
+}
+
+/* Highlights the save button. */
+.save-button:hover {
+  background: #334155;
+}
+
+/* Covers the page with the confirmation overlay. */
+.confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+/* Styles the confirmation popup. */
+.confirmation-popup {
+  width: 400px;
+  padding: 28px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.2);
+  text-align: center;
+}
+
+/* Styles the confirmation icon. */
+.confirmation-icon {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Styles the popup title. */
+.confirmation-popup h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+/* Styles the popup message. */
+.confirmation-popup p {
+  margin: 9px 0 22px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Aligns confirmation buttons. */
+.confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Styles the confirmation cancel button. */
+.confirmation-cancel,
+.confirmation-confirm {
+  min-width: 90px;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Styles the cancel action. */
+.confirmation-cancel {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+}
+
+/* Styles the confirm action. */
+.confirmation-confirm {
+  border: none;
+  background: #1e293b;
+  color: #ffffff;
+}
+
+/* Positions the profile toast. */
+.profile-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 2000;
+  min-width: 320px;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15);
+  animation: toast-slide-in 0.25s ease-out;
+}
+
+/* Styles the success toast. */
+.success-toast {
+  border-left: 4px solid #16a34a;
+}
+
+/* Styles the error toast. */
+.error-toast {
+  border-left: 4px solid #dc2626;
+}
+
+/* Styles the toast icon. */
+.toast-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Styles the error icon. */
+.error-toast .toast-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Arranges toast content. */
+.toast-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Styles the toast title. */
+.toast-content strong {
+  color: #1e293b;
+  font-size: 13px;
+}
+
+/* Styles the toast message. */
+.toast-content span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* Styles the toast close button. */
+.toast-close {
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Animates the toast entrance. */
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

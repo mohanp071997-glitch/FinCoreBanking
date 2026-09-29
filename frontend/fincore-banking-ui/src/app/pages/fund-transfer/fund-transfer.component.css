@@ -1,0 +1,447 @@
+/* Main page background */
+.fund-transfer-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    110deg,
+    #f5a06f 0%,
+    #d77ac7 45%,
+    #68c5d1 100%
+  );
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  padding: 20px 35px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.transfer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 55px;
+}
+
+/* Back button */
+.back-button {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 38px;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Page title */
+.page-title {
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Logout button */
+.logout-button {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Main content */
+.transfer-content {
+  display: flex;
+  width: 85%;
+  max-width: 1250px;
+  margin: 55px auto 0;
+  gap: 120px;
+  align-items: flex-start;
+}
+
+/* Left account section */
+.account-section {
+  width: 38%;
+  padding-top: 25px;
+}
+
+/* Welcome text */
+.welcome-text {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+/* Customer name */
+.customer-name {
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 50px;
+}
+
+/* Balance card */
+.balance-card {
+  margin-bottom: 38px;
+}
+
+/* Balance label */
+.balance-label {
+  font-size: 15px;
+  margin-bottom: 7px;
+}
+
+/* Balance amount */
+.balance-amount {
+  font-size: 23px;
+  font-weight: 600;
+}
+
+/* Right form section */
+.form-section {
+  width: 55%;
+  padding-top: 5px;
+}
+
+/* FROM section */
+.from-section {
+  margin-bottom: 48px;
+}
+
+/* FROM label */
+.section-label {
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+/* Account toggle */
+.account-toggle {
+  display: flex;
+  gap: 20px;
+}
+
+/* Account option */
+.account-option {
+  width: 150px;
+  height: 44px;
+  border: none;
+  border-radius: 22px;
+  background: rgba(54, 193, 205, 0.85);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Selected account */
+.account-option.selected {
+  border: 1px solid #006d65;
+  background: #43c1c9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Selected check */
+.account-option span {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 14px;
+}
+
+/* Form row */
+.form-row {
+  display: grid;
+  grid-template-columns: 190px 15px 1fr;
+  align-items: center;
+  column-gap: 8px;
+  margin-bottom: 28px;
+}
+
+/* Form label */
+.form-row label {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+/* Colon */
+.form-row > span {
+  font-size: 14px;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Input and textarea */
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  min-height: 42px;
+  border: none;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #333333;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Textarea */
+.form-row textarea {
+  resize: vertical;
+  min-height: 75px;
+}
+
+/* Proceed section */
+.proceed-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+/* Proceed button */
+.proceed-button {
+  border: none;
+  border-radius: 14px;
+  background: #19a944;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 22px;
+  cursor: pointer;
+}
+
+/* Button hover */
+.proceed-button:hover {
+  background: #128a36;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) {
+  .transfer-content {
+    width: 90%;
+    gap: 50px;
+  }
+
+  .form-row {
+    grid-template-columns: 160px 15px 1fr;
+  }
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .transfer-content {
+    flex-direction: column;
+    width: 90%;
+    gap: 30px;
+  }
+
+  .account-section,
+  .form-section {
+    width: 100%;
+  }
+
+  .account-section {
+    padding-top: 10px;
+  }
+
+  .form-row {
+    grid-template-columns: 140px 10px 1fr;
+  }
+}
+
+.transfer-content {
+  display: flex;
+  width: 85%;
+  max-width: 1250px;
+  margin: 55px auto 0;
+  gap: 120px;
+  align-items: stretch;
+}
+
+.account-section {
+  width: 38%;
+  padding: 25px 45px 25px 25px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+.form-section {
+  width: 55%;
+  padding: 25px 35px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+/* Success popup overlay */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Success card */
+.success-card {
+  width: 500px;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: visible;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  color: #222222;
+  position: relative;
+}
+
+/* Success header */
+.success-header {
+  height: 70px;
+  background: #118bd6;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 16px 16px 0 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Header back icon */
+.success-back-icon {
+  position: absolute;
+  left: 20px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Success icon wrapper */
+.success-icon-wrapper {
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* Success icon */
+.success-icon {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: #2dcc20;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: 600;
+  border: 5px solid #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Success content */
+.success-content {
+  padding: 70px 45px 20px;
+}
+
+/* Success title */
+.success-content h2 {
+  text-align: center;
+  font-size: 23px;
+  margin: 0 0 30px;
+  color: #111111;
+}
+
+/* Success detail */
+.success-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 22px;
+}
+
+/* Detail label */
+.success-detail span {
+  font-size: 14px;
+  color: #777777;
+}
+
+/* Detail value */
+.success-detail strong {
+  font-size: 16px;
+  color: #111111;
+}
+
+/* Two column row */
+.success-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
+}
+
+/* Success date */
+.success-date {
+  font-size: 12px;
+  color: #888888;
+  margin-top: 8px;
+}
+
+/* Action buttons */
+.success-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 25px 25px;
+}
+
+/* Send more */
+.send-more-button,
+.back-home-button {
+  flex: 1;
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Send more button */
+.send-more-button {
+  background: #e5f1f8;
+  color: #111111;
+}
+
+/* Back home button */
+.back-home-button {
+  background: #2dcc20;
+  color: #ffffff;
+}
+
+/* Button hover */
+.send-more-button:hover {
+  background: #d4e8f2;
+}
+
+.back-home-button:hover {
+  background: #20ad17;
+}
+
+/* Validation message */
+.validation-message {
+  margin-top: 1px;
+  margin-bottom: 15px;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.from-section {
+  margin-bottom: 45px;
+}
+

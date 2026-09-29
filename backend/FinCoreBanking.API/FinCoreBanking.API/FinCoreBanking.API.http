@@ -1,0 +1,6 @@
+@FinCoreBanking.API_HostAddress = http://localhost:5075
+
+GET {{FinCoreBanking.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

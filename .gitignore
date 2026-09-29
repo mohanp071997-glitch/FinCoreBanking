@@ -1,0 +1,37 @@
+# Visual Studio
+.vs/
+.vscode/
+
+# .NET build output
+bin/
+obj/
+
+# Visual Studio user files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio generated/cache files
+CopilotIndices/
+FileContentIndex/
+ProjectEvaluation/
+DesignTimeBuild/
+
+# Test results
+TestResults/
+
+# Logs
+*.log
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+
+# Environment files
+.env
+.env.*
+
+# Azure Functions local settings
+local.settings.json

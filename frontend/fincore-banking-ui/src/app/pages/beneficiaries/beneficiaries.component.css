@@ -1,0 +1,400 @@
+/* Beneficiaries page */
+.beneficiaries-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 35px 45px;
+  box-sizing: border-box;
+}
+
+/* Page header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+/* Page title */
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Page description */
+.page-header p {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Add beneficiary button */
+.add-button {
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Add button hover */
+.add-button:hover {
+  background: #1d4ed8;
+}
+
+/* Main beneficiary card */
+.beneficiary-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* Card header */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Card title */
+.card-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+/* Beneficiary count */
+.card-header span {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Beneficiary row */
+.beneficiary-row {
+  display: grid;
+  grid-template-columns: 55px 1.5fr 1.2fr 1fr 120px;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 5px;
+  border-bottom: 1px solid #eef0f4;
+}
+
+/* Beneficiary icon */
+.beneficiary-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #eef4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+}
+
+/* Beneficiary information */
+.beneficiary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Beneficiary name */
+.beneficiary-info strong {
+  color: #1f2937;
+  font-size: 15px;
+}
+
+/* Bank name */
+.beneficiary-info span {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Account and IFSC sections */
+.beneficiary-account,
+.beneficiary-ifsc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Detail labels */
+.beneficiary-account small,
+.beneficiary-ifsc small {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+/* Detail values */
+.beneficiary-account strong,
+.beneficiary-ifsc strong {
+  color: #374151;
+  font-size: 13px;
+}
+
+/* Status container */
+.beneficiary-status span {
+  display: inline-block;
+  min-width: 75px;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Approved status */
+.approved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* Pending status */
+.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+/* Rejected status */
+.rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Blocked status */
+.blocked {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+/* Empty icon */
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+/* Empty title */
+.empty-state h3 {
+  margin: 0 0 8px;
+  color: #374151;
+  font-size: 18px;
+}
+
+/* Empty description */
+.empty-state p {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+
+  .beneficiaries-page {
+    padding: 25px;
+  }
+
+  .beneficiary-row {
+    grid-template-columns: 50px 1fr 1fr;
+  }
+
+  .beneficiary-status {
+    grid-column: 2 / 4;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .beneficiaries-page {
+    padding: 20px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .beneficiary-card {
+    padding: 18px;
+  }
+
+  .beneficiary-row {
+    grid-template-columns: 45px 1fr;
+    gap: 15px;
+  }
+
+  .beneficiary-account,
+  .beneficiary-ifsc,
+  .beneficiary-status {
+    grid-column: 2;
+  }
+}
+
+/* Add beneficiary popup overlay */
+.form-overlay {
+  position: fixed !important;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 99999 !important;
+}
+
+/* Add beneficiary popup */
+.beneficiary-form {
+  width: 450px;
+  max-width: 90%;
+  background: #ffffff;
+
+  padding: 30px;
+  border-radius: 16px;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Add beneficiary popup overlay */
+.form-overlay {
+  position: fixed !important;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 99999 !important;
+}
+
+/* Add beneficiary popup */
+.beneficiary-form {
+  width: 480px;
+  max-width: 90%;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Popup title */
+.beneficiary-form h2 {
+  margin: 0 0 25px;
+  color: #1f2937;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 18px;
+}
+
+/* Form label */
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Form input */
+.form-group input {
+  width: 100%;
+  height: 42px;
+  padding: 10px 13px;
+  box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  outline: none;
+  font-size: 14px;
+  color: #1f2937;
+  background: #ffffff;
+}
+
+/* Input focus */
+.form-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Form actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+/* Cancel button */
+.cancel-button {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+
+  padding: 10px 20px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* Cancel hover */
+.cancel-button:hover {
+  background: #f3f4f6;
+}
+
+/* Save button */
+.save-button {
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+
+  padding: 10px 20px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* Save hover */
+.save-button:hover {
+  background: #1d4ed8;
+}
+
+/* Validation message */
+.validation-message {
+  margin-top: 5px;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 500;
+}

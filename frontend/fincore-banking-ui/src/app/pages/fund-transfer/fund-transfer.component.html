@@ -1,0 +1,304 @@
+
+<div class="fund-transfer-page">
+
+  <!-- Header -->
+  <div class="transfer-header">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+      aria-label="Go back"
+    >
+      ←
+    </button>
+
+    <div class="page-title">
+      FUND TRANSFER
+    </div>
+
+    <!-- Navigates to the home page. -->
+    <button
+    type="button"
+    class="logout-button"
+    (click)="goHome()"
+    >
+      🏠HOME
+    </button>
+
+  </div>
+
+
+  <!-- Main Content -->
+  <div class="transfer-content">
+
+    <!-- Left Section -->
+    <div class="account-section">
+
+      <div class="welcome-text">
+        Welcome
+      </div>
+
+      <div class="customer-name">
+        {{ customer?.firstName || 'Customer' }}
+      </div>
+
+
+      <!-- Savings Account -->
+      <div class="balance-card">
+
+        <div class="balance-label">
+          Savings Account
+        </div>
+
+        <div class="balance-amount">
+          ₹{{ savingsBalance | number:'1.2-2' }}
+        </div>
+
+      </div>
+
+
+      <!-- Current Account -->
+      <div class="balance-card">
+
+        <div class="balance-label">
+          Current Account
+        </div>
+
+        <div class="balance-amount">
+          ₹{{ currentBalance | number:'1.2-2' }}
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Right Section -->
+    <div class="form-section">
+
+      <!-- From Account -->
+      <div class="from-section">
+
+        <div class="section-label">
+          FROM
+        </div>
+
+        <div class="account-toggle">
+
+          <button
+            type="button"
+            class="account-option"
+            [class.selected]="selectedAccountType === 'Savings'"
+            (click)="selectAccount('Savings')"
+          >
+            <span *ngIf="selectedAccountType === 'Savings'">
+              ✓
+            </span>
+            SAVINGS
+          </button>
+
+          <button
+            type="button"
+            class="account-option"
+            [class.selected]="selectedAccountType === 'Current'"
+            (click)="selectAccount('Current')"
+          >
+            <span *ngIf="selectedAccountType === 'Current'">
+              ✓
+            </span>
+            CURRENT
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Displays validation message. -->
+        <div
+        class="validation-message"
+        *ngIf="validationMessage"
+        >
+        {{ validationMessage }}
+        </div>
+
+
+      <!-- Beneficiary Number -->
+      <div class="form-row">
+
+        <label>
+          Enter Beneficiary Number
+        </label>
+
+        <span>:</span>
+
+        <input
+          type="text"
+          [(ngModel)]="beneficiaryAccountNumber"
+        />
+
+      </div>
+
+
+      <!-- Re-enter Beneficiary Number -->
+      <div class="form-row">
+
+        <label>
+          Re-Enter Beneficiary Number
+        </label>
+
+        <span>:</span>
+
+        <input
+          type="text"
+          [(ngModel)]="confirmBeneficiaryAccountNumber"
+        />
+
+      </div>
+
+
+      <!-- Amount -->
+      <div class="form-row">
+
+        <label>
+          Enter Amount
+        </label>
+
+        <span>:</span>
+
+        <input
+          type="number"
+          [(ngModel)]="amount"
+          min="1"
+        />
+
+      </div>
+
+      <!-- Transfer Description -->
+        <div class="form-row">
+
+        <label>
+            Transfer Description
+        </label>
+
+        <span>:</span>
+
+        <textarea
+            [(ngModel)]="transferDescription"
+            rows="3"
+            placeholder="Enter transfer description"
+        ></textarea>
+
+        </div>
+
+      <!-- Proceed -->
+      <div class="proceed-section">
+
+        <button
+          type="button"
+          class="proceed-button"
+          (click)="transferMoney()"
+        >
+          PROCEED
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Success popup -->
+<div
+  class="success-overlay"
+  *ngIf="showSuccessPopup"
+>
+  <div class="success-card">
+
+    <!-- Popup header -->
+    <div class="success-header">
+      <button
+        type="button"
+        class="success-back-icon"
+        (click)="closeSuccessPopup()"
+      >
+        ←
+      </button>
+
+      <span>Done</span>
+    </div>
+
+    <!-- Success icon -->
+    <div class="success-icon-wrapper">
+      <div class="success-icon">
+        ✓
+      </div>
+    </div>
+
+    <!-- Success content -->
+    <div class="success-content">
+
+      <h2>Transferred successfully !!</h2>
+
+      <div class="success-detail">
+        <span>Transferred to</span>
+        <strong>{{ successBeneficiaryName }}</strong>
+      </div>
+
+      <div class="success-detail">
+        <span>From</span>
+        <strong>{{ successAccountNumber }}</strong>
+      </div>
+
+      <div class="success-row">
+
+        <div class="success-detail">
+          <span>Amount Transferred</span>
+          <strong>₹{{ successAmount | number:'1.2-2' }}</strong>
+        </div>
+
+        <div class="success-detail">
+          <span>Payment mode</span>
+          <strong>Fund Transfer</strong>
+        </div>
+
+      </div>
+
+      <div class="success-detail">
+        <span>Remark</span>
+        <strong>
+          {{ transferDescription || 'Fund Transfer' }}
+        </strong>
+      </div>
+
+      <div class="success-date">
+        Sent on {{ successDate | date:'dd MMM yyyy, hh:mm a' }}
+      </div>
+
+    </div>
+
+    <!-- Action buttons -->
+    <div class="success-actions">
+
+      <button
+        type="button"
+        class="send-more-button"
+        (click)="sendMore()"
+      >
+        Send More
+      </button>
+
+      <button
+        type="button"
+        class="back-home-button"
+        (click)="goHome()"
+      >
+        Back to Home
+      </button>
+
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,289 @@
+<div class="beneficiaries-page">
+
+  <!-- Page header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Beneficiaries</h1>
+      <p>Manage your registered beneficiaries</p>
+    </div>
+
+    <!-- Opens the add beneficiary form. -->
+    <button
+      type="button"
+      class="add-button"
+      (click)="openAddForm()"
+    >
+      + Add Beneficiary
+    </button>
+
+  </div>
+
+
+  <!-- Success message -->
+  <div
+    class="success-message"
+    *ngIf="successMessage"
+  >
+    {{ successMessage }}
+  </div>
+
+
+  <!-- Beneficiary list -->
+  <div class="beneficiary-card">
+
+    <div class="card-header">
+      <h2>My Beneficiaries</h2>
+
+      <span>
+        {{ beneficiaries.length }} Beneficiaries
+      </span>
+    </div>
+
+
+    <!-- Empty state -->
+    <div
+      class="empty-state"
+      *ngIf="beneficiaries.length === 0"
+    >
+
+      <div class="empty-icon">
+        👥
+      </div>
+
+      <h3>
+        No Beneficiaries Found
+      </h3>
+
+      <p>
+        You don't have any beneficiaries registered yet.
+      </p>
+
+    </div>
+
+
+    <!-- Beneficiary list -->
+    <div
+      class="beneficiary-list"
+      *ngIf="beneficiaries.length > 0"
+    >
+
+      <div
+        class="beneficiary-row"
+        *ngFor="let beneficiary of beneficiaries"
+      >
+
+        <!-- Beneficiary icon -->
+        <div class="beneficiary-icon">
+          👤
+        </div>
+
+
+        <!-- Beneficiary information -->
+        <div class="beneficiary-info">
+
+          <strong>
+            {{ beneficiary.beneficiaryName }}
+          </strong>
+
+          <span>
+            {{ beneficiary.bankName }}
+          </span>
+
+        </div>
+
+
+        <!-- Account number -->
+        <div class="beneficiary-account">
+
+          <small>
+            Account Number
+          </small>
+
+          <strong>
+            {{ beneficiary.beneficiaryAccountNumber }}
+          </strong>
+
+        </div>
+
+
+        <!-- IFSC -->
+        <div class="beneficiary-ifsc">
+
+          <small>
+            IFSC
+          </small>
+
+          <strong>
+            {{ beneficiary.ifscCode }}
+          </strong>
+
+        </div>
+
+
+        <!-- Status -->
+        <div class="beneficiary-status">
+
+          <span
+            [ngClass]="{
+              'approved': beneficiary.beneficiaryStatus === 'Approved',
+              'pending': beneficiary.beneficiaryStatus === 'Pending',
+              'rejected': beneficiary.beneficiaryStatus === 'Rejected',
+              'blocked': beneficiary.beneficiaryStatus === 'Blocked'
+            }"
+          >
+            {{ beneficiary.beneficiaryStatus }}
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ====================================================== -->
+<!-- Add Beneficiary Popup -->
+<!-- ====================================================== -->
+
+<div
+  class="form-overlay"
+  *ngIf="showAddForm"
+>
+
+  <div class="beneficiary-form">
+
+    <!-- Popup title -->
+    <h2>
+      Add Beneficiary
+    </h2>
+
+
+    <!-- Beneficiary Name -->
+    <div class="form-group">
+
+      <label>
+        Beneficiary Name
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="beneficiaryName"
+        placeholder="Enter beneficiary name"
+      />
+
+      <!-- Beneficiary name validation -->
+      <div
+        class="validation-message"
+        *ngIf="validationMessage === 'beneficiaryName'"
+      >
+        Please enter beneficiary name.
+      </div>
+
+    </div>
+
+
+    <!-- Account Number -->
+    <div class="form-group">
+
+      <label>
+        Account Number
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="beneficiaryAccountNumber"
+        placeholder="Enter account number"
+      />
+
+      <!-- Account number validation -->
+      <div
+        class="validation-message"
+        *ngIf="validationMessage === 'beneficiaryAccountNumber'"
+      >
+        Please enter beneficiary account number.
+      </div>
+
+    </div>
+
+
+    <!-- Bank Name -->
+    <div class="form-group">
+
+      <label>
+        Bank Name
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="bankName"
+        placeholder="Enter bank name"
+      />
+
+      <!-- Bank name validation -->
+      <div
+        class="validation-message"
+        *ngIf="validationMessage === 'bankName'"
+      >
+        Please enter bank name.
+      </div>
+
+    </div>
+
+
+    <!-- IFSC Code -->
+    <div class="form-group">
+
+      <label>
+        IFSC Code
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="ifscCode"
+        placeholder="Enter IFSC code"
+      />
+
+      <!-- IFSC validation -->
+      <div
+        class="validation-message"
+        *ngIf="validationMessage === 'ifscCode'"
+      >
+        Please enter IFSC code.
+      </div>
+
+    </div>
+
+
+    <!-- Form buttons -->
+    <div class="form-actions">
+
+      <!-- Cancel button -->
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="closeAddForm()"
+      >
+        Cancel
+      </button>
+
+
+      <!-- Save button -->
+      <button
+        type="button"
+        class="save-button"
+        (click)="saveBeneficiary()"
+      >
+        Save Beneficiary
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

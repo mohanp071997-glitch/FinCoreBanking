@@ -1,0 +1,401 @@
+<div class="login-page">
+
+  <!-- Top utility bar -->
+  <div class="top-bar">
+    <div class="container-fluid d-flex justify-content-end align-items-center">
+      <span>Personal Banking</span>
+      <span>Help</span>
+      <span>Contact Us</span>
+      <span>English</span>
+    </div>
+  </div>
+
+  <!-- Main navigation -->
+  <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container-fluid px-4">
+
+      <a class="navbar-brand fw-bold" routerLink="/login">
+        <span class="brand-name">FinCore</span>
+        <span class="brand-subtitle">BANKING</span>
+      </a>
+
+      <div class="navbar-nav ms-5">
+        <a class="nav-link active">Home</a>
+        <a class="nav-link">Accounts</a>
+        <a class="nav-link">Loans</a>
+        <a class="nav-link">Cards</a>
+        <a class="nav-link">Investments</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Login section -->
+  <div class="login-content">
+
+    <div class="container">
+
+      <div class="row align-items-center">
+
+        <!-- Welcome section -->
+        <div class="col-lg-7 welcome-section">
+
+          <h1>Hello!</h1>
+
+          <h2>Welcome to FinCore Banking</h2>
+
+          <h4>Are you a new user?</h4>
+
+          <p>
+            Open an account and experience simple and secure digital banking.
+          </p>
+
+          <div class="welcome-actions">
+            <button class="btn btn-primary btn-lg">
+              Register Now
+            </button>
+
+            <button class="btn btn-outline-primary btn-lg">
+              Open Account
+            </button>
+          </div>
+
+          <p class="existing-account">
+            Don't have an account with FinCore?
+            <a href="#">Open Now!</a>
+          </p>
+
+        </div>
+
+        <!-- Login section -->
+        <div class="col-lg-5">
+
+          <div class="login-card">
+
+            <h3 class="text-center mb-4">
+              Username / Password
+            </h3>
+
+            <form (ngSubmit)="login()">
+
+              <div class="mb-4">
+                <label for="email" class="form-label">
+                  Email
+                </label>
+
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  class="form-control"
+                  [(ngModel)]="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+
+              <div class="mb-4">
+                <label for="password" class="form-label">
+                  Password
+                </label>
+
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  class="form-control"
+                  [(ngModel)]="password"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+
+              <div class="text-end mb-4">
+                <a href="#" class="forgot-link">
+                  Forgot Password?
+                </a>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary login-button">
+                Login
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Quick actions -->
+  <div class="quick-actions">
+
+    <div class="container">
+
+      <h3>Quick Actions</h3>
+
+      <div class="row g-3 mt-2">
+
+        <div class="col-md-3">
+          <div class="quick-card">
+            Check Balance
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="quick-card">
+            Fund Transfer
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="quick-card">
+            Transaction History
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="quick-card">
+            Customer Support
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Important notices and security practices -->
+    <div class="information-section">
+
+    <div class="container">
+
+        <div class="information-card">
+
+        <div class="row">
+
+            <!-- Important notices -->
+            <div class="col-lg-6 notice-section">
+
+            <div class="section-header">
+                <h3>Important Notices</h3>
+                <a href="#">View All</a>
+            </div>
+
+            <div class="notice-item">
+                <span class="notice-icon">→</span>
+                <p>
+                Never share your password, OTP or banking credentials
+                with anyone.
+                </p>
+            </div>
+
+            <div class="notice-item">
+                <span class="notice-icon">→</span>
+                <p>
+                Always verify the beneficiary details before making
+                a fund transfer.
+                </p>
+            </div>
+
+            <div class="notice-item">
+                <span class="notice-icon">→</span>
+                <p>
+                FinCore Banking will never ask for your password or
+                OTP through email or phone.
+                </p>
+            </div>
+
+            </div>
+
+            <!-- Security best practices -->
+            <div class="col-lg-6 security-section">
+
+            <div class="section-header">
+                <h3>Security Best Practices</h3>
+                <a href="#">View All</a>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4 security-item">
+
+                <div class="security-icon">
+                    ✓
+                </div>
+
+                <h5>Be Vigilant</h5>
+
+                <p>
+                    Always protect your banking credentials and
+                    personal information.
+                </p>
+
+                </div>
+
+                <div class="col-md-4 security-item">
+
+                <div class="security-icon">
+                    🔒
+                </div>
+
+                <h5>Keep It Secure</h5>
+
+                <p>
+                    Use a strong password and never share it with
+                    anyone.
+                </p>
+
+                </div>
+
+                <div class="col-md-4 security-item">
+
+                <div class="security-icon">
+                    ⚠
+                </div>
+
+                <h5>Beware of Phishing</h5>
+
+                <p>
+                    Do not click suspicious links or share sensitive
+                    banking information.
+                </p>
+
+                </div>
+
+            </div>
+
+            </div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    <!-- Do's and Don'ts -->
+    <div class="dos-donts-section">
+
+    <div class="container">
+
+        <h3 class="dos-donts-title">
+        Do's & Don'ts
+        </h3>
+
+        <div class="row g-3">
+
+        <!-- Do -->
+        <div class="col-lg-3 col-md-6">
+            <div class="security-tip do-tip">
+
+            <div class="tip-icon">
+                ✓
+            </div>
+
+            <div class="tip-content">
+                <strong>Always</strong>
+                <p>
+                Keep your computer free of malware.
+                </p>
+            </div>
+
+            </div>
+        </div>
+
+        <!-- Do -->
+        <div class="col-lg-3 col-md-6">
+            <div class="security-tip do-tip">
+
+            <div class="tip-icon">
+                ✓
+            </div>
+
+            <div class="tip-content">
+                <strong>Always</strong>
+                <p>
+                Change your passwords periodically.
+                </p>
+            </div>
+
+            </div>
+        </div>
+
+        <!-- Don't -->
+        <div class="col-lg-3 col-md-6">
+            <div class="security-tip dont-tip">
+
+            <div class="tip-icon">
+                ×
+            </div>
+
+            <div class="tip-content">
+                <strong>Never</strong>
+                <p>
+                Respond to communication seeking your passwords.
+                </p>
+            </div>
+
+            </div>
+        </div>
+
+        <!-- Don't -->
+        <div class="col-lg-3 col-md-6">
+            <div class="security-tip dont-tip">
+
+            <div class="tip-icon">
+                ×
+            </div>
+
+            <div class="tip-content">
+                <strong>Never</strong>
+                <p>
+                Reveal your passwords or card details to anyone.
+                </p>
+            </div>
+
+            </div>
+        </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    <footer class="footer">
+
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <span>|</span>
+    <a href="#">Terms of Service</a>
+    <span>|</span>
+    <a href="#">Security</a>
+    <span>|</span>
+    <a href="#">Contact Us</a>
+  </div>
+
+  <div class="footer-bottom">
+
+    <span>
+      © 2026 FinCore Banking. All rights reserved.
+    </span>
+
+    <span>
+      Secure Digital Banking
+    </span>
+
+  </div>
+
+    </footer>
+
+</div>

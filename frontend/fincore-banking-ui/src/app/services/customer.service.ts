@@ -18,4 +18,15 @@ export class CustomerService {
       `${this.apiUrl}/current`
     );
   }
+
+  // Updates the customer profile.
+  updateCustomer(
+    customerId: number,
+    customer: Customer
+  ): Observable<Customer> {
+    return this.http.put<Customer>(
+      `${this.apiUrl}/${customerId}`,
+      customer
+    );
+  }
 }

@@ -73,6 +73,9 @@ export class ProfileComponent implements OnInit {
 
     if (authUser) {
       const user = JSON.parse(authUser);
+      console.log('Parsed auth user:', user);
+    console.log('Last Login Date:', user.lastLoginDate);
+
       this.lastLoginDate = user.lastLoginDate ?? null;
     }
   }

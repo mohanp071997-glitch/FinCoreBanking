@@ -33,7 +33,7 @@ export class TransactionsComponent implements OnInit {
 
   currentPage = 1;
 
-  pageSize = 10;
+  pageSize = 5;
 
   Math = Math;
 

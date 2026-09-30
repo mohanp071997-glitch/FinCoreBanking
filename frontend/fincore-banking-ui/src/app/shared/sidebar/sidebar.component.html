@@ -1,0 +1,124 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+
+  <!-- Toggle button -->
+  <button
+    type="button"
+    class="toggle-button"
+    (click)="toggleSidebar()">
+    ☰
+  </button>
+
+  <div class="sidebar-menu">
+
+    <!-- Dashboard -->
+    <a
+      class="sidebar-item"
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+
+      <span class="sidebar-icon">🏠</span>
+      <span class="sidebar-label">Dashboard</span>
+      <span class="sidebar-tooltip">Dashboard</span>
+
+    </a>
+
+    <!-- Accounts -->
+    <a class="sidebar-item">
+
+      <span class="sidebar-icon">💳</span>
+      <span class="sidebar-label">Accounts</span>
+      <span class="sidebar-tooltip">Accounts</span>
+
+    </a>
+
+    <!-- Fund Transfer -->
+    <a
+      class="sidebar-item"
+      routerLink="/fund-transfer"
+      routerLinkActive="active">
+
+      <span class="sidebar-icon">💸</span>
+      <span class="sidebar-label">Fund Transfer</span>
+      <span class="sidebar-tooltip">Fund Transfer</span>
+
+    </a>
+
+    <!-- Beneficiaries -->
+    <a
+      class="sidebar-item"
+      routerLink="/beneficiaries"
+      routerLinkActive="active">
+
+      <span class="sidebar-icon">👥</span>
+      <span class="sidebar-label">Beneficiaries</span>
+      <span class="sidebar-tooltip">Beneficiaries</span>
+
+    </a>
+
+    <!-- Transactions -->
+    <a
+      class="sidebar-item"
+      routerLink="/transactions"
+      routerLinkActive="active">
+
+      <span class="sidebar-icon">📄</span>
+      <span class="sidebar-label">Transactions History</span>
+      <span class="sidebar-tooltip">Transactions History</span>
+
+    </a>
+
+    <!-- Loans -->
+    <a class="sidebar-item">
+
+      <span class="sidebar-icon">🏦</span>
+      <span class="sidebar-label">Loans</span>
+      <span class="sidebar-tooltip">Loans</span>
+
+    </a>
+
+    <!-- Cards -->
+    <a class="sidebar-item">
+
+      <span class="sidebar-icon">💳</span>
+      <span class="sidebar-label" routerLink="/cards" routerLinkActive="active">Cards</span>
+      <span class="sidebar-tooltip">Cards</span>
+
+    </a>
+
+    <!-- Profile -->
+    <a
+      class="sidebar-item"
+      routerLink="/profile"
+      routerLinkActive="active">
+
+      <span class="sidebar-icon">👤</span>
+      <span class="sidebar-label">Profile</span>
+      <span class="sidebar-tooltip">Profile</span>
+
+    </a>
+
+    <!-- Settings -->
+    <a class="sidebar-item">
+
+      <span class="sidebar-icon">⚙️</span>
+      <span class="sidebar-label">Settings</span>
+      <span class="sidebar-tooltip">Settings</span>
+
+    </a>
+
+  </div>
+
+  <!-- Logout -->
+  <button
+    type="button"
+    class="sidebar-item logout-button"
+    (click)="logout()">
+
+    <span class="sidebar-icon">🚪</span>
+    <span class="sidebar-label">Logout</span>
+    <span class="sidebar-tooltip">Logout</span>
+
+  </button>
+
+</aside>

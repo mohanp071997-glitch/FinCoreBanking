@@ -4,5 +4,6 @@ export interface AuthResponse {
   userId: number;
   userName: string;
   email: string;
+  lastLoginDate: string;
   role: string;
 }

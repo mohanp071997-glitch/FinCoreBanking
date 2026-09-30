@@ -1,0 +1,134 @@
+/* Sidebar container */
+.sidebar {
+  width: 255px;
+  min-height: 100%;
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.25s ease;
+  position: relative;
+}
+
+/* Collapsed sidebar */
+.sidebar.collapsed {
+  width: 72px;
+}
+
+/* Toggle button */
+.toggle-button {
+  width: 40px;
+  height: 40px;
+  margin: 14px auto 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Toggle hover */
+.toggle-button:hover {
+  background: #f3eefb;
+}
+
+/* Sidebar menu */
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+}
+
+/* Sidebar item */
+.sidebar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #334155;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Sidebar item hover */
+.sidebar-item:hover {
+  background: #f3eefb;
+  color: #5b258e;
+}
+
+/* Active menu */
+.sidebar-item.active {
+  background: #5b258e;
+  color: #ffffff;
+}
+
+/* Sidebar icon */
+.sidebar-icon {
+  width: 24px;
+  min-width: 24px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Sidebar label */
+.sidebar-label {
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+/* Hide labels when collapsed */
+.sidebar.collapsed .sidebar-label {
+  display: none;
+}
+
+/* Center icons when collapsed */
+.sidebar.collapsed .sidebar-item {
+  justify-content: center;
+  padding: 14px 10px;
+}
+
+/* Tooltip */
+.sidebar-tooltip {
+  display: none;
+  position: absolute;
+  left: 62px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #29265c;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Show tooltip only when collapsed and hovered */
+.sidebar.collapsed .sidebar-item:hover .sidebar-tooltip {
+  display: block;
+}
+
+/* Keep tooltip hidden when expanded */
+.sidebar:not(.collapsed) .sidebar-tooltip {
+  display: none;
+}
+
+/* Logout */
+.logout-button {
+  margin-top: auto;
+  margin-bottom: 20px;
+  margin-left: 14px;
+  margin-right: 14px;
+}

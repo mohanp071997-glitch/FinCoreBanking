@@ -4,9 +4,6 @@
   <header class="dashboard-header">
 
     <div class="header-left">
-      <button class="menu-button">
-        ☰
-      </button>
 
       <div class="brand">
         <span class="brand-icon">🏦</span>
@@ -26,11 +23,10 @@
         </div>
 
         <div class="user-info">
-          <strong>{{ customer?.firstName }}</strong>
+          <strong> {{ customer?.firstName }} {{ customer?.lastName }}</strong>
           <small>Customer</small>
         </div>
 
-        <span>⌄</span>
       </div>
 
     </div>
@@ -39,76 +35,6 @@
 
 
   <div class="dashboard-body">
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-
-      <div class="sidebar-menu">
-
-        <a routerLink="/dashboard" class="sidebar-item active">
-          <span>🏠</span>
-          <span>Dashboard</span>
-        </a>
-
-        <a class="sidebar-item">
-          <span>💳</span>
-          <span>Accounts</span>
-        </a>
-
-        <a class="sidebar-item">
-          <span>💸</span>
-          <span>Fund Transfer</span>
-        </a>
-
-        <!-- Navigates to the beneficiaries page. -->
-        <a
-          class="sidebar-item"
-          routerLink="/beneficiaries"
-        >
-          <span>👥</span>
-          <span>Beneficiaries</span>
-        </a>
-
-        <a class="sidebar-item">
-          <span>📄</span>
-          <span>Transactions</span>
-        </a>
-
-        <a class="sidebar-item">
-          <span>🏦</span>
-          <span>Loans</span>
-        </a>
-
-        <a class="sidebar-item">
-          <span>💳</span>
-          <span>Cards</span>
-        </a>
-
-        <a class="sidebar-item">
-          <span>👤</span>
-          <span>Profile</span>
-        </a>
-
-        <a class="sidebar-item">
-          <span>⚙️</span>
-          <span>Settings</span>
-        </a>
-
-      </div>
-
-
-    <!-- Logs out the current user. -->
-    <button
-      type="button"
-      class="sidebar-item"
-      (click)="logout()"
-    >
-      <span>🚪</span>
-      <span>Logout</span>
-    </button>
-
-    </aside>
-
 
     <!-- Main content -->
     <main class="dashboard-content">
@@ -120,14 +46,14 @@
           <h1>Customer Overview</h1>
 
           <p>
-            Welcome back, {{ customer?.firstName }}!
+            Welcome back, {{ customer?.firstName }} {{ customer?.lastName }}!
           </p>
         </div>
 
-        <div class="last-login">
-          Last login: Today, 10:30 AM
+       <div class="last-login">
+          Last login:
+          {{ lastLoginDate ? (lastLoginDate | date:'dd MMM yyyy, hh:mm a') : '-' }}
         </div>
-
       </div>
 
 
@@ -135,53 +61,195 @@
       <div class="summary-grid">
 
         <!-- Available balance -->
-        <div class="summary-card balance-card">
+          <div class="summary-card balance-card">
 
-          <div class="card-header">
-            <div>
-              <span class="card-label">
-                Available Balance
+            <div class="card-header">
+
+              <div>
+                <span class="card-label">
+                  Available Balance
+                </span>
+
+                <h2>
+                  {{ showAvailableBalance
+                    ? ('₹' + (accounts[0].currentBalance | number:'1.2-2'))
+                    : '₹••••••'
+                  }}
+                </h2>
+              </div>
+
+              <button
+                type="button"
+                class="balance-toggle"
+                (click)="toggleAvailableBalance()"
+                [attr.aria-label]="showAvailableBalance ? 'Hide balance' : 'Show balance'">
+
+                <svg
+                  *ngIf="showAvailableBalance"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+                  <circle cx="12" cy="12" r="3"/>
+
+                </svg>
+
+                <svg
+                  *ngIf="!showAvailableBalance"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+
+                  <path d="M3 3l18 18"/>
+                  <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+                  <path d="M9.9 4.2A10.7 10.7 0 0 1 12 4c6.5 0 10 6 10 6a18.7 18.7 0 0 1-4.1 4.7"/>
+                  <path d="M6.1 6.1C3.5 8 2 10 2 10s3.5 6 10 6c1.3 0 2.5-.2 3.5-.6"/>
+
+                </svg>
+
+              </button>
+
+            </div>
+
+          <div class="card-footer account-number-footer">
+
+            <span>Account Number</span>
+
+            <div class="account-number-wrapper">
+
+              <span class="account-number">
+                {{
+                  showAccountNumber
+                    ? accounts[0].accountNumber
+                    : '•••• ' + accounts[0].accountNumber.slice(-4)
+                }}
               </span>
 
-              <h2>₹{{ accounts[0].currentBalance | number:'1.2-2' }}</h2>
+              <button
+                type="button"
+                class="account-number-toggle"
+                (click)="toggleAccountNumber()"
+                [attr.aria-label]="showAccountNumber ? 'Hide account number' : 'Show account number'">
+
+                <!-- Eye icon -->
+                <svg
+                  *ngIf="showAccountNumber"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+                  <circle cx="12" cy="12" r="3"/>
+
+                </svg>
+
+                <!-- Eye slash icon -->
+                <svg
+                  *ngIf="!showAccountNumber"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+
+                  <path d="M3 3l18 18"/>
+                  <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+                  <path d="M9.9 4.2A10.7 10.7 0 0 1 12 4c6.5 0 10 6 10 6a18.7 18.7 0 0 1-4.1 4.7"/>
+                  <path d="M6.1 6.1C3.5 8 2 10 2 10s3.5 6 10 6c1.3 0 2.5-.2 3.5-.6"/>
+
+                </svg>
+
+              </button>
+
             </div>
 
-            <div class="card-icon">
-              ₹
-            </div>
           </div>
 
-          <div class="card-footer">
-            <span>Primary Account</span>
-            <span>•••• 0001</span>
           </div>
-
-        </div>
 
 
         <!-- Savings -->
-        <div class="summary-card">
 
-          <div class="card-header">
-            <div>
-              <span class="card-label">
-                Savings Account
-              </span>
+      <div class="summary-card">
 
-              <h2>₹{{ accounts[0].currentBalance | number:'1.2-2' }}</h2>
-            </div>
+        <div class="card-header">
 
-            <div class="card-icon">
-              💰
-            </div>
+          <div>
+            <span class="card-label">
+              Savings Account
+            </span>
+
+            <h2>
+              {{ showSavingsBalance
+                ? ('₹' + (accounts[0].currentBalance | number:'1.2-2'))
+                : '₹••••••'
+              }}
+            </h2>
           </div>
 
-          <div class="card-footer">
-            <span>FCB Savings</span>
-            <span>Active</span>
-          </div>
+          <button
+            type="button"
+            class="balance-toggle"
+            (click)="toggleSavingsBalance()"
+            [attr.aria-label]="showSavingsBalance ? 'Hide balance' : 'Show balance'">
+
+            <svg
+              *ngIf="showSavingsBalance"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+
+              <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+              <circle cx="12" cy="12" r="3"/>
+
+            </svg>
+
+            <svg
+              *ngIf="!showSavingsBalance"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+
+              <path d="M3 3l18 18"/>
+              <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+              <path d="M9.9 4.2A10.7 10.7 0 0 1 12 4c6.5 0 10 6 10 6a18.7 18.7 0 0 1-4.1 4.7"/>
+              <path d="M6.1 6.1C3.5 8 2 10 2 10s3.5 6 10 6c1.3 0 2.5-.2 3.5-.6"/>
+
+            </svg>
+
+          </button>
 
         </div>
+
+        <div class="card-footer">
+          <span>FCB Savings</span>
+          <span>Active</span>
+        </div>
+
+      </div>
 
 
         <!-- Transactions -->
@@ -203,16 +271,18 @@
 
           <div class="card-footer">
             <span>This Month</span>
-            <span>View Details</span>
+            <strong>{{ currentMonthTransactionCount }}</strong>
           </div>
 
         </div>
 
 
         <!-- Beneficiaries -->
+
         <div class="summary-card">
 
           <div class="card-header">
+
             <div>
               <span class="card-label">
                 Beneficiaries
@@ -224,12 +294,24 @@
             <div class="card-icon">
               👥
             </div>
+
           </div>
 
-          <div class="card-footer">
-            <span>Approved</span>
-            <span>View All</span>
-          </div>
+          <div class="card-footer beneficiary-status">
+
+              <span>
+                Approved: {{ approvedBeneficiaryCount }}
+              </span>
+
+              <span>
+                Pending: {{ pendingBeneficiaryCount }}
+              </span>
+
+              <span>
+                Rejected: {{ rejectedBeneficiaryCount }}
+              </span>
+
+            </div>
 
         </div>
 
@@ -239,51 +321,21 @@
       <!-- Main dashboard grid -->
       <div class="dashboard-grid">
 
+      <!-- Account Statistics -->
+      <section class="dashboard-card account-statistics">
 
-        <!-- Account summary -->
-        <section class="dashboard-card account-summary">
-
-          <div class="section-header">
-
-            <div>
-              <h3>Account Summary</h3>
-              <p>Your primary banking account</p>
-            </div>
-
-            <button class="link-button">
-              View Details
-            </button>
-
+        <div class="section-header">
+          <div>
+            <h3>Account Statistics</h3>
+            <p>Credit and debit activity</p>
           </div>
+        </div>
 
+        <div class="chart-container">
+          <canvas id="accountStatisticsChart"></canvas>
+        </div>
 
-          <div class="account-details">
-
-            <div class="account-detail">
-              <span>Account Number</span>
-              <strong>{{ accounts[0].accountNumber }}</strong>
-            </div>
-
-            <div class="account-detail">
-              <span>Account Type</span>
-              <strong>{{ accounts[0].accountTypeName }}</strong>
-            </div>
-
-            <div class="account-detail">
-              <span>IFSC Code</span>
-              <strong>{{ accounts[0].ifscCode }}</strong>
-            </div>
-
-            <div class="account-detail">
-              <span>Account Status</span>
-              <strong class="status-active">
-                {{ accounts[0].accountStatus }}
-              </strong>
-            </div>
-
-          </div>
-
-        </section>
+      </section>
 
 
         <!-- Quick actions -->
@@ -307,13 +359,14 @@
               <small>Send money</small>
             </button>
 
-            <button class="quick-action">
+            <button class="quick-action" (click)="goToBeneficiaries()" >
               <span>👥</span>
               <strong>Add Beneficiary</strong>
               <small>Manage beneficiaries</small>
             </button>
 
-            <button class="quick-action">
+            <button class="quick-action"
+            routerLink="/transactions">
               <span>📄</span>
               <strong>Transactions</strong>
               <small>View history</small>
@@ -340,7 +393,10 @@
               <p>Your latest account activity</p>
             </div>
 
-            <button class="link-button">
+            <button
+              type="button"
+              class="link-button"
+              (click)="goToTransactions()">
               View All
             </button>
 
@@ -349,10 +405,10 @@
 
         <div class="transaction-list">
 
-        <div
-            class="transaction-row"
-            *ngFor="let transaction of transactions"
-        >
+            <div
+              class="transaction-row"
+              *ngFor="let transaction of transactions | slice:0:5"
+            >
 
             <div
             class="transaction-icon"
@@ -396,37 +452,33 @@
 
 
         <!-- Spending analysis -->
+
         <section class="dashboard-card spending-analysis">
 
-          <div class="section-header">
+          <div class="section-header spending-header">
 
             <div>
               <h3>Spending Analysis</h3>
               <p>Monthly transaction overview</p>
             </div>
 
-            <select>
-              <option>September 2026</option>
-              <option>August 2026</option>
-              <option>July 2026</option>
+            <select
+              class="month-select"
+              [(ngModel)]="selectedSpendingMonth"
+              (change)="updateSpendingChart()">
+
+              <option
+                *ngFor="let month of spendingMonths"
+                [value]="month.value">
+                {{ month.label }}
+              </option>
+
             </select>
 
           </div>
 
-
-          <div class="chart-placeholder">
-
-            <div class="chart-line">
-              ╱╲___╱╲____╱╲___
-            </div>
-
-            <div class="chart-labels">
-              <span>Week 1</span>
-              <span>Week 2</span>
-              <span>Week 3</span>
-              <span>Week 4</span>
-            </div>
-
+          <div class="spending-chart-container">
+            <canvas id="spendingAnalysisChart"></canvas>
           </div>
 
         </section>

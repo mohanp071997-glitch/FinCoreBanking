@@ -7,6 +7,9 @@ export interface Customer {
   lastName: string;
   dateOfBirth: string;
   phoneNumber: string;
+  email: string;
+  emergencyContactNumber: string;
+  bloodGroup: string;
   addressLine1: string;
   addressLine2?: string;
   city: string;

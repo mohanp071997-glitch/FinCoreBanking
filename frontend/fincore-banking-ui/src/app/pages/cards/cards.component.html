@@ -1,0 +1,264 @@
+<div class="cards-page">
+
+  <div class="page-header">
+
+     <button
+    type="button"
+    class="back-button"
+    (click)="goBack()">
+
+    ← Back
+
+  </button>
+  
+    <div>
+      <h1>My Cards</h1>
+      <p>Manage your FinCore Bank cards</p>
+    </div>
+  </div>
+
+  <section class="cards-section">
+
+    <div class="section-header">
+      <div>
+        <h2>Your Cards</h2>
+        <p>View and manage your active cards</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+
+      <div
+        class="bank-card"
+        *ngFor="let card of cards">
+
+        <div class="card-top">
+
+          <div class="card-brand">
+            <span class="bank-icon">🏦</span>
+            <span>FinCore Bank</span>
+          </div>
+
+          <span class="card-type">
+            {{ card.cardBrand }}
+          </span>
+
+        </div>
+
+        <div class="card-chip">
+          <span></span>
+        </div>
+
+        <div class="card-number-row">
+
+        <div class="card-number">
+            {{
+            showCardNumber
+                ? card.cardNumber
+                : '•••• •••• •••• ' + card.cardNumber.slice(-4)
+            }}
+        </div>
+
+        <button
+            type="button"
+            class="card-number-toggle"
+            (click)="toggleCardNumber()"
+            [attr.aria-label]="showCardNumber ? 'Hide card number' : 'Show card number'">
+
+            <svg
+            *ngIf="!showCardNumber"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+            <circle cx="12" cy="12" r="3"/>
+
+            </svg>
+
+            <svg
+            *ngIf="showCardNumber"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <path d="M3 3l18 18"/>
+            <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+            <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c7 0 10 8 10 8a17.2 17.2 0 0 1-3.1 4.4"/>
+            <path d="M6.1 6.1C3.6 7.8 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 3.2-.5"/>
+            </svg>
+
+        </button>
+
+        </div>
+
+        <div class="card-bottom">
+
+          <div>
+            <small>CARD HOLDER</small>
+            <strong>{{ card.cardHolderName }}</strong>
+          </div>
+
+          <div>
+            <small>VALID THRU</small>
+            <strong>{{ card.expiryDate | date:'MM/yy' }}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+    class="card-details"
+    *ngFor="let card of cards">
+
+    <div class="detail-item">
+        <span>Card Type</span>
+        <strong>{{ card.cardType }}</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Card Status</span>
+
+        <strong
+        [class.active-status]="card.cardStatus === 'Active'"
+        [class.blocked-status]="card.cardStatus === 'Blocked'">
+
+        {{ card.cardStatus }}
+
+        </strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Available Limit</span>
+
+        <strong>
+        ₹{{ card.availableLimit | number:'1.2-2' }}
+        </strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Used Amount</span>
+
+        <strong>
+        ₹{{ card.usedAmount | number:'1.2-2' }}
+        </strong>
+    </div>
+
+    <div class="card-action">
+
+        <button
+        type="button"
+        class="card-status-button"
+        [class.block-button]="card.cardStatus === 'Active'"
+        [class.unblock-button]="card.cardStatus === 'Blocked'"
+        (click)="updateCardStatus(card)">
+
+        {{ card.cardStatus === 'Active'
+            ? 'Block Card'
+            : 'Unblock Card' }}
+
+        </button>
+
+    </div>
+
+    </div>
+
+    <div
+      class="no-cards"
+      *ngIf="cards.length === 0">
+
+      <p>No cards available.</p>
+
+    </div>
+
+  </section>
+
+  <!-- Card status confirmation popup. -->
+    <div
+    class="modal-overlay"
+    *ngIf="showStatusPopup">
+
+    <div class="status-modal">
+
+        <div class="modal-header">
+
+        <div>
+            <h3>
+            {{
+                selectedCard?.cardStatus === 'Active'
+                ? 'Block Card'
+                : 'Unblock Card'
+            }}
+            </h3>
+
+            <p>
+            {{
+                selectedCard?.cardStatus === 'Active'
+                ? 'Are you sure you want to block this card?'
+                : 'Do you want to unblock this card?'
+            }}
+            </p>
+        </div>
+
+        <button
+            type="button"
+            class="modal-close"
+            (click)="closeStatusPopup()">
+
+            ×
+
+        </button>
+
+        </div>
+
+        <div class="modal-card-info">
+
+        <span>Card</span>
+
+        <strong>
+            •••• {{ selectedCard?.cardNumber?.slice(-4) }}
+        </strong>
+
+        </div>
+
+        <div class="modal-actions">
+
+        <button
+            type="button"
+            class="cancel-button"
+            (click)="closeStatusPopup()">
+
+            Cancel
+
+        </button>
+
+        <button
+            type="button"
+            class="confirm-button"
+            [class.unblock-confirm]="selectedCard?.cardStatus === 'Blocked'"
+            (click)="confirmStatusUpdate()">
+
+            {{
+            selectedCard?.cardStatus === 'Active'
+                ? 'Block Card'
+                : 'Unblock Card'
+            }}
+
+        </button>
+
+        </div>
+
+    </div>
+
+    </div>
+
+</div>

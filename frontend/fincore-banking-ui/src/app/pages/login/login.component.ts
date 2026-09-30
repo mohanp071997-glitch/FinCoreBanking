@@ -31,6 +31,7 @@ export class LoginComponent {
           userId: response.userId,
           userName: response.userName,
           email: response.email,
+          lastLoginDate: response.lastLoginDate,
           role: response.role
         }));
         console.log('Login successful:', response);

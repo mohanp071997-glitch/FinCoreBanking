@@ -6,6 +6,7 @@ import { BeneficiaryService } from '../../services/beneficiary.service';
 import { CustomerService } from '../../services/customer.service';
 import { FormsModule } from '@angular/forms';
 import { Customer } from '../../interfaces/customer.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-beneficiaries',
@@ -22,6 +23,9 @@ export class BeneficiariesComponent implements OnInit {
 
   showAddForm = false;
 
+  // Controls the add beneficiary popup.
+  showAddBeneficiary = false;
+
 
 
   beneficiaryName = '';
@@ -35,12 +39,18 @@ export class BeneficiariesComponent implements OnInit {
 
   constructor(
     private beneficiaryService: BeneficiaryService,
-    private customerService: CustomerService
+    private customerService: CustomerService,private route: ActivatedRoute
   ) {}
 
   // Loads beneficiaries for the logged-in customer.
   ngOnInit(): void {
     this.loadBeneficiaries();
+
+      this.route.queryParams.subscribe(params => {
+      if (params['openAdd'] === 'true') {
+        this.openAddBeneficiary();
+      }
+    });
   }
 
   // Loads beneficiaries using the logged-in customer.
@@ -185,6 +195,10 @@ export class BeneficiariesComponent implements OnInit {
     this.validationMessage = '';
     this.successMessage = '';
     this.showAddForm = true;
+  }
+
+    openAddBeneficiary(): void {
+    this.showAddBeneficiary = true;
   }
 
 }

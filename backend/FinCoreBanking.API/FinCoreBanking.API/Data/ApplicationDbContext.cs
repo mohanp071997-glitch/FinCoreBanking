@@ -33,6 +33,9 @@ namespace FinCoreBanking.API.Data
         // Represents the beneficiary records.
         public DbSet<Beneficiary> Beneficiaries { get; set; }
 
+        // Represents the Cards table.
+        public DbSet<Card> Cards { get; set; }
+
         // Represents the fund transfer records.
         public DbSet<FundTransfer> FundTransfers { get; set; }
 
@@ -244,6 +247,56 @@ namespace FinCoreBanking.API.Data
                     .IsRequired();
 
                 // Configures the customer relationship.
+                entity.HasOne<Customer>()
+                    .WithMany()
+                    .HasForeignKey(x => x.CustomerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configures the Cards table.
+            modelBuilder.Entity<Card>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.CardId);
+
+                // Configures the card number.
+                entity.Property(x => x.CardNumber)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                // Prevents duplicate card numbers.
+                entity.HasIndex(x => x.CardNumber)
+                    .IsUnique();
+
+                // Configures the card type.
+                entity.Property(x => x.CardType)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                // Configures the card brand.
+                entity.Property(x => x.CardBrand)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                // Configures the card holder name.
+                entity.Property(x => x.CardHolderName)
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                // Configures the card status.
+                entity.Property(x => x.CardStatus)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                // Configures the available limit.
+                entity.Property(x => x.AvailableLimit)
+                    .HasPrecision(18, 2);
+
+                // Configures the used amount.
+                entity.Property(x => x.UsedAmount)
+                    .HasPrecision(18, 2);
+
+                // Configures the relationship between Cards and Customers.
                 entity.HasOne<Customer>()
                     .WithMany()
                     .HasForeignKey(x => x.CustomerId)

@@ -1,4 +1,3 @@
-// Represents an account returned by the API.
 export interface Account {
   accountId: number;
   customerId: number;
@@ -10,4 +9,8 @@ export interface Account {
   accountStatus: string;
   createdDate: string;
   modifiedDate?: string;
+
+  salaryCompanyName?: string;
+  monthlySalary?: number;
+  salaryConvertedDate?: string;
 }

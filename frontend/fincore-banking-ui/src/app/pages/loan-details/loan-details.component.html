@@ -1,0 +1,344 @@
+<div class="loan-details-page">
+
+  <!-- Page header -->
+  <div class="page-header">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()">
+      ← Back to Loans
+    </button>
+
+    <h1>Loan Details</h1>
+
+    <p>
+      View your loan information and payment details
+    </p>
+
+  </div>
+
+  <!-- Displays the loading overlay. -->
+    <div
+    class="loading-overlay"
+    *ngIf="loanLoading">
+
+    <div class="professional-loader">
+
+        <div class="spinner"></div>
+
+        <div class="loading-title">
+        Loading
+        </div>
+
+        <div class="loading-subtitle">
+        Please wait while we fetch your loan details
+        </div>
+
+    </div>
+
+    </div>
+
+    <!-- Repayment progress -->
+    <div class="repayment-progress">
+
+    <div class="progress-header">
+        <div>
+        <span class="progress-label">Repayment Progress</span>
+        <strong>
+            ₹{{ getRepaidAmount() | number:'1.2-2' }} Repaid
+        </strong>
+        </div>
+
+        <span class="progress-percentage">
+        {{ getRepaymentPercentage() | number:'1.1-1' }}%
+        </span>
+    </div>
+
+    <div class="progress-bar">
+        <div
+        class="progress-fill"
+        [style.width.%]="getRepaymentPercentage()">
+        </div>
+    </div>
+
+    <div class="progress-footer">
+        <span>
+        Principal: ₹{{ loan?.principalAmount | number:'1.2-2' }}
+        </span>
+
+        <span>
+        Outstanding: ₹{{ loan?.outstandingAmount | number:'1.2-2' }}
+        </span>
+    </div>
+
+    </div>
+
+  <!-- Loan details -->
+  <div
+    class="loan-container"
+    *ngIf="loan">
+
+    <!-- Loan summary -->
+    <div class="loan-summary">
+
+      <div>
+        <span class="label">Loan Number</span>
+        <h2>{{ loan.loanNumber }}</h2>
+      </div>
+
+      <span
+        class="loan-status"
+        [class.active]="loan.loanStatus === 'Active'"
+        [class.pending]="loan.loanStatus === 'Pending'"
+        [class.closed]="loan.loanStatus === 'Closed'"
+        [class.rejected]="loan.loanStatus === 'Rejected'">
+
+        <span
+          class="status-dot"
+          *ngIf="loan.loanStatus === 'Active'">
+        </span>
+
+        {{ loan.loanStatus }}
+
+      </span>
+
+    </div>
+
+    <!-- Financial information -->
+    <div class="section">
+
+      <h3>Loan Summary</h3>
+
+      <div class="details-grid">
+
+        <div class="detail-item">
+          <span>Principal Amount</span>
+          <strong>
+            ₹{{ loan.principalAmount | number:'1.2-2' }}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Outstanding Amount</span>
+          <strong>
+            ₹{{ loan.outstandingAmount | number:'1.2-2' }}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Interest Rate</span>
+          <strong>
+            {{ loan.interestRate }}%
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span>EMI Amount</span>
+          <strong>
+            ₹{{ loan.emiAmount | number:'1.2-2' }}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Tenure</span>
+          <strong>
+            {{ loan.tenureMonths }} Months
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Next Payment Date</span>
+
+          <strong>
+            {{ loan.nextPaymentDate | date:'dd MMM yyyy' }}
+
+            <small
+              *ngIf="getDaysUntilPayment(loan.nextPaymentDate) !== null"
+              class="payment-days">
+              Due in {{ getDaysUntilPayment(loan.nextPaymentDate) }} days
+            </small>
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Loan dates -->
+    <div class="section">
+
+      <h3>Loan Information</h3>
+
+      <div class="details-grid">
+
+        <div class="detail-item">
+          <span>Applied Date</span>
+          <strong>
+            {{ loan.appliedDate | date:'dd MMM yyyy' }}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Approved Date</span>
+          <strong>
+            {{
+              loan.approvedDate
+                ? (loan.approvedDate | date:'dd MMM yyyy')
+                : 'N/A'
+            }}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Loan Type</span>
+          <strong>
+            {{ loan.loanTypeName }}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Payment Schedule -->
+    <div class="section payment-schedule-section">
+
+      <div class="section-header">
+
+        <div>
+          <h3>Payment Schedule</h3>
+          <p>
+            Monthly EMI payment details for this loan
+          </p>
+        </div>
+
+        <span class="payment-count">
+          {{ payments.length }} Payments
+        </span>
+
+      </div>
+
+      <!-- Payment table -->
+      <div
+        *ngIf="payments.length > 0"
+        class="payment-table-wrapper">
+
+        <table class="payment-table">
+
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Due Date</th>
+              <th>EMI Amount</th>
+              <th>Status</th>
+              <th>Paid Date</th>
+              <th>Paid Amount</th>
+              <th>Remaining Amount</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let payment of payments">
+
+              <td>
+                <span class="payment-number">
+                  {{ payment.paymentNumber }}
+                </span>
+              </td>
+
+              <td>
+                {{ payment.dueDate | date:'dd MMM yyyy' }}
+              </td>
+
+              <td class="amount">
+                ₹{{ payment.emiAmount | number:'1.2-2' }}
+              </td>
+
+              <td>
+                <span
+                  class="payment-status"
+                  [ngClass]="getPaymentStatusClass(payment)">
+
+                  <span class="status-dot"></span>
+
+                  {{ getPaymentDisplayStatus(payment) }}
+
+                </span>
+              </td>
+
+              <td>
+                {{
+                  payment.paidDate
+                    ? (payment.paidDate | date:'dd MMM yyyy')
+                    : '-'
+                }}
+              </td>
+
+              <td class="amount">
+                {{
+                  payment.paidAmount
+                    ? ('₹' + (payment.paidAmount | number:'1.2-2'))
+                    : '-'
+                }}
+              </td>
+
+            <td class="amount">
+            <ng-container *ngIf="payment.paymentStatus === 'Paid'; else noRemainingAmount">
+                ₹{{ getRemainingAmount(payment) | number:'1.2-2' }}
+            </ng-container>
+
+            <ng-template #noRemainingAmount>
+                -
+            </ng-template>
+            </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <!-- Empty payment schedule -->
+      <div
+        *ngIf="payments.length === 0"
+        class="no-payments">
+
+        <div class="no-payments-icon">📅</div>
+
+        <h4>No Payment Schedule Available</h4>
+
+        <p>
+          Payment schedule details are not available for this loan.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Loading / empty state -->
+  <div
+    class="no-loan"
+    *ngIf="!loan">
+
+    <h3>Loan details not available</h3>
+
+    <p>
+      We could not find the requested loan.
+    </p>
+
+    <button
+      type="button"
+      class="back-action"
+      (click)="goBack()">
+      Back to Loans
+    </button>
+
+  </div>
+
+</div>

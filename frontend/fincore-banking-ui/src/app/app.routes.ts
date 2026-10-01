@@ -8,11 +8,20 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
 import { LayoutComponent } from './shared/layout/layout.component';
 import { CardsComponent } from './pages/cards/cards.component';
+import { LoansComponent } from './pages/loans/loans.component';
+import { LoanDetailsComponent } from './pages/loan-details/loan-details.component';
+import { AccountsComponent } from './pages/accounts/accounts.component';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./pages/settings/settings.component')
+        .then(m => m.SettingsComponent)
   },
 
     // Protected application layout.
@@ -44,6 +53,19 @@ export const routes: Routes = [
     {
       path: 'cards',
       component: CardsComponent
+    },
+    {
+      path: 'loans',
+      component: LoansComponent
+    },
+    {
+      path: 'loans/:id',
+      component: LoanDetailsComponent,
+      
+    },
+    {
+      path: 'accounts',
+      component: AccountsComponent
     },
   ]
 },

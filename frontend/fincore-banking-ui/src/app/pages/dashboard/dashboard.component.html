@@ -191,7 +191,7 @@
 
           <div>
             <span class="card-label">
-              Savings Account
+              {{ accounts[0].accountTypeName }} Account
             </span>
 
             <h2>
@@ -245,8 +245,8 @@
         </div>
 
         <div class="card-footer">
-          <span>FCB Savings</span>
-          <span>Active</span>
+          <span>FCB {{ accounts[0].accountTypeName }}</span>
+          <span>{{ accounts[0].accountStatus }}</span>
         </div>
 
       </div>

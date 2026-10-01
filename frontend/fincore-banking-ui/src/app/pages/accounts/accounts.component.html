@@ -1,0 +1,370 @@
+<div class="accounts-page">
+
+  <!-- Loading state -->
+  <div
+    class="account-loading"
+    *ngIf="loading">
+
+    <div class="loading-spinner"></div>
+
+    <p>Loading account details...</p>
+
+  </div>
+
+  <!-- Error state -->
+  <div
+    class="account-error"
+    *ngIf="!loading && errorMessage">
+
+    <div class="error-icon">!</div>
+
+    <h3>Unable to Load Account</h3>
+
+    <p>{{ errorMessage }}</p>
+
+    <button
+      type="button"
+      class="retry-button"
+      (click)="loadAccounts()">
+      Try Again
+    </button>
+
+  </div>
+
+  <!-- Account content -->
+  <ng-container *ngIf="!loading && !errorMessage">
+
+    <!-- Page header -->
+    <div class="page-header">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="goBack()">
+        ← Back to Dashboard
+      </button>
+
+      <h1>My Accounts</h1>
+
+      <p>
+        View and manage your FinCore Bank accounts
+      </p>
+
+    </div>
+
+    <!-- No accounts -->
+    <div
+      class="no-account"
+      *ngIf="accounts.length === 0">
+
+      <div class="no-account-icon">🏦</div>
+
+      <h3>No Active Accounts</h3>
+
+      <p>
+        No active bank accounts are available for your profile.
+      </p>
+
+    </div>
+
+    <!-- Account list -->
+    <div
+      class="account-list"
+      *ngIf="accounts.length > 0">
+
+      <div
+        class="account-card"
+        *ngFor="let account of accounts">
+
+        <!-- Account header -->
+        <div class="account-card-header">
+
+          <div class="account-title">
+
+            <div class="account-icon">
+              💳
+            </div>
+
+            <div>
+              <h2>
+                {{ account.accountTypeName }}
+              </h2>
+
+              <span>
+                {{ account.accountNumber }}
+              </span>
+            </div>
+
+          </div>
+
+          <span
+            class="account-status"
+            [class.active]="account.accountStatus === 'Active'">
+
+            <span class="status-dot"></span>
+
+            {{ account.accountStatus }}
+
+          </span>
+
+        </div>
+
+        <!-- Balance -->
+        <div class="balance-section">
+
+          <span class="balance-label">
+            Available Balance
+          </span>
+
+          <strong class="balance-amount">
+            ₹{{ account.currentBalance | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+        <!-- Account details -->
+        <div class="account-details">
+
+          <div class="detail-item">
+
+            <span>Account Number</span>
+
+            <strong>
+              {{ maskAccountNumber(account.accountNumber) }}
+            </strong>
+
+          </div>
+
+          <div class="detail-item">
+
+            <span>Account Type</span>
+
+            <strong>
+              {{ account.accountTypeName }}
+            </strong>
+
+          </div>
+
+          <div class="detail-item">
+
+            <span>IFSC Code</span>
+
+            <strong>
+              {{ account.ifscCode }}
+            </strong>
+
+          </div>
+
+          <div class="detail-item">
+
+            <span>Account Status</span>
+
+            <strong>
+              {{ account.accountStatus }}
+            </strong>
+
+          </div>
+
+          <div class="detail-item">
+
+            <span>Opened Date</span>
+
+            <strong>
+              {{ account.createdDate | date:'dd MMM yyyy' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions">
+
+          <button
+            type="button"
+            class="action-button"
+            (click)="goToTransactions()">
+
+            📄
+            <span>Transactions</span>
+
+          </button>
+
+          <button
+            type="button"
+            class="action-button salary-action"
+            (click)="openSalaryConversion(account)">
+            💼
+            <span>Convert to Salary Account</span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Salary Account Details -->
+
+        <div
+        class="salary-details-card"
+        *ngIf="accounts.length > 0 && accounts[0].accountTypeName === 'Salary'"
+        >
+        <div class="salary-details-header">
+            <div>
+            <h3>Salary Account Details</h3>
+            <p>Your salary account information</p>
+            </div>
+        </div>
+
+        <div class="salary-details-grid">
+
+            <div class="salary-detail-item">
+            <span>Company Name</span>
+            <strong>
+                {{ accounts[0].salaryCompanyName || 'Not available' }}
+            </strong>
+            </div>
+
+            <div class="salary-detail-item">
+            <span>Monthly Salary</span>
+            <strong>
+                ₹{{ accounts[0].monthlySalary | number:'1.2-2' }}
+            </strong>
+            </div>
+
+            <div class="salary-detail-item">
+            <span>Converted Date</span>
+            <strong>
+                {{ accounts[0].salaryConvertedDate | date:'dd MMM yyyy' }}
+            </strong>
+            </div>
+
+        </div>
+        </div>
+
+  </ng-container>
+
+  <!-- Salary Account Conversion Popup -->
+    <div class="salary-modal-backdrop" *ngIf="showSalaryPopup">
+
+    <div class="salary-modal">
+
+        <!-- Popup Header -->
+        <div class="salary-modal-header">
+
+        <div>
+            <h2>💼 Convert to Salary Account</h2>
+            <p>Provide your salary details to continue</p>
+        </div>
+
+        <button
+            type="button"
+            class="modal-close-button"
+            (click)="closeSalaryPopup()">
+            ×
+        </button>
+
+        </div>
+
+        <!-- Popup Body -->
+        <div class="salary-modal-body">
+
+        <!-- Company Name -->
+        <div class="form-field">
+
+            <label for="companyName">
+            Company Name <span>*</span>
+            </label>
+
+            <input
+            id="companyName"
+            type="text"
+            [(ngModel)]="companyName"
+            placeholder="Enter company name">
+
+        </div>
+
+        <!-- Account Number -->
+        <div class="form-field">
+
+            <label>Account Number</label>
+
+            <input
+            type="text"
+            [value]="selectedAccount ? selectedAccount.accountNumber : ''"
+            readonly>
+        </div>
+
+        <!-- Monthly Salary -->
+        <div class="form-field">
+
+            <label for="monthlySalary">
+            Monthly Salary <span>*</span>
+            </label>
+
+            <div class="salary-input-wrapper">
+            <span>₹</span>
+
+            <input
+                id="monthlySalary"
+                type="number"
+                [(ngModel)]="monthlySalary"
+                placeholder="Enter monthly salary"
+                min="1">
+            </div>
+
+        </div>
+
+        <!-- Confirmation -->
+        <div class="salary-confirmation">
+
+            <label>
+            <input
+                type="checkbox"
+                [(ngModel)]="salaryConfirmation">
+
+            <span>
+                I confirm that this account will be used
+                for receiving my salary.
+            </span>
+            </label>
+
+        </div>
+
+        <!-- Validation Message -->
+        <div
+            class="salary-error"
+            *ngIf="salaryErrorMessage">
+
+            {{ salaryErrorMessage }}
+
+        </div>
+
+        </div>
+
+        <!-- Popup Footer -->
+        <div class="salary-modal-footer">
+
+        <button
+            type="button"
+            class="modal-cancel-button"
+            (click)="closeSalaryPopup()">
+            Cancel
+        </button>
+
+        <button
+        type="button"
+        class="modal-confirm-button"
+        [disabled]="!isSalaryFormValid()"
+        (click)="convertToSalaryAccount()">
+        Convert Account
+        </button>
+
+        </div>
+
+    </div>
+
+    </div>
+
+</div>

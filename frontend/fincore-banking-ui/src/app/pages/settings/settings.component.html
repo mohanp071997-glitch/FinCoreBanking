@@ -1,0 +1,454 @@
+<div class="settings-page">
+
+    <!-- Success Toast -->
+    <div
+    class="success-toast"
+    *ngIf="showSuccessToast"
+    >
+    <div class="success-toast-icon">
+        ✓
+    </div>
+
+    <div class="success-toast-content">
+        <strong>Success</strong>
+        <span>{{ successMessage }}</span>
+    </div>
+
+    <button
+        type="button"
+        class="success-toast-close"
+        (click)="showSuccessToast = false"
+    >
+        ×
+    </button>
+    </div>
+
+  <!-- Back navigation -->
+  <div class="back-link" (click)="goBack()">
+    ← Back
+  </div>
+
+  <!-- Page header -->
+  <div class="page-header">
+    <h1>Settings</h1>
+    <p>Manage your account preferences and security</p>
+  </div>
+
+  <!-- Security -->
+  <section class="settings-card">
+
+    <div class="section-header">
+      <div class="section-icon">🔐</div>
+
+      <div>
+        <h2>Security</h2>
+        <p>Manage your account security settings</p>
+      </div>
+    </div>
+
+    <div class="settings-list">
+
+      <div class="setting-item">
+        <div>
+          <h3>Change Password</h3>
+          <p>Update your account password</p>
+        </div>
+
+        <button
+        class="outline-button"
+        (click)="openChangePassword()"
+        >
+        Change
+        </button>
+      </div>
+
+      <div class="setting-item">
+        <div>
+          <h3>Change MPIN</h3>
+          <p>Update your transaction MPIN</p>
+        </div>
+
+        <button
+        class="outline-button"
+        (click)="openChangeMpin()"
+        >
+        Change
+        </button>
+      </div>
+
+      <div class="setting-item">
+        <div>
+          <h3>Two-Factor Authentication</h3>
+          <p>Add an additional layer of security</p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="twoFactorAuthentication"
+            >
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Notifications -->
+  <section class="settings-card">
+
+    <div class="section-header">
+      <div class="section-icon">🔔</div>
+
+      <div>
+        <h2>Notifications</h2>
+        <p>Choose which notifications you want to receive</p>
+      </div>
+    </div>
+
+    <div class="settings-list">
+
+      <div class="setting-item">
+        <div>
+          <h3>Transaction Alerts</h3>
+          <p>Receive alerts for account transactions</p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="transactionAlerts"
+          >
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div>
+          <h3>Login Alerts</h3>
+          <p>Receive alerts when your account is accessed</p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="loginAlerts"
+          >
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div>
+          <h3>Promotional Notifications</h3>
+          <p>Receive offers and promotional updates</p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="promotionalNotifications"
+          >
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Preferences -->
+  <section class="settings-card">
+
+    <div class="section-header">
+      <div class="section-icon">⚙️</div>
+
+      <div>
+        <h2>Preferences</h2>
+        <p>Customize your application preferences</p>
+      </div>
+    </div>
+
+    <div class="preferences-grid">
+
+      <div class="form-group">
+        <label for="language">Language</label>
+
+        <select
+          id="language"
+          [(ngModel)]="language"
+        >
+          <option value="English">English</option>
+          <option value="Tamil">Tamil</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="theme">Theme</label>
+
+        <select
+          id="theme"
+          [(ngModel)]="theme"
+        >
+          <option value="Light">Light</option>
+          <option value="Dark">Dark</option>
+        </select>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Save -->
+  <div class="save-section">
+    <button
+      class="save-button"
+      (click)="saveSettings()"
+    >
+      Save Settings
+    </button>
+  </div>
+
+  <!-- Change Password Modal -->
+    <div
+    class="modal-overlay"
+    *ngIf="showPasswordModal"
+    (click)="closeChangePassword()"
+    >
+    <div
+        class="password-modal"
+        (click)="$event.stopPropagation()"
+    >
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <div>
+            <h2>Change Password</h2>
+            <p>Update your account password securely</p>
+        </div>
+
+        <button
+            type="button"
+            class="close-button"
+            (click)="closeChangePassword()"
+        >
+            ×
+        </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+
+        <!-- Current Password -->
+        <div class="password-field">
+            <label for="currentPassword">
+            Current Password
+            </label>
+
+            <input
+            id="currentPassword"
+            type="password"
+            [(ngModel)]="currentPassword"
+            placeholder="Enter current password"
+            />
+        </div>
+
+        <!-- New Password -->
+        <div class="password-field">
+            <label for="newPassword">
+            New Password
+            </label>
+
+            <input
+            id="newPassword"
+            type="password"
+            [(ngModel)]="newPassword"
+            placeholder="Enter new password"
+            />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="password-field">
+            <label for="confirmPassword">
+            Confirm New Password
+            </label>
+
+            <input
+            id="confirmPassword"
+            type="password"
+            [(ngModel)]="confirmPassword"
+            placeholder="Re-enter new password"
+            />
+        </div>
+
+        <!-- Password Requirements -->
+        <div class="password-hint">
+            <strong>Password requirements</strong>
+
+            <ul>
+            <li>At least 8 characters</li>
+            <li>Use uppercase and lowercase letters</li>
+            <li>Include at least one number</li>
+            <li>Include at least one special character</li>
+            </ul>
+        </div>
+
+        <!-- Error -->
+        <div
+            class="password-error"
+            *ngIf="passwordErrorMessage"
+        >
+            {{ passwordErrorMessage }}
+        </div>
+
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+
+        <button
+            type="button"
+            class="cancel-button"
+            (click)="closeChangePassword()"
+        >
+            Cancel
+        </button>
+
+        <button
+            type="button"
+            class="update-password-button"
+            (click)="updatePassword()"
+        >
+            Update Password
+        </button>
+
+        </div>
+
+    </div>
+    </div>
+
+    <!-- Change MPIN Modal -->
+    <div
+    class="modal-overlay"
+    *ngIf="showMpinModal"
+    (click)="closeChangeMpin()"
+    >
+    <div
+        class="password-modal"
+        (click)="$event.stopPropagation()"
+    >
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <div>
+            <h2>Change MPIN</h2>
+            <p>Update your transaction MPIN securely</p>
+        </div>
+
+        <button
+            type="button"
+            class="close-button"
+            (click)="closeChangeMpin()"
+        >
+            ×
+        </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+
+        <!-- Current MPIN -->
+        <div class="password-field">
+            <label for="currentMpin">
+            Current MPIN
+            </label>
+
+            <input
+            id="currentMpin"
+            type="password"
+            inputmode="numeric"
+            maxlength="4"
+            [(ngModel)]="currentMpin"
+            placeholder="Enter current MPIN"
+            />
+        </div>
+
+        <!-- New MPIN -->
+        <div class="password-field">
+            <label for="newMpin">
+            New MPIN
+            </label>
+
+            <input
+            id="newMpin"
+            type="password"
+            inputmode="numeric"
+            maxlength="4"
+            [(ngModel)]="newMpin"
+            placeholder="Enter new 4-digit MPIN"
+            />
+        </div>
+
+        <!-- Confirm MPIN -->
+        <div class="password-field">
+            <label for="confirmMpin">
+            Confirm New MPIN
+            </label>
+
+            <input
+            id="confirmMpin"
+            type="password"
+            inputmode="numeric"
+            maxlength="4"
+            [(ngModel)]="confirmMpin"
+            placeholder="Re-enter new MPIN"
+            />
+        </div>
+
+        <!-- MPIN Information -->
+        <div class="password-hint">
+            <strong>MPIN requirements</strong>
+
+            <ul>
+            <li>MPIN must contain exactly 4 digits</li>
+            <li>Do not share your MPIN with anyone</li>
+            <li>Use a unique transaction MPIN</li>
+            </ul>
+        </div>
+
+        <!-- Error -->
+        <div
+            class="password-error"
+            *ngIf="mpinErrorMessage"
+        >
+            {{ mpinErrorMessage }}
+        </div>
+
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+
+        <button
+            type="button"
+            class="cancel-button"
+            (click)="closeChangeMpin()"
+        >
+            Cancel
+        </button>
+
+        <button
+            type="button"
+            class="update-password-button"
+            (click)="updateMpin()"
+        >
+            Update MPIN
+        </button>
+
+        </div>
+
+    </div>
+    </div>
+
+</div>

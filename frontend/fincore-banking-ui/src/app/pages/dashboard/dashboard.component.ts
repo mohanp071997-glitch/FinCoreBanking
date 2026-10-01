@@ -126,8 +126,13 @@ spendingAnalysisChart: Chart | null = null;
         console.log('Accounts loaded:', response);
 
         if (this.accounts.length > 0) {
-        this.loadTransactions(this.accounts[0].accountId);
-      }
+          this.loadTransactions(this.accounts[0].accountId);
+        } else {
+          this.transactions = [];
+          this.totalCreditAmount = 0;
+          this.totalDebitAmount = 0;
+          this.createAccountStatisticsChart();
+        }
       },
       error: (error) => {
         console.error('Failed to load accounts:', error);

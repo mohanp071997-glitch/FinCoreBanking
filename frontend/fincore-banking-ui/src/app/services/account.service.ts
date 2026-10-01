@@ -18,4 +18,19 @@ export class AccountService {
       `${this.apiUrl}/current`
     );
   }
+
+  // Converts an account to a Salary Account.
+  convertToSalaryAccount(
+    accountId: number,
+    request: {
+      companyName: string;
+      monthlySalary: number | null;
+      confirmation: boolean;
+    }
+  ): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/${accountId}/convert-to-salary`,
+      request
+    );
+  }
 }

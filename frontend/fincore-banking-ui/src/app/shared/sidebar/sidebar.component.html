@@ -24,7 +24,8 @@
     </a>
 
     <!-- Accounts -->
-    <a class="sidebar-item">
+    <a class="sidebar-item"       routerLink="/accounts"
+      routerLinkActive="active">
 
       <span class="sidebar-icon">💳</span>
       <span class="sidebar-label">Accounts</span>
@@ -69,7 +70,11 @@
     </a>
 
     <!-- Loans -->
-    <a class="sidebar-item">
+
+    <a
+      class="sidebar-item"
+      routerLink="/loans"
+      routerLinkActive="active">
 
       <span class="sidebar-icon">🏦</span>
       <span class="sidebar-label">Loans</span>
@@ -78,10 +83,10 @@
     </a>
 
     <!-- Cards -->
-    <a class="sidebar-item">
+    <a class="sidebar-item" routerLink="/cards" routerLinkActive="active">
 
       <span class="sidebar-icon">💳</span>
-      <span class="sidebar-label" routerLink="/cards" routerLinkActive="active">Cards</span>
+      <span class="sidebar-label" >Cards</span>
       <span class="sidebar-tooltip">Cards</span>
 
     </a>
@@ -99,14 +104,22 @@
     </a>
 
     <!-- Settings -->
-    <a class="sidebar-item">
+   
+    <a
+      class="sidebar-item"
+      routerLink="/settings"
+      routerLinkActive="active"
+    >
+      <span class="sidebar-icon">⚙</span>
 
-      <span class="sidebar-icon">⚙️</span>
-      <span class="sidebar-label">Settings</span>
-      <span class="sidebar-tooltip">Settings</span>
+      <span class="sidebar-label">
+        Settings
+      </span>
 
+      <span class="sidebar-tooltip">
+        Settings
+      </span>
     </a>
-
   </div>
 
   <!-- Logout -->

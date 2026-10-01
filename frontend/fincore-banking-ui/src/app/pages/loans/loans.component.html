@@ -1,0 +1,169 @@
+<div class="loans-page">
+
+    <!-- Navigates back to the previous page. -->
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()">
+      ← Back
+    </button>
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div>
+      <h1>My Loans</h1>
+      <p>View and manage your FinCore Bank loans</p>
+    </div>
+  </div>
+
+  <!-- Loan type groups -->
+  <div
+    class="loan-group"
+    *ngFor="let group of loanGroups">
+
+    <!-- Loan type header -->
+    <div
+      class="loan-group-header"
+      (click)="toggleLoanType(group)">
+
+      <div class="loan-group-title">
+        <span
+        class="expand-icon"
+        [class.expanded]="group.expanded">
+        ▶
+        </span>
+
+        <div>
+          <h2>{{ group.loanTypeName }}</h2>
+          <span class="loan-count">
+            {{ group.loans.length }}
+            {{ group.loans.length === 1 ? 'Loan' : 'Loans' }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Expanded loan cards -->
+    <div
+      class="loan-group-content"
+      *ngIf="group.expanded">
+
+      <div
+        class="loan-card"
+        *ngFor="let loan of group.loans"
+        (click)="viewLoan(loan.loanId)">
+
+        <!-- Loan header -->
+        <div class="loan-header">
+
+            <div class="loan-title">
+
+            <!-- Loan type -->
+            <span class="loan-type">
+                {{ loan.loanTypeName }}
+            </span>
+
+            <!-- Loan number and details -->
+            <div class="loan-number-row">
+
+                <h2 class="loan-number">
+                {{ loan.loanNumber }}
+                </h2>
+
+                <button
+                type="button"
+                class="view-details-btn"
+                (click)="viewLoan(loan.loanId); $event.stopPropagation()">
+                View Details
+                </button>
+
+            </div>
+
+            </div>
+
+          <span
+            class="loan-status"
+            [class.active]="loan.loanStatus === 'Active'"
+            [class.closed]="loan.loanStatus === 'Closed'"
+            [class.pending]="loan.loanStatus === 'Pending'">
+
+            <span
+              class="status-dot"
+              *ngIf="loan.loanStatus === 'Active'">
+            </span>
+
+            {{ loan.loanStatus }}
+
+          </span>
+
+        </div>
+
+        <!-- Loan details -->
+        <div class="loan-details">
+
+          <div class="detail-item">
+            <span>Principal Amount</span>
+            <strong>
+              ₹{{ loan.principalAmount | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Outstanding Amount</span>
+            <strong>
+              ₹{{ loan.outstandingAmount | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Interest Rate</span>
+            <strong>
+              {{ loan.interestRate }}%
+            </strong>
+          </div>
+
+          <div class="detail-item">
+            <span>EMI</span>
+            <strong>
+              ₹{{ loan.emiAmount | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Tenure</span>
+            <strong>
+              {{ loan.tenureMonths }} Months
+            </strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Next Payment</span>
+            <strong>
+              {{
+                loan.nextPaymentDate
+                  ? (loan.nextPaymentDate | date:'dd MMM yyyy')
+                  : 'N/A'
+              }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- No loans -->
+  <div
+    class="no-loans"
+    *ngIf="loanGroups.length === 0">
+
+    <h3>No Loans Available</h3>
+    <p>You currently do not have any loans.</p>
+
+  </div>
+
+</div>

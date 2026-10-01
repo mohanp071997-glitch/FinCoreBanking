@@ -1,6 +1,7 @@
 ﻿using FinCoreBanking.API.Data;
 using FinCoreBanking.API.DTOs;
 using FinCoreBanking.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -148,6 +149,85 @@ namespace FinCoreBanking.API.Controllers
                 user.LastLoginDate,
                 Role = role,
                 Token = token
+            });
+        }
+
+        // Changes the password for the authenticated user.
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword(
+            ChangePasswordRequest request)
+        {
+            // Gets the logged-in user ID from the JWT token.
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized();
+            }
+
+            // Gets the authenticated user.
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x =>
+                    x.UserId == userId &&
+                    x.IsActive);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Verifies the current password.
+            var isCurrentPasswordValid =
+                BCrypt.Net.BCrypt.Verify(
+                    request.CurrentPassword,
+                    user.PasswordHash
+                );
+
+            if (!isCurrentPasswordValid)
+            {
+                return BadRequest("Current password is incorrect.");
+            }
+
+            // Checks whether the new password matches confirmation.
+            if (request.NewPassword != request.ConfirmPassword)
+            {
+                return BadRequest(
+                    "New password and confirm password do not match."
+                );
+            }
+
+            // Validates the new password length.
+            if (request.NewPassword.Length < 8)
+            {
+                return BadRequest(
+                    "Password must contain at least 8 characters."
+                );
+            }
+
+            // Prevents using the current password again.
+            if (BCrypt.Net.BCrypt.Verify(
+                request.NewPassword,
+                user.PasswordHash))
+            {
+                return BadRequest(
+                    "New password must be different from the current password."
+                );
+            }
+
+            // Creates a new password hash.
+            user.PasswordHash =
+                BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+            // Updates the modified date.
+            user.ModifiedDate = DateTime.UtcNow;
+
+            // Saves the new password.
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Password changed successfully."
             });
         }
 

@@ -13,5 +13,13 @@
         public string AccountStatus { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        // Stores the company name for a Salary Account.
+        public string? SalaryCompanyName { get; set; }
+
+        // Stores the monthly salary amount.
+        public decimal? MonthlySalary { get; set; }
+
+        // Stores the date when the account was converted to Salary Account.
+        public DateTime? SalaryConvertedDate { get; set; }
     }
 }

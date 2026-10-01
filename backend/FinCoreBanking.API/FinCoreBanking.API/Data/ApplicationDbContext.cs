@@ -39,6 +39,14 @@ namespace FinCoreBanking.API.Data
         // Represents the fund transfer records.
         public DbSet<FundTransfer> FundTransfers { get; set; }
 
+        // Represents the available loan types.
+        public DbSet<LoanType> LoanTypes { get; set; }
+
+        // Represents customer loans.
+        public DbSet<Loan> Loans { get; set; }
+
+        public DbSet<LoanPayment> LoanPayments { get; set; }
+
         // Configures table relationships and constraints.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -303,6 +311,75 @@ namespace FinCoreBanking.API.Data
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // Configures the LoanTypes table.
+            modelBuilder.Entity<LoanType>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.LoanTypeId);
+
+                // Configures the loan type name.
+                entity.Property(x => x.LoanTypeName)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                // Configures the interest rate.
+                entity.Property(x => x.InterestRate)
+                    .HasPrecision(5, 2);
+
+                // Prevents duplicate loan type names.
+                entity.HasIndex(x => x.LoanTypeName)
+                    .IsUnique();
+            });
+
+            // Configures the Loans table.
+            modelBuilder.Entity<Loan>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.LoanId);
+
+                // Configures the loan number.
+                entity.Property(x => x.LoanNumber)
+                    .HasMaxLength(30)
+                    .IsRequired();
+
+                // Prevents duplicate loan numbers.
+                entity.HasIndex(x => x.LoanNumber)
+                    .IsUnique();
+
+                // Configures the principal amount.
+                entity.Property(x => x.PrincipalAmount)
+                    .HasPrecision(18, 2);
+
+                // Configures the outstanding amount.
+                entity.Property(x => x.OutstandingAmount)
+                    .HasPrecision(18, 2);
+
+                // Configures the interest rate.
+                entity.Property(x => x.InterestRate)
+                    .HasPrecision(5, 2);
+
+                // Configures the EMI amount.
+                entity.Property(x => x.EMIAmount)
+                    .HasPrecision(18, 2);
+
+                // Configures the loan status.
+                entity.Property(x => x.LoanStatus)
+                    .HasMaxLength(30)
+                    .IsRequired();
+
+                // Configures the customer relationship.
+                entity.HasOne<Customer>()
+                    .WithMany()
+                    .HasForeignKey(x => x.CustomerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Configures the loan type relationship.
+                entity.HasOne<LoanType>()
+                    .WithMany()
+                    .HasForeignKey(x => x.LoanTypeId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
             // Configures the fund transfer entity.
             modelBuilder.Entity<FundTransfer>(entity =>
             {
@@ -342,6 +419,27 @@ namespace FinCoreBanking.API.Data
                     .WithMany()
                     .HasForeignKey(x => x.BeneficiaryId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configures the LoanPayments table.
+            modelBuilder.Entity<LoanPayment>(entity =>
+            {
+                entity.HasKey(x => x.LoanPaymentId);
+
+                entity.Property(x => x.EMIAmount)
+                      .HasPrecision(18, 2);
+
+                entity.Property(x => x.PaymentStatus)
+                      .HasMaxLength(20)
+                      .IsRequired();
+
+                entity.Property(x => x.PaidAmount)
+                      .HasPrecision(18, 2);
+
+                entity.HasOne<Loan>()
+                      .WithMany()
+                      .HasForeignKey(x => x.LoanId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

@@ -140,11 +140,79 @@ namespace FinCoreBanking.API.Controllers
                         CurrentBalance = account.CurrentBalance,
                         AccountStatus = account.AccountStatus,
                         CreatedDate = account.CreatedDate,
-                        ModifiedDate = account.ModifiedDate
+                        ModifiedDate = account.ModifiedDate,
+
+                        SalaryCompanyName = account.SalaryCompanyName,
+                        MonthlySalary = account.MonthlySalary,
+                        SalaryConvertedDate = account.SalaryConvertedDate
                     })
                 .ToListAsync();
 
             return Ok(accounts);
+        }
+
+        [HttpPut("{id}/convert-to-salary")]
+        public async Task<IActionResult> ConvertToSalaryAccount(
+            int id,
+            [FromBody] ConvertSalaryAccountRequest request)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userIdClaim, out var userId))
+                return Unauthorized();
+
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(x =>
+                    x.UserId == userId &&
+                    x.IsActive);
+
+            if (customer == null)
+                return NotFound("Customer not found.");
+
+            var account = await _context.Accounts
+                .FirstOrDefaultAsync(x =>
+                    x.AccountId == id &&
+                    x.CustomerId == customer.CustomerId &&
+                    x.AccountStatus == "Active");
+
+            if (account == null)
+                return NotFound("Account not found.");
+
+            var salaryAccountType = await _context.AccountTypes
+                .FirstOrDefaultAsync(x =>
+                    x.AccountTypeName == "Salary" &&
+                    x.IsActive);
+
+            if (salaryAccountType == null)
+                return BadRequest("Salary account type is not configured.");
+
+            if (account.AccountTypeId == salaryAccountType.AccountTypeId)
+                return BadRequest("Account is already a Salary Account.");
+
+            if (string.IsNullOrWhiteSpace(request.CompanyName))
+                return BadRequest("Company name is required.");
+
+            if (request.MonthlySalary <= 0)
+                return BadRequest("Monthly salary must be greater than zero.");
+
+            if (!request.Confirmation)
+                return BadRequest("Please confirm the Salary Account declaration.");
+
+            account.AccountTypeId = salaryAccountType.AccountTypeId;
+            account.SalaryCompanyName = request.CompanyName.Trim();
+            account.MonthlySalary = request.MonthlySalary;
+            account.SalaryConvertedDate = DateTime.UtcNow;
+            account.ModifiedDate = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Account converted to Salary Account successfully.",
+                accountId = account.AccountId,
+                accountTypeId = account.AccountTypeId,
+                accountTypeName = "Salary"
+            });
         }
     }
 }

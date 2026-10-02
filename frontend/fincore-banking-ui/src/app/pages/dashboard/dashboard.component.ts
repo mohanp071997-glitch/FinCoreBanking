@@ -12,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Chart, registerables } from 'chart.js';
 import { FormsModule } from '@angular/forms';
+import { AppNotification, NotificationService } from '../../services/notification.service';
 
 
 Chart.register(...registerables);
@@ -62,19 +63,33 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   { value: 11, label: 'December' }
 ];
 
-// Stores the spending analysis chart.
-spendingAnalysisChart: Chart | null = null;
+  // Stores the spending analysis chart.
+  spendingAnalysisChart: Chart | null = null;
+
+  // Stores the notification list.
+  notifications: AppNotification[] = [];
+
+  // Stores the unread notification count.
+  unreadNotificationCount = 0;
+
+  // Controls the notification dropdown.
+  showNotifications = false;
+
+ 
 
 
   constructor(private customerService: CustomerService, private accountService: AccountService,
      private transactionService: TransactionService, private authService: AuthService,
-     private beneficiaryService: BeneficiaryService, private router: Router) {}
+     private beneficiaryService: BeneficiaryService,
+     private notificationService: NotificationService,
+      private router: Router) {}
 
   // Loads the logged-in customer.
   ngOnInit(): void {
     this.loadCustomer();
     this.loadAccounts();
     this.loadLastLogin();
+    this.loadNotificationCount();
   }
 
   // Initializes the account statistics chart.
@@ -412,6 +427,102 @@ spendingAnalysisChart: Chart | null = null;
           }
         });
       }
+
+      // Loads notifications for the current user.
+    loadNotifications(): void {
+      this.notificationService.getNotifications().subscribe({
+        next: (response) => {
+          this.notifications = response;
+        },
+        error: (error) => {
+          console.error(
+            'Failed to load notifications:',
+            error
+          );
+        }
+      });
+    }
+
+    // Loads the unread notification count.
+    loadNotificationCount(): void {
+      this.notificationService.getUnreadCount().subscribe({
+        next: (response) => {
+          this.unreadNotificationCount =
+            response.unreadCount;
+        },
+        error: (error) => {
+          console.error(
+            'Failed to load notification count:',
+            error
+          );
+        }
+      });
+    }
+
+    // Opens or closes the notification dropdown.
+    toggleNotifications(): void {
+      this.showNotifications =
+        !this.showNotifications;
+
+      if (this.showNotifications) {
+        this.loadNotifications();
+      }
+    }
+
+    // Marks a notification as read.
+    openNotification(notification: AppNotification): void {
+
+      if (!notification.isRead) {
+
+        this.notificationService
+          .markAsRead(notification.notificationId)
+          .subscribe({
+            next: () => {
+
+              this.notifications = this.notifications.filter(
+                x => x.notificationId !== notification.notificationId
+              );
+
+              this.unreadNotificationCount =
+                Math.max(
+                  0,
+                  this.unreadNotificationCount - 1
+                );
+            },
+            error: (error) => {
+              console.error(
+                'Failed to mark notification as read:',
+                error
+              );
+            }
+          });
+      }
+    }
+
+    // Marks all notifications as read.
+    markAllNotificationsAsRead(): void {
+
+      this.notificationService
+        .markAllAsRead()
+        .subscribe({
+          next: () => {
+
+            this.notifications.forEach(
+              notification => {
+                notification.isRead = true;
+              }
+            );
+
+            this.unreadNotificationCount = 0;
+          },
+          error: (error) => {
+            console.error(
+              'Failed to mark all notifications as read:',
+              error
+            );
+          }
+        });
+    }
 
     // Logs out the current user.
     logout(): void {

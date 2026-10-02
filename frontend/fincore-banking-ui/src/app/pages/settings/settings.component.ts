@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
+import { NotificationSettingsService } from '../../services/notification-settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -44,48 +45,33 @@ export class SettingsComponent implements OnInit {
     // Stores whether the MPIN has been configured.
   isMpinConfigured = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService,private notificationSettingsService: NotificationSettingsService) {}
 
-ngOnInit(): void {
+  ngOnInit(): void {
 
-  const notificationSettings =
-    localStorage.getItem('notificationSettings');
+    // Loads notification settings from database.
+    this.loadNotificationSettings();
 
-  if (notificationSettings) {
+    const userPreferences =
+      localStorage.getItem('userPreferences');
 
-    const settings = JSON.parse(notificationSettings);
+    if (userPreferences) {
+      const preferences =
+        JSON.parse(userPreferences);
 
-    this.transactionAlerts =
-      settings.transactionAlerts ?? true;
+      this.language =
+        preferences.language ?? 'English';
 
-    this.loginAlerts =
-      settings.loginAlerts ?? true;
+      this.theme =
+        preferences.theme ?? 'Light';
+    }
 
-    this.promotionalNotifications =
-      settings.promotionalNotifications ?? false;
+    // Loads MPIN status.
+    this.loadMpinStatus();
+
+    // Loads two-factor authentication status.
+    this.loadTwoFactorStatus();
   }
-
-  const userPreferences =
-    localStorage.getItem('userPreferences');
-
-  if (userPreferences) {
-
-    const preferences = JSON.parse(userPreferences);
-
-    this.language =
-      preferences.language ?? 'English';
-
-    this.theme =
-      preferences.theme ?? 'Light';
-  }
-
-  // Loads the MPIN configuration status.
-  this.loadMpinStatus();
-
-  // Loads the two-factor authentication status.
-  this.loadTwoFactorStatus();
-}
-
 //   ngOnInit(): void {
 
 //   // Loads the saved notification settings.
@@ -130,27 +116,58 @@ ngOnInit(): void {
     this.router.navigate(['/dashboard']);
   }
 
-  saveSettings(): void {
-    localStorage.setItem(
-      'notificationSettings',
-      JSON.stringify({
+    // Saves notification and user preferences.
+    saveSettings(): void {
+
+      const notificationSettings = {
         transactionAlerts: this.transactionAlerts,
         loginAlerts: this.loginAlerts,
-        promotionalNotifications: this.promotionalNotifications,
-        twoFactorAuthentication: this.twoFactorAuthentication
-      })
-    );
+        promotionalNotifications:
+          this.promotionalNotifications
+      };
 
-    localStorage.setItem(
-      'userPreferences',
-      JSON.stringify({
-        language: this.language,
-        theme: this.theme
-      })
-    );
+      this.notificationSettingsService
+        .updateSettings(notificationSettings)
+        .subscribe({
+          next: () => {
 
-    alert('Settings saved successfully.');
-  }
+            // Stores only UI preferences locally.
+            localStorage.setItem(
+              'userPreferences',
+              JSON.stringify({
+                language: this.language,
+                theme: this.theme
+              })
+            );
+
+            // Shows success toast.
+            this.successMessage =
+              'Settings saved successfully.';
+
+            this.showSuccessToast = true;
+
+            setTimeout(() => {
+              this.showSuccessToast = false;
+            }, 3000);
+          },
+
+          error: (error) => {
+            console.error(
+              'Failed to save settings:',
+              error
+            );
+
+            this.successMessage =
+              'Failed to save settings.';
+
+            this.showSuccessToast = true;
+
+            setTimeout(() => {
+              this.showSuccessToast = false;
+            }, 3000);
+          }
+        });
+    }
 
     openChangePassword(): void {
     this.showPasswordModal = true;
@@ -457,6 +474,54 @@ ngOnInit(): void {
         }
       });
     }
+
+    // Loads the current user's notification settings.
+    loadNotificationSettings(): void {
+      this.notificationSettingsService.getSettings().subscribe({
+        next: (settings) => {
+          this.transactionAlerts =
+            settings.transactionAlerts;
+
+          this.loginAlerts =
+            settings.loginAlerts;
+
+          this.promotionalNotifications =
+            settings.promotionalNotifications;
+        },
+        error: (error) => {
+          console.error(
+            'Failed to load notification settings:',
+            error
+          );
+        }
+      });
+    }
+
+    // Saves notification settings to the database.
+  saveNotificationSettings(): void {
+    const settings = {
+      transactionAlerts: this.transactionAlerts,
+      loginAlerts: this.loginAlerts,
+      promotionalNotifications:
+        this.promotionalNotifications
+    };
+
+    this.notificationSettingsService
+      .updateSettings(settings)
+      .subscribe({
+        next: () => {
+          console.log(
+            'Notification settings updated successfully.'
+          );
+        },
+        error: (error) => {
+          console.error(
+            'Failed to update notification settings:',
+            error
+          );
+        }
+      });
+  }
 
 
  

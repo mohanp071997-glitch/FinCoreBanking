@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-settings',
@@ -40,44 +41,90 @@ export class SettingsComponent implements OnInit {
   showSuccessToast = false;
   successMessage = '';
 
+    // Stores whether the MPIN has been configured.
+  isMpinConfigured = false;
+
   constructor(private router: Router, private authService: AuthService) {}
 
-    ngOnInit(): void {
+ngOnInit(): void {
 
-    const notificationSettings =
-      localStorage.getItem('notificationSettings');
+  const notificationSettings =
+    localStorage.getItem('notificationSettings');
 
-    if (notificationSettings) {
+  if (notificationSettings) {
 
-      const settings = JSON.parse(notificationSettings);
+    const settings = JSON.parse(notificationSettings);
 
-      this.transactionAlerts =
-        settings.transactionAlerts ?? true;
+    this.transactionAlerts =
+      settings.transactionAlerts ?? true;
 
-      this.loginAlerts =
-        settings.loginAlerts ?? true;
+    this.loginAlerts =
+      settings.loginAlerts ?? true;
 
-      this.promotionalNotifications =
-        settings.promotionalNotifications ?? false;
-
-      this.twoFactorAuthentication =
-        settings.twoFactorAuthentication ?? true;
-    }
-
-    const userPreferences =
-      localStorage.getItem('userPreferences');
-
-    if (userPreferences) {
-
-      const preferences = JSON.parse(userPreferences);
-
-      this.language =
-        preferences.language ?? 'English';
-
-      this.theme =
-        preferences.theme ?? 'Light';
-    }
+    this.promotionalNotifications =
+      settings.promotionalNotifications ?? false;
   }
+
+  const userPreferences =
+    localStorage.getItem('userPreferences');
+
+  if (userPreferences) {
+
+    const preferences = JSON.parse(userPreferences);
+
+    this.language =
+      preferences.language ?? 'English';
+
+    this.theme =
+      preferences.theme ?? 'Light';
+  }
+
+  // Loads the MPIN configuration status.
+  this.loadMpinStatus();
+
+  // Loads the two-factor authentication status.
+  this.loadTwoFactorStatus();
+}
+
+//   ngOnInit(): void {
+
+//   // Loads the saved notification settings.
+//   const notificationSettings =
+//     localStorage.getItem('notificationSettings');
+
+//   if (notificationSettings) {
+//     const settings = JSON.parse(notificationSettings);
+
+//     this.transactionAlerts =
+//       settings.transactionAlerts ?? true;
+
+//     this.loginAlerts =
+//       settings.loginAlerts ?? true;
+
+//     this.promotionalNotifications =
+//       settings.promotionalNotifications ?? false;
+//   }
+
+//   // Loads the saved user preferences.
+//   const userPreferences =
+//     localStorage.getItem('userPreferences');
+
+//   if (userPreferences) {
+//     const preferences = JSON.parse(userPreferences);
+
+//     this.language =
+//       preferences.language ?? 'English';
+
+//     this.theme =
+//       preferences.theme ?? 'Light';
+//   }
+
+//   // Loads the MPIN status.
+//   this.loadMpinStatus();
+
+//   // Loads the two-factor authentication status.
+//   this.loadTwoFactorStatus();
+// }
 
   goBack(): void {
     this.router.navigate(['/dashboard']);
@@ -179,6 +226,13 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+
+  // Opens the MPIN modal.
+  openMpinModal(): void {
+    this.showMpinModal = true;
+    this.mpinErrorMessage = '';
+  }
+
     openChangeMpin(): void {
     this.showMpinModal = true;
     this.mpinErrorMessage = '';
@@ -193,36 +247,217 @@ export class SettingsComponent implements OnInit {
     this.mpinErrorMessage = '';
   }
 
+    // Creates or changes the transaction MPIN.
   updateMpin(): void {
 
-    if (!this.currentMpin ||
-        !this.newMpin ||
-        !this.confirmMpin) {
+  // Clears the previous error message.
+  this.mpinErrorMessage = '';
 
-      this.mpinErrorMessage =
-        'Please complete all MPIN fields.';
-
-      return;
-    }
-
-    if (!/^\d{4}$/.test(this.newMpin)) {
-
-      this.mpinErrorMessage =
-        'MPIN must contain exactly 4 digits.';
-
-      return;
-    }
-
-    if (this.newMpin !== this.confirmMpin) {
-
-      this.mpinErrorMessage =
-        'New MPIN and confirm MPIN do not match.';
-
-      return;
-    }
-
-    console.log('MPIN update requested.');
-
-    this.closeChangeMpin();
+  // Validates the new MPIN.
+  if (!this.newMpin || !this.confirmMpin) {
+    this.mpinErrorMessage = 'Please complete all MPIN fields.';
+    return;
   }
+
+  // Validates the MPIN format.
+  if (!/^\d{4}$/.test(this.newMpin)) {
+    this.mpinErrorMessage = 'MPIN must contain exactly 4 digits.';
+    return;
+  }
+
+  // Checks whether both MPIN values match.
+  if (this.newMpin !== this.confirmMpin) {
+    this.mpinErrorMessage =
+      'New MPIN and confirm MPIN do not match.';
+    return;
+  }
+
+  // Checks the current MPIN when changing an existing MPIN.
+    if (this.isMpinConfigured && !this.currentMpin) {
+      this.mpinErrorMessage = 'Please enter your current MPIN.';
+      return;
+    }
+
+    // Creates the MPIN for first-time users.
+    if (!this.isMpinConfigured) {
+
+      this.authService.setMpin({
+        newMpin: this.newMpin,
+        confirmMpin: this.confirmMpin
+      }).subscribe({
+        next: (response) => {
+
+          console.log(
+            'MPIN created successfully:',
+            response
+          );
+
+          this.closeChangeMpin();
+
+          this.isMpinConfigured = true;
+
+          this.successMessage =
+            'Transaction MPIN created successfully.';
+
+          this.showSuccessToast = true;
+
+          setTimeout(() => {
+            this.showSuccessToast = false;
+          }, 3000);
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Failed to create MPIN:',
+            error
+          );
+
+          this.mpinErrorMessage =
+            error?.error?.message ||
+            error?.error ||
+            'Unable to create MPIN.';
+        }
+      });
+
+      return;
+    }
+
+    // Changes the existing MPIN.
+    this.authService.changeMpin({
+      currentMpin: this.currentMpin,
+      newMpin: this.newMpin,
+      confirmMpin: this.confirmMpin
+    }).subscribe({
+      next: (response) => {
+
+        console.log(
+          'MPIN changed successfully:',
+          response
+        );
+
+        // Closes the MPIN modal.
+        this.closeChangeMpin();
+
+        // Shows the success message.
+        this.successMessage =
+          'Transaction MPIN changed successfully.';
+
+        this.showSuccessToast = true;
+
+        // Hides the toast after 3 seconds.
+        setTimeout(() => {
+          this.showSuccessToast = false;
+        }, 3000);
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Failed to change MPIN:',
+          error
+        );
+
+        // Displays the API error.
+        this.mpinErrorMessage =
+          error?.error?.message ||
+          error?.error ||
+          'Unable to change MPIN.';
+      }
+    });
+  }
+
+  // Loads the MPIN configuration status.
+    loadMpinStatus(): void {
+
+      this.authService.getMpinStatus().subscribe({
+        next: (response) => {
+          this.isMpinConfigured = response.isMpinConfigured;
+        },
+
+        error: (error) => {
+          console.error(
+            'Failed to load MPIN status:',
+            error
+          );
+
+          this.isMpinConfigured = false;
+        }
+      });
+    }
+
+    // Updates the two-factor authentication setting.
+    toggleTwoFactor(): void {
+
+      // Sends the updated setting to the backend.
+      this.authService
+        .updateTwoFactor(this.twoFactorAuthentication)
+        .subscribe({
+          next: (response) => {
+
+            console.log(
+              'Two-factor authentication updated:',
+              response
+            );
+
+            // Shows the success message.
+            this.successMessage =
+              this.twoFactorAuthentication
+                ? 'Two-factor authentication enabled successfully.'
+                : 'Two-factor authentication disabled successfully.';
+
+            this.showSuccessToast = true;
+
+            // Hides the toast after 3 seconds.
+            setTimeout(() => {
+              this.showSuccessToast = false;
+            }, 3000);
+          },
+
+          error: (error) => {
+
+            console.error(
+              'Failed to update two-factor authentication:',
+              error
+            );
+
+            // Reverts the toggle when the API fails.
+            this.twoFactorAuthentication =
+              !this.twoFactorAuthentication;
+
+            this.successMessage =
+              'Unable to update two-factor authentication.';
+
+            this.showSuccessToast = true;
+
+            setTimeout(() => {
+              this.showSuccessToast = false;
+            }, 3000);
+          }
+        });
+    }
+
+    // Loads the current two-factor authentication status.
+    loadTwoFactorStatus(): void {
+
+      this.authService.getTwoFactorStatus().subscribe({
+        next: (response) => {
+
+          // Updates the toggle with the database value.
+          this.twoFactorAuthentication =
+            response.isTwoFactorEnabled;
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load two-factor status:',
+            error
+          );
+        }
+      });
+    }
+
+
+ 
 }

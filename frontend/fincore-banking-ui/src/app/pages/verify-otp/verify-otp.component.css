@@ -1,0 +1,146 @@
+/* Main OTP page container. */
+.otp-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background: #f4f1fa;
+}
+
+/* OTP card container. */
+.otp-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 42px 40px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(70, 30, 110, 0.12);
+  text-align: center;
+}
+
+/* Security icon. */
+.security-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eee5fa;
+  font-size: 30px;
+}
+
+/* Page heading. */
+.otp-card h1 {
+  margin: 0 0 12px;
+  color: #54258a;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Description text. */
+.subtitle {
+  margin: 0 auto 18px;
+  max-width: 360px;
+  color: #666666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Registered email display. */
+.email {
+  display: inline-block;
+  margin: 0 0 28px;
+  padding: 9px 16px;
+  border-radius: 20px;
+  background: #f3eef9;
+  color: #54258a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Form group. */
+.form-group {
+  text-align: left;
+  margin-bottom: 22px;
+}
+
+/* OTP label. */
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* OTP input. */
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  border: 1px solid #d8d1e3;
+  border-radius: 10px;
+  outline: none;
+  text-align: center;
+  letter-spacing: 8px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333333;
+  background: #faf9fc;
+}
+
+/* OTP input focus state. */
+.form-group input:focus {
+  border-color: #54258a;
+  box-shadow: 0 0 0 3px rgba(84, 37, 138, 0.1);
+}
+
+/* Verify button. */
+.otp-card button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #54258a;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Button hover state. */
+.otp-card button:hover:not(:disabled) {
+  background: #452073;
+}
+
+/* Disabled button state. */
+.otp-card button:disabled {
+  background: #c9bfd4;
+  cursor: not-allowed;
+}
+
+/* OTP expiry message. */
+.expiry {
+  margin: 20px 0 0;
+  color: #777777;
+  font-size: 13px;
+}
+
+/* Mobile responsive design. */
+@media (max-width: 600px) {
+  .otp-page {
+    padding: 20px;
+  }
+
+  .otp-card {
+    padding: 32px 24px;
+  }
+
+  .otp-card h1 {
+    font-size: 24px;
+  }
+}

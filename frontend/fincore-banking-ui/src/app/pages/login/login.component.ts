@@ -23,7 +23,31 @@ export class LoginComponent {
       password: this.password
     }).subscribe({
       next: (response) => {
-        // Stores the JWT token.
+
+        // Checks whether two-factor authentication is required.
+        if (response.requiresTwoFactor) {
+
+          // Stores the user ID for OTP verification.
+          localStorage.setItem(
+            'twoFactorUserId',
+            response.userId.toString()
+          );
+
+          // Stores the email for the OTP screen.
+          localStorage.setItem(
+            'twoFactorEmail',
+            response.email
+          );
+
+          console.log('Two-factor authentication required:', response);
+
+          // Navigates to the OTP verification page.
+          this.router.navigate(['/verify-otp']);
+
+          return;
+        }
+
+        // Stores the JWT token for normal login.
         localStorage.setItem('token', response.token);
 
         // Stores the logged-in user details.
@@ -34,9 +58,13 @@ export class LoginComponent {
           lastLoginDate: response.lastLoginDate,
           role: response.role
         }));
+
         console.log('Login successful:', response);
+
+        // Navigates to the dashboard.
         this.router.navigate(['/dashboard']);
       },
+
       error: (error) => {
         console.error('Login failed:', error);
       }

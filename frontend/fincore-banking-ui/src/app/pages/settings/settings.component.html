@@ -69,10 +69,11 @@
         </div>
 
         <button
-        class="outline-button"
-        (click)="openChangeMpin()"
+          type="button"
+          class="outline-button"
+          (click)="openMpinModal()"
         >
-        Change
+          {{ isMpinConfigured ? 'Change' : 'Set MPIN' }}
         </button>
       </div>
 
@@ -86,7 +87,8 @@
           <input
             type="checkbox"
             [(ngModel)]="twoFactorAuthentication"
-            >
+            (change)="toggleTwoFactor()"
+          >
           <span class="slider"></span>
         </label>
       </div>
@@ -328,127 +330,140 @@
     </div>
     </div>
 
-    <!-- Change MPIN Modal -->
-    <div
+
+  <!-- MPIN Modal -->
+  <div
     class="modal-overlay"
     *ngIf="showMpinModal"
     (click)="closeChangeMpin()"
-    >
+  >
     <div
-        class="password-modal"
-        (click)="$event.stopPropagation()"
+      class="password-modal"
+      (click)="$event.stopPropagation()"
     >
 
-        <!-- Modal Header -->
-        <div class="modal-header">
+      <!-- Modal Header -->
+      <div class="modal-header">
         <div>
-            <h2>Change MPIN</h2>
-            <p>Update your transaction MPIN securely</p>
+          <h2>
+            {{ isMpinConfigured ? 'Change MPIN' : 'Set MPIN' }}
+          </h2>
+
+          <p>
+            {{
+              isMpinConfigured
+                ? 'Update your transaction MPIN securely'
+                : 'Create your transaction MPIN securely'
+            }}
+          </p>
         </div>
 
         <button
-            type="button"
-            class="close-button"
-            (click)="closeChangeMpin()"
+          type="button"
+          class="close-button"
+          (click)="closeChangeMpin()"
         >
-            ×
+          ×
         </button>
-        </div>
+      </div>
 
-        <!-- Modal Body -->
-        <div class="modal-body">
+      <!-- Modal Body -->
+      <div class="modal-body">
 
         <!-- Current MPIN -->
-        <div class="password-field">
-            <label for="currentMpin">
+        <div
+          class="password-field"
+          *ngIf="isMpinConfigured"
+        >
+          <label for="currentMpin">
             Current MPIN
-            </label>
+          </label>
 
-            <input
+          <input
             id="currentMpin"
             type="password"
             inputmode="numeric"
             maxlength="4"
             [(ngModel)]="currentMpin"
             placeholder="Enter current MPIN"
-            />
+          />
         </div>
 
         <!-- New MPIN -->
         <div class="password-field">
-            <label for="newMpin">
-            New MPIN
-            </label>
+          <label for="newMpin">
+            {{ isMpinConfigured ? 'New MPIN' : 'Create MPIN' }}
+          </label>
 
-            <input
+          <input
             id="newMpin"
             type="password"
             inputmode="numeric"
             maxlength="4"
             [(ngModel)]="newMpin"
-            placeholder="Enter new 4-digit MPIN"
-            />
+            placeholder="Enter 4-digit MPIN"
+          />
         </div>
 
         <!-- Confirm MPIN -->
         <div class="password-field">
-            <label for="confirmMpin">
-            Confirm New MPIN
-            </label>
+          <label for="confirmMpin">
+            Confirm MPIN
+          </label>
 
-            <input
+          <input
             id="confirmMpin"
             type="password"
             inputmode="numeric"
             maxlength="4"
             [(ngModel)]="confirmMpin"
-            placeholder="Re-enter new MPIN"
-            />
+            placeholder="Re-enter 4-digit MPIN"
+          />
         </div>
 
-        <!-- MPIN Information -->
+        <!-- MPIN Requirements -->
         <div class="password-hint">
-            <strong>MPIN requirements</strong>
+          <strong>MPIN requirements</strong>
 
-            <ul>
+          <ul>
             <li>MPIN must contain exactly 4 digits</li>
             <li>Do not share your MPIN with anyone</li>
             <li>Use a unique transaction MPIN</li>
-            </ul>
+          </ul>
         </div>
 
-        <!-- Error -->
+        <!-- Error Message -->
         <div
-            class="password-error"
-            *ngIf="mpinErrorMessage"
+          class="password-error"
+          *ngIf="mpinErrorMessage"
         >
-            {{ mpinErrorMessage }}
+          {{ mpinErrorMessage }}
         </div>
 
-        </div>
+      </div>
 
-        <!-- Modal Footer -->
-        <div class="modal-footer">
+      <!-- Modal Footer -->
+      <div class="modal-footer">
 
         <button
-            type="button"
-            class="cancel-button"
-            (click)="closeChangeMpin()"
+          type="button"
+          class="cancel-button"
+          (click)="closeChangeMpin()"
         >
-            Cancel
+          Cancel
         </button>
 
         <button
-            type="button"
-            class="update-password-button"
-            (click)="updateMpin()"
+          type="button"
+          class="update-password-button"
+          (click)="updateMpin()"
         >
-            Update MPIN
+          {{ isMpinConfigured ? 'Update MPIN' : 'Create MPIN' }}
         </button>
 
-        </div>
+      </div>
 
     </div>
-    </div>
+  </div>
 
 </div>

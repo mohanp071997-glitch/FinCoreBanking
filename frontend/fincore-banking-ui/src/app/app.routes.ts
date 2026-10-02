@@ -23,6 +23,12 @@ export const routes: Routes = [
       import('./pages/settings/settings.component')
         .then(m => m.SettingsComponent)
   },
+  {
+  path: 'verify-otp',
+  loadComponent: () =>
+    import('./pages/verify-otp/verify-otp.component')
+      .then(m => m.VerifyOtpComponent)
+},
 
     // Protected application layout.
   {

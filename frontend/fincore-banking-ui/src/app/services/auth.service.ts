@@ -21,17 +21,90 @@ export class AuthService {
     );
   }
 
+  // Changes the account password.  
     changePassword(request: {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
   }): Observable<any> {
-
+    // Sends the password change request to the API.
     return this.http.put(
       `${this.apiUrl}/change-password`,
       request
     );
   }
+
+   // Sets the transaction MPIN.
+    setMpin(request: {
+      newMpin: string;
+      confirmMpin: string;
+    }): Observable<any> {
+
+      // Sends the MPIN request to the API.
+      return this.http.post(
+        `${this.apiUrl}/set-mpin`,
+        request
+      );
+    }
+
+    // Changes the transaction MPIN.
+    changeMpin(request: {
+      currentMpin: string;
+      newMpin: string;
+      confirmMpin: string;
+    }): Observable<any> {
+
+      // Sends the MPIN change request to the API.
+      return this.http.put(
+        `${this.apiUrl}/change-mpin`,
+        request
+      );
+    }
+
+    // Gets the MPIN configuration status.
+    getMpinStatus(): Observable<{ isMpinConfigured: boolean }> {
+
+      // Gets the MPIN status from the API.
+      return this.http.get<{ isMpinConfigured: boolean }>(
+        `${this.apiUrl}/mpin-status`
+      );
+    }
+
+    // Updates the two-factor authentication setting.
+    updateTwoFactor(enabled: boolean): Observable<any> {
+
+      // Sends the two-factor setting to the API.
+      return this.http.put(
+        `${this.apiUrl}/two-factor`,
+        {
+          enabled
+        }
+      );
+    }
+
+    // Gets the current two-factor authentication status.
+    getTwoFactorStatus(): Observable<{
+      isTwoFactorEnabled: boolean;
+    }> {
+
+      // Gets the two-factor status from the API.
+      return this.http.get<{
+        isTwoFactorEnabled: boolean;
+      }>(
+        `${this.apiUrl}/two-factor-status`
+      );
+    }
+
+    // Verifies the OTP and returns the authentication response.
+    verifyOtp(request: {
+      userId: number;
+      otpCode: string;
+    }): Observable<AuthResponse> {
+      return this.http.post<AuthResponse>(
+        `${this.apiUrl}/verify-otp`,
+        request
+      );
+    }
 
   // Logs out the current user.
   logout(): void {

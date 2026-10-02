@@ -47,6 +47,9 @@ namespace FinCoreBanking.API.Data
 
         public DbSet<LoanPayment> LoanPayments { get; set; }
 
+        // Stores two-factor authentication OTP records.
+        public DbSet<TwoFactorOtp> TwoFactorOtps { get; set; }
+
         // Configures table relationships and constraints.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -419,6 +422,36 @@ namespace FinCoreBanking.API.Data
                     .WithMany()
                     .HasForeignKey(x => x.BeneficiaryId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configures the two-factor authentication OTP entity.
+            modelBuilder.Entity<TwoFactorOtp>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.TwoFactorOtpId);
+
+                // Configures the OTP code.
+                entity.Property(x => x.OtpCode)
+                      .HasMaxLength(6)
+                      .IsRequired();
+
+                // Configures the OTP expiry date.
+                entity.Property(x => x.ExpiresAt)
+                      .IsRequired();
+
+                // Configures whether the OTP has been used.
+                entity.Property(x => x.IsUsed)
+                      .IsRequired();
+
+                // Configures the created date.
+                entity.Property(x => x.CreatedDate)
+                      .IsRequired();
+
+                // Configures the relationship between OTPs and Users.
+                entity.HasOne<User>()
+                      .WithMany()
+                      .HasForeignKey(x => x.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             // Configures the LoanPayments table.

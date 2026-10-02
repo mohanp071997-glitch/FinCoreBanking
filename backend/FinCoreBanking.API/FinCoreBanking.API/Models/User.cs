@@ -10,6 +10,12 @@
         public string Email { get; set; } = string.Empty;
 
         public string PasswordHash { get; set; } = string.Empty;
+        // Stores the hashed transaction MPIN.
+        public string? MpinHash { get; set; }
+
+        // Stores whether two-factor authentication is enabled.
+        public bool IsTwoFactorEnabled { get; set; }
+
 
         public bool IsActive { get; set; } = true;
         // Stores the user's last successful login time.

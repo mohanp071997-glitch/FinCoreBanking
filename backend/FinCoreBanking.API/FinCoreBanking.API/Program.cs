@@ -1,4 +1,5 @@
 using FinCoreBanking.API.Data;
+using FinCoreBanking.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -28,6 +29,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+
+// Registers the email service for sending OTP emails.
+builder.Services.AddScoped<EmailService>();
 
 // JWT authentication configuration.
 var jwtKey = builder.Configuration["JwtSettings:Key"];

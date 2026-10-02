@@ -192,6 +192,10 @@ namespace FinCoreBanking.API.Controllers
             // Generates the JWT token.
             var token = GenerateJwtToken(user, role);
 
+            // Sends a successful login email when login alerts are enabled.
+            await SendLoginEmailAsync(user);
+
+
             // Returns the normal login response.
             return Ok(new
             {
@@ -738,6 +742,11 @@ namespace FinCoreBanking.API.Controllers
             // Saves the OTP and login changes.
             await _context.SaveChangesAsync();
 
+            await CreateLoginNotificationAsync(user.UserId);
+
+            // Sends a successful login email when login alerts are enabled.
+            await SendLoginEmailAsync(user);
+
             // Generates the JWT token after successful OTP verification.
             var token = GenerateJwtToken(user, role);
 
@@ -789,6 +798,63 @@ namespace FinCoreBanking.API.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        // Creates a login notification for the user.
+        private async Task CreateLoginNotificationAsync(int userId)
+        {
+            var notification = new Notification
+            {
+                UserId = userId,
+                Title = "New Login Detected",
+                Message = "Your FinCore Banking account was logged in successfully.",
+                NotificationType = "Login",
+                IsRead = false,
+                CreatedDate = DateTime.UtcNow
+            };
+
+            _context.Notifications.Add(notification);
+
+            await _context.SaveChangesAsync();
+        }
+
+        // Sends a successful login email when login alerts are enabled.
+        private async Task SendLoginEmailAsync(User user)
+        {
+            // Gets the user's notification settings.
+            var settings = await _context.UserNotificationSettings
+                .FirstOrDefaultAsync(x => x.UserId == user.UserId);
+
+            // Stops the email when login alerts are disabled.
+            if (settings == null || !settings.LoginAlerts)
+            {
+                return;
+            }
+
+            // Gets the current login date and time.
+            var loginDateTime = DateTime.Now;
+
+            // Gets the client IP address.
+            var ipAddress =
+                HttpContext.Connection.RemoteIpAddress?.ToString()
+                ?? "Unknown";
+
+            // Creates the email placeholder values.
+            var placeholders = new Dictionary<string, string>
+            {
+                ["{{UserName}}"] = user.UserName,
+                ["{{LoginDate}}"] = loginDateTime.ToString("dd-MMM-yyyy"),
+                ["{{LoginTime}}"] = loginDateTime.ToString("hh:mm tt"),
+                ["{{Device}}"] = "Web Browser",
+                ["{{IPAddress}}"] = ipAddress,
+                ["{{CurrentYear}}"] = loginDateTime.Year.ToString()
+            };
+
+            // Sends the successful login email using the database template.
+            await _emailService.SendTemplateEmailAsync(
+                user.Email,
+                "SuccessfulLogin",
+                placeholders);
         }
     }
 }

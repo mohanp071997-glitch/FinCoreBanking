@@ -1,15 +1,22 @@
-﻿using System.Net;
+﻿using FinCoreBanking.API.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 
 namespace FinCoreBanking.API.Services;
 
 public class EmailService
 {
     private readonly IConfiguration _configuration;
+    private readonly ApplicationDbContext _context;
+    private readonly IWebHostEnvironment _environment;
 
-    public EmailService(IConfiguration configuration)
+    public EmailService(IConfiguration configuration, ApplicationDbContext context, IWebHostEnvironment environment)
     {
         _configuration = configuration;
+        _context = context;
+        _environment = environment;
     }
 
     // Sends the OTP to the registered email address.
@@ -59,6 +66,89 @@ public class EmailService
 
         mailMessage.To.Add(recipientEmail);
 
+        await smtpClient.SendMailAsync(mailMessage);
+    }
+
+
+    // Sends an email using the template stored in the database.
+    public async Task SendTemplateEmailAsync(
+        string recipientEmail,
+        string templateName,
+        Dictionary<string, string>? placeholders = null)
+    {
+        // Gets the email template from the database.
+        var template = await _context.EmailTemplates
+            .FirstOrDefaultAsync(x =>
+                x.TemplateName == templateName &&
+                x.IsActive);
+
+        // Stops when the template is not found.
+        if (template == null)
+        {
+            throw new InvalidOperationException(
+                $"Email template '{templateName}' was not found.");
+        }
+
+        // Gets the email body from the database.
+        var emailBody = template.EmailBody;
+
+        // Replaces template placeholders with actual values.
+        if (placeholders != null)
+        {
+            foreach (var placeholder in placeholders)
+            {
+                emailBody = emailBody.Replace(
+                    placeholder.Key,
+                    placeholder.Value);
+            }
+        }
+
+        // Gets SMTP settings.
+        var smtpServer =
+            _configuration["EmailSettings:SmtpServer"];
+
+        var port =
+            _configuration.GetValue<int>("EmailSettings:Port");
+
+        var senderName =
+            _configuration["EmailSettings:SenderName"];
+
+        var senderEmail =
+            _configuration["EmailSettings:SenderEmail"];
+
+        var username =
+            _configuration["EmailSettings:Username"];
+
+        var password =
+            _configuration["EmailSettings:Password"];
+
+        // Creates the SMTP client.
+        using var smtpClient =
+            new SmtpClient(smtpServer, port)
+            {
+                EnableSsl = true,
+                Credentials =
+                    new NetworkCredential(username, password)
+            };
+
+        // Creates the email message.
+        using var mailMessage = new MailMessage
+        {
+            From = new MailAddress(
+                senderEmail!,
+                senderName),
+
+            Subject = template.EmailSubject,
+
+            Body = emailBody,
+
+            IsBodyHtml = true
+        };
+
+        // Adds the recipient.
+        mailMessage.To.Add(recipientEmail);
+
+        // Sends the email.
         await smtpClient.SendMailAsync(mailMessage);
     }
 }

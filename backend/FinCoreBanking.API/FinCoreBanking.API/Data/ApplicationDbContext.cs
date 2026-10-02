@@ -50,6 +50,15 @@ namespace FinCoreBanking.API.Data
         // Stores two-factor authentication OTP records.
         public DbSet<TwoFactorOtp> TwoFactorOtps { get; set; }
 
+        // Stores user notification settings.
+        public DbSet<UserNotificationSetting> UserNotificationSettings { get; set; }
+
+        // Stores user notifications.
+        public DbSet<Notification> Notifications { get; set; }
+
+        // Stores email templates used for security and notification emails.
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+
         // Configures table relationships and constraints.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -454,6 +463,8 @@ namespace FinCoreBanking.API.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
+
+
             // Configures the LoanPayments table.
             modelBuilder.Entity<LoanPayment>(entity =>
             {
@@ -473,6 +484,108 @@ namespace FinCoreBanking.API.Data
                       .WithMany()
                       .HasForeignKey(x => x.LoanId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configures the user notification settings entity.
+            modelBuilder.Entity<UserNotificationSetting>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.NotificationSettingId);
+
+                // Configures the user ID.
+                entity.Property(x => x.UserId)
+                      .IsRequired();
+
+                // Configures transaction alerts.
+                entity.Property(x => x.TransactionAlerts)
+                      .IsRequired();
+
+                // Configures login alerts.
+                entity.Property(x => x.LoginAlerts)
+                      .IsRequired();
+
+                // Configures promotional notifications.
+                entity.Property(x => x.PromotionalNotifications)
+                      .IsRequired();
+
+                // Configures the created date.
+                entity.Property(x => x.CreatedDate)
+                      .IsRequired();
+
+                // Configures the relationship with Users.
+                entity.HasOne<User>()
+                      .WithMany()
+                      .HasForeignKey(x => x.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Ensures one notification setting per user.
+                entity.HasIndex(x => x.UserId)
+                      .IsUnique();
+            });
+
+            // Configures the notification entity.
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.NotificationId);
+
+                // Configures the title.
+                entity.Property(x => x.Title)
+                      .HasMaxLength(200)
+                      .IsRequired();
+
+                // Configures the message.
+                entity.Property(x => x.Message)
+                      .HasMaxLength(500)
+                      .IsRequired();
+
+                // Configures the notification type.
+                entity.Property(x => x.NotificationType)
+                      .HasMaxLength(50)
+                      .IsRequired();
+
+                // Configures the read status.
+                entity.Property(x => x.IsRead)
+                      .IsRequired();
+
+                // Configures the created date.
+                entity.Property(x => x.CreatedDate)
+                      .IsRequired();
+
+                // Configures the relationship between notifications and users.
+                entity.HasOne<User>()
+                      .WithMany()
+                      .HasForeignKey(x => x.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configures the EmailTemplates table.
+            modelBuilder.Entity<EmailTemplate>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.EmailTemplateId);
+
+                // Configures the template name.
+                entity.Property(x => x.TemplateName)
+                      .HasMaxLength(100)
+                      .IsRequired();
+
+                // Configures the email subject.
+                entity.Property(x => x.EmailSubject)
+                      .HasMaxLength(200)
+                      .IsRequired();
+
+                // Configures the email body.
+                entity.Property(x => x.EmailBody)
+                      .IsRequired();
+
+                // Configures the active status.
+                entity.Property(x => x.IsActive)
+                      .IsRequired();
+
+                // Configures the created date.
+                entity.Property(x => x.CreatedDate)
+                      .IsRequired();
             });
         }
     }

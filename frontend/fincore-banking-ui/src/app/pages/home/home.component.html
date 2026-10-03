@@ -282,6 +282,12 @@
             {{ slides[currentSlide].badge }}
         </span>
 
+        <!-- Promotional slide image -->
+        <img
+            [src]="slides[currentSlide].imageUrl"
+            [alt]="slides[currentSlide].title"
+        />
+
         </div>
 
     </div>
@@ -964,40 +970,94 @@
 
             <div class="duration-options">
 
+                <!-- 6 Months -->
                 <button
                 type="button"
-                [class.active]="loanYears === 0.5"
-                (click)="loanYears = 0.5; calculateLoan()">
+                class="loan-duration"
+                [class.active]="!isCustomDuration && loanYears === 0.5"
+                (click)="loanYears = 0.5; isCustomDuration = false; calculateLoan()">
                 6 Months
                 </button>
 
+                <!-- 1 Year -->
                 <button
                 type="button"
-                [class.active]="loanYears === 1"
-                (click)="loanYears = 1; calculateLoan()">
+                class="loan-duration"
+                [class.active]="!isCustomDuration && loanYears === 1"
+                (click)="loanYears = 1; isCustomDuration = false; calculateLoan()">
                 1 Year
                 </button>
 
+                <!-- 2 Years -->
                 <button
                 type="button"
-                [class.active]="loanYears === 2"
-                (click)="loanYears = 2; calculateLoan()">
+                class="loan-duration"
+                [class.active]="!isCustomDuration && loanYears === 2"
+                (click)="loanYears = 2; isCustomDuration = false; calculateLoan()">
                 2 Years
                 </button>
 
+                <!-- 3 Years -->
                 <button
                 type="button"
-                [class.active]="loanYears === 3"
-                (click)="loanYears = 3; calculateLoan()">
+                class="loan-duration"
+                [class.active]="!isCustomDuration && loanYears === 3"
+                (click)="loanYears = 3; isCustomDuration = false; calculateLoan()">
                 3 Years
                 </button>
 
+                <!-- Custom -->
                 <button
                 type="button"
-                [class.active]="loanYears === 5"
-                (click)="loanYears = 5; calculateLoan()">
-                5 Years
+                class="loan-duration"
+                [class.active]="isCustomDuration"
+                (click)="selectCustomDuration()">
+                Custom
                 </button>
+
+                <!-- Custom duration control -->
+                <div
+                class="custom-duration"
+                *ngIf="isCustomDuration">
+
+                <!-- Years option -->
+                <button
+                    type="button"
+                    class="custom-duration-type"
+                    [class.active]="customDurationType === 'Years'"
+                    (click)="customDurationType = 'Years'">
+                    Years
+                </button>
+
+                <!-- Months option -->
+                <button
+                    type="button"
+                    class="custom-duration-type"
+                    [class.active]="customDurationType === 'Months'"
+                    (click)="customDurationType = 'Months'">
+                    Months
+                </button>
+
+                <!-- Custom duration input -->
+                <input
+                type="number"
+                [(ngModel)]="customDurationValue"
+                (input)="calculateLoan()"
+                min="1"
+                [max]="customDurationType === 'Years' ? 6 : 72"
+                [placeholder]="customDurationType === 'Years'
+                    ? 'Max tenure - 6Y'
+                    : 'Max tenure - 72M'"
+                />
+                <!-- Close custom duration -->
+                <button
+                    type="button"
+                    class="custom-duration-close"
+                    (click)="closeCustomDuration()">
+                    ×
+                </button>
+
+                </div>
 
             </div>
 

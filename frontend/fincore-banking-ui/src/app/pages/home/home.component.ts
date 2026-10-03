@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,7 +10,8 @@ import { RouterLink } from '@angular/router';
   imports: [
     FormsModule,
     CurrencyPipe,
-    RouterLink
+    RouterLink,
+    NgIf
   ],
 
   templateUrl: './home.component.html',
@@ -69,35 +70,44 @@ export class HomeComponent {
   // Stores the automatic slide timer.
   private slideTimer: any;
 
+  // Stores whether custom duration is selected.
+  isCustomDuration = false;
+
+  // Stores the custom duration in months.
+  customDurationMonths = 12;
+
+  // Stores the custom duration type.
+  customDurationType: 'Years' | 'Months' = 'Years';
+
+  // Stores the custom duration value.
+  customDurationValue: number | null = null;
+
   // Stores the banking promotional slides.
+
   slides = [
     {
       title: 'Personal Loan',
       description: 'Get instant disbursement with no foreclosure charges after 24 EMIs',
       badge: 'Ongoing offer',
       button1: 'Apply',
-      button2: 'Details'
+      button2: 'Details',
+      imageUrl: 'https://hfcl-website-cms.s3.ap-south-1.amazonaws.com/image_4fdd8d5f06.png'
     },
     {
       title: 'Car Loan',
       description: 'Drive your new car with 100% on-road funding',
       badge: 'Ongoing offer',
       button1: 'Apply',
-      button2: 'Details'
-    },
-    {
-      title: 'Personal Loan',
-      description: 'Complete your application now',
-      badge: 'Welcome back',
-      button1: 'APPLY NOW',
-      button2: 'KNOW MORE'
+      button2: 'Details',
+      imageUrl: 'https://www.icici.bank.in/content/dam/icicibank/india/managed-assets/images/blog/small/used-car-loan-differ-from-new-car-loan-d.webp'
     },
     {
       title: 'Credit Card',
       description: 'Complete your journey now!',
       badge: 'Get your card now',
       button1: 'APPLY NOW',
-      button2: 'KNOW MORE'
+      button2: 'KNOW MORE',
+      imageUrl: 'https://www.indusind.bank.in/content/dam/indusind-platform-images/carousal-banner-images/credit-card/new-webp-cc-/b1/Product-Page-Web-Banner_CC_Desktop_1_1920X450_4_11zon.webp'
     }
   ];
 
@@ -106,6 +116,7 @@ export class HomeComponent {
     // Calculates the default loan values.
     this.calculateLoan();
     this.startAutoSlide();
+
 
   }
 
@@ -131,8 +142,31 @@ export class HomeComponent {
     // Converts annual interest rate to monthly rate.
     const monthlyRate = this.interestRate / 12 / 100;
 
-    // Converts years to months.
-    const numberOfMonths = this.loanYears * 12;
+
+ // Calculates the loan duration in months.
+    let numberOfMonths: number;
+
+    if (this.isCustomDuration) {
+
+      // Stops calculation when custom duration is empty.
+      if (this.customDurationValue === null) {
+        this.monthlyEmi = 0;
+        this.totalInterest = 0;
+        this.totalPayment = 0;
+        return;
+      }
+
+      if (this.customDurationType === 'Years') {
+        numberOfMonths = this.customDurationValue * 12;
+      } else {
+        numberOfMonths = this.customDurationValue;
+      }
+
+    } else {
+
+      numberOfMonths = this.loanYears * 12;
+
+    }
 
     // Stops calculation when values are invalid.
     if (
@@ -197,6 +231,23 @@ export class HomeComponent {
     this.currentSlide =
       (this.currentSlide - 1 + this.slides.length) %
       this.slides.length;
+  }
+
+  // Opens the custom duration option.
+  selectCustomDuration(): void {
+    this.isCustomDuration = true;
+    this.customDurationType = 'Years';
+    this.customDurationValue = null;
+
+    this.calculateLoan();
+  }
+  // Closes the custom duration control.
+  closeCustomDuration(): void {
+    this.isCustomDuration = false;
+
+    this.loanYears = 0.5;
+
+    this.calculateLoan();
   }
  
 }

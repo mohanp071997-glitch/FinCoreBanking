@@ -107,10 +107,18 @@ namespace FinCoreBanking.API.Controllers
                 return Unauthorized("Invalid email or password.");
             }
 
-            // Verifies the password.
+            
+            // Verifies the entered password.
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
-                return Unauthorized("Invalid email or password.");
+                // Sends a failed login email when login alerts are enabled.
+                await SendFailedLoginEmailAsync(user);
+
+                // Returns an invalid login response.
+                return Unauthorized(new
+                {
+                    message = "Invalid email or password."
+                });
             }
 
             // Gets the role assigned to the user.
@@ -705,15 +713,30 @@ namespace FinCoreBanking.API.Controllers
                 .FirstOrDefaultAsync();
 
             // Returns an error if the OTP is invalid.
+            // Handles an invalid OTP attempt.
             if (otpRecord == null)
             {
-                return BadRequest("Invalid OTP.");
+                // Sends a failed OTP email.
+                await SendFailedOtpEmailAsync(user);
+
+                // Returns an invalid OTP response.
+                return Unauthorized(new
+                {
+                    message = "Invalid OTP."
+                });
             }
 
             // Checks whether the OTP has expired.
             if (otpRecord.ExpiresAt < DateTime.UtcNow)
             {
-                return BadRequest("OTP has expired.");
+                // Sends an expired OTP email.
+                await SendExpiredOtpEmailAsync(user);
+
+                // Returns an expired OTP response.
+                return Unauthorized(new
+                {
+                    message = "OTP has expired."
+                });
             }
 
             // Gets the role assigned to the user.
@@ -854,6 +877,96 @@ namespace FinCoreBanking.API.Controllers
             await _emailService.SendTemplateEmailAsync(
                 user.Email,
                 "SuccessfulLogin",
+                placeholders);
+        }
+
+        // Sends a failed login email when login alerts are enabled.
+        private async Task SendFailedLoginEmailAsync(User user)
+        {
+            // Gets the user's notification settings.
+            var settings = await _context.UserNotificationSettings
+                .FirstOrDefaultAsync(x => x.UserId == user.UserId);
+
+            // Stops email sending when login alerts are disabled.
+            if (settings == null || !settings.LoginAlerts)
+            {
+                return;
+            }
+
+            // Creates the email placeholders.
+            var placeholders = new Dictionary<string, string>
+            {
+                ["{{UserName}}"] = user.UserName,
+                ["{{LoginDate}}"] = DateTime.Now.ToString("dd MMM yyyy"),
+                ["{{LoginTime}}"] = DateTime.Now.ToString("hh:mm tt"),
+                ["{{Device}}"] = "Web Browser",
+                ["{{CurrentYear}}"] = DateTime.Now.Year.ToString()
+            };
+
+            // Sends the failed login email using the database template.
+            await _emailService.SendTemplateEmailAsync(
+                user.Email,
+                "FailedLogin",
+                placeholders);
+        }
+
+        // Sends a failed OTP email when login alerts are enabled.
+        private async Task SendFailedOtpEmailAsync(User user)
+        {
+            // Gets the user's notification settings.
+            var settings = await _context.UserNotificationSettings
+                .FirstOrDefaultAsync(x => x.UserId == user.UserId);
+
+            // Stops email sending when login alerts are disabled.
+            if (settings == null || !settings.LoginAlerts)
+            {
+                return;
+            }
+
+            // Creates the email placeholders.
+            var placeholders = new Dictionary<string, string>
+            {
+                ["{{UserName}}"] = user.UserName,
+                ["{{LoginDate}}"] = DateTime.Now.ToString("dd MMM yyyy"),
+                ["{{LoginTime}}"] = DateTime.Now.ToString("hh:mm tt"),
+                ["{{Device}}"] = "Web Browser",
+                ["{{CurrentYear}}"] = DateTime.Now.Year.ToString()
+            };
+
+            // Sends the failed OTP email using the database template.
+            await _emailService.SendTemplateEmailAsync(
+                user.Email,
+                "FailedOtp",
+                placeholders);
+        }
+
+        // Sends an expired OTP email when login alerts are enabled.
+        private async Task SendExpiredOtpEmailAsync(User user)
+        {
+            // Gets the user's notification settings.
+            var settings = await _context.UserNotificationSettings
+                .FirstOrDefaultAsync(x => x.UserId == user.UserId);
+
+            // Stops email sending when login alerts are disabled.
+            if (settings == null || !settings.LoginAlerts)
+            {
+                return;
+            }
+
+            // Creates the email placeholders.
+            var placeholders = new Dictionary<string, string>
+            {
+                ["{{UserName}}"] = user.UserName,
+                ["{{LoginDate}}"] = DateTime.Now.ToString("dd MMM yyyy"),
+                ["{{LoginTime}}"] = DateTime.Now.ToString("hh:mm tt"),
+                ["{{Device}}"] = "Web Browser",
+                ["{{CurrentYear}}"] = DateTime.Now.Year.ToString()
+            };
+
+            // Sends the expired OTP email using the database template.
+            await _emailService.SendTemplateEmailAsync(
+                user.Email,
+                "ExpiredOtp",
                 placeholders);
         }
     }

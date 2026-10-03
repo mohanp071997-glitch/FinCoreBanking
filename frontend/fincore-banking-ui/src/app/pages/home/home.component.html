@@ -1,0 +1,1073 @@
+<div class="home-page">
+
+  <!-- Main navigation -->
+  <nav class="main-navbar">
+
+    <div class="navbar-container">
+
+      <!-- Brand -->
+      <a class="brand" routerLink="/">
+
+        <div class="brand-icon">
+          F
+        </div>
+
+        <div class="brand-text">
+          <span class="brand-name">FinCore</span>
+          <span class="brand-subtitle">BANKING</span>
+        </div>
+
+      </a>
+
+      <!-- Navigation -->
+      <div class="navigation-links">
+
+        <a class="nav-link">Personal</a>
+
+        <a class="nav-link">NRI</a>
+
+        <a class="nav-link">Business</a>
+
+        <a class="nav-link">Accounts</a>
+
+        <a class="nav-link">Cards</a>
+
+        <a class="nav-link">Loans</a>
+
+      </div>
+
+    <!-- Actions -->
+    <div class="navbar-actions">
+
+    <a class="nav-link">Resources</a>
+
+    <a class="nav-link">About</a>
+
+    <a class="nav-link">Help</a>
+
+    <span>☎ 1800 123 4567</span>
+
+    <button class="search-button">
+        🔍
+    </button>
+
+    <button class="search-button">
+        ✨
+    </button>
+
+    <button class="search-button">
+        ♙
+    </button>
+
+    <button class="search-button">
+        🇮🇳
+    </button>
+
+    <button
+        class="login-button"
+        routerLink="/login">
+        Login
+    </button>
+
+    </div>
+
+    </div>
+
+  </nav>
+
+  <!-- Hero section -->
+    <section class="hero-section">
+
+    <div class="hero-container">
+
+        <!-- Hero content -->
+        <div class="hero-content">
+
+        <span class="hero-badge">
+            ✦ SMARTER DIGITAL BANKING
+        </span>
+
+        <h1>
+            Banking made
+            <span>simple.</span>
+        </h1>
+
+        <p>
+            Experience secure, smart and seamless digital banking
+            designed around your financial journey.
+        </p>
+
+        <div class="hero-actions">
+
+            <button
+            class="primary-action"
+            routerLink="/login">
+            Login to Banking
+            <span>→</span>
+            </button>
+
+            <button class="secondary-action">
+            Explore Services
+            </button>
+
+        </div>
+
+        <!-- Trust information -->
+        <div class="hero-trust">
+
+            <div class="trust-item">
+            <strong>24/7</strong>
+            <span>Digital Access</span>
+            </div>
+
+            <div class="trust-divider"></div>
+
+            <div class="trust-item">
+            <strong>100%</strong>
+            <span>Secure Banking</span>
+            </div>
+
+            <div class="trust-divider"></div>
+
+            <div class="trust-item">
+            <strong>Fast</strong>
+            <span>Transactions</span>
+            </div>
+
+        </div>
+
+        </div>
+
+        <!-- 3D banking visual -->
+        <div class="hero-visual">
+
+        <!-- Background glow -->
+        <div class="glow-circle glow-one"></div>
+        <div class="glow-circle glow-two"></div>
+
+        <!-- Floating card -->
+        <!-- Generic banking card -->
+        <div class="bank-card">
+
+        <div class="card-top">
+
+            <span class="card-brand">
+            FinCore
+            </span>
+
+            <span class="card-type">
+            VISA
+            </span>
+
+        </div>
+
+        <div class="chip">
+            <span></span>
+        </div>
+
+        <div class="card-number">
+            •••• &nbsp;&nbsp; •••• &nbsp;&nbsp; •••• &nbsp;&nbsp; 0000
+        </div>
+
+        <div class="card-bottom">
+
+            <div>
+            <small>CARD HOLDER</small>
+            <strong>FINCORE CUSTOMER</strong>
+            </div>
+
+            <div>
+            <small>VALID THRU</small>
+            <strong>••/••</strong>
+            </div>
+
+        </div>
+
+        </div>
+
+        
+        <!-- Secure account card -->
+        <div class="balance-card">
+
+        <div class="balance-header">
+
+            <span>Account Security</span>
+
+            <span class="balance-icon">
+            🔒
+            </span>
+
+        </div>
+
+        <h3>
+            Secure Banking
+        </h3>
+
+        <div class="balance-footer">
+
+            <span>Login to view your account</span>
+
+        </div>
+
+        </div>
+
+        <!-- Security feature card -->
+        <div class="security-card">
+
+        <div class="security-icon">
+            🔐
+        </div>
+
+        <div class="security-content">
+
+            <small>FinCore Security</small>
+
+            <strong>
+            Banking Protected
+            </strong>
+
+            <span>
+            Advanced security for every transaction
+            </span>
+
+        </div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </section>
+
+    <!-- Promotional slider -->
+    <div class="promo-slider">
+
+    <!-- Promotional card -->
+    <div class="promo-card">
+
+        <!-- Promotional content -->
+        <div class="promo-content">
+
+        <!-- Loan or card title -->
+        <h2>
+            {{ slides[currentSlide].title }}
+        </h2>
+
+        <!-- Promotional description -->
+        <p>
+            {{ slides[currentSlide].description }}
+        </p>
+
+        <!-- Promotional actions -->
+        <div class="promo-actions">
+
+            <button type="button">
+            {{ slides[currentSlide].button1 }}
+            </button>
+
+            <button type="button">
+            {{ slides[currentSlide].button2 }}
+            </button>
+
+        </div>
+
+        </div>
+
+        <!-- Promotional image -->
+        <div class="promo-image">
+
+        <!-- Promotional badge -->
+        <span class="promo-badge">
+            {{ slides[currentSlide].badge }}
+        </span>
+
+        </div>
+
+    </div>
+
+    <!-- Slider navigation -->
+    <div class="slider-controls">
+
+        <!-- Previous slide button -->
+        <button
+        type="button"
+        (click)="previousSlide()">
+        ←
+        </button>
+
+        <!-- Next slide button -->
+        <button
+        type="button"
+        (click)="nextSlide()">
+        →
+        </button>
+
+    </div>
+
+    </div>
+
+    <!-- Quick access section -->
+    <section class="quick-access-section">
+
+    <div class="quick-access-container">
+
+        <div class="quick-access-header">
+
+        <h2>How can we help you?</h2>
+
+        <p>
+            Explore our most popular banking products and services.
+        </p>
+
+        </div>
+
+        <div class="quick-access-grid">
+
+        <div class="quick-access-card">
+            <div class="quick-icon">🏦</div>
+            <h3>Savings Account</h3>
+            <p>Save, manage and grow your money.</p>
+            <a>Explore →</a>
+        </div>
+
+        <div class="quick-access-card">
+            <div class="quick-icon">💳</div>
+            <h3>Cards</h3>
+            <p>Choose cards for your everyday needs.</p>
+            <a>Explore →</a>
+        </div>
+
+        <div class="quick-access-card">
+            <div class="quick-icon">💰</div>
+            <h3>Loans</h3>
+            <p>Find financing options for your goals.</p>
+            <a>Explore →</a>
+        </div>
+
+        <div class="quick-access-card">
+            <div class="quick-icon">📄</div>
+            <h3>Deposits</h3>
+            <p>Build your savings with flexible deposits.</p>
+            <a>Explore →</a>
+        </div>
+
+        <div class="quick-access-card">
+            <div class="quick-icon">📈</div>
+            <h3>Investments</h3>
+            <p>Explore options for your financial future.</p>
+            <a>Explore →</a>
+        </div>
+
+        </div>
+
+    </div>
+
+    </section>
+
+    <!-- Offers section -->
+    <section class="offers-section">
+
+    <div class="offers-container">
+
+        <div class="offers-header">
+
+        <div>
+            <span class="section-label">
+            FINCORE OFFERS
+            </span>
+
+            <h2>Offers for you</h2>
+
+            <p>
+            Discover banking products designed to meet your financial needs.
+            </p>
+        </div>
+
+        <a class="view-all-link">
+            View All
+            <span>→</span>
+        </a>
+
+        </div>
+
+        <!-- Offer cards -->
+        <div class="offers-grid">
+
+        <!-- Credit Card -->
+        <div class="offer-card credit-card-offer">
+
+            <div class="offer-content">
+
+            <span class="offer-tag">
+                CREDIT CARDS
+            </span>
+
+            <h3>
+                Find a card that
+                fits your lifestyle.
+            </h3>
+
+            <p>
+                Enjoy rewards, convenience and secure
+                payments with FinCore Cards.
+            </p>
+
+            <button class="offer-button">
+                Explore Cards
+                <span>→</span>
+            </button>
+
+            </div>
+
+            <div class="offer-visual">
+            <div class="mini-card">
+                <span>FinCore</span>
+                <strong>VISA</strong>
+                <small>•••• 0000</small>
+            </div>
+            </div>
+
+        </div>
+
+        <!-- Personal Loan -->
+        <div class="offer-card loan-offer">
+
+            <div class="offer-content">
+
+            <span class="offer-tag">
+                PERSONAL LOAN
+            </span>
+
+            <h3>
+                Turn your plans
+                into reality.
+            </h3>
+
+            <p>
+                Flexible financing options for your
+                personal goals and important plans.
+            </p>
+
+            <button class="offer-button">
+                Learn More
+                <span>→</span>
+            </button>
+
+            </div>
+
+            <div class="offer-visual">
+            <div class="loan-circle">
+                ₹
+            </div>
+            </div>
+
+        </div>
+
+        <!-- Home Loan -->
+        <div class="offer-card home-loan-offer">
+
+            <div class="offer-content">
+
+            <span class="offer-tag">
+                HOME LOAN
+            </span>
+
+            <h3>
+                Make your dream
+                home a reality.
+            </h3>
+
+            <p>
+                Explore simple and flexible home financing
+                solutions for your future.
+            </p>
+
+            <button class="offer-button">
+                Explore Loan
+                <span>→</span>
+            </button>
+
+            </div>
+
+            <div class="offer-visual">
+            <div class="home-icon">
+                🏠
+            </div>
+            </div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </section>
+
+    <!-- Credit cards section -->
+    <section class="credit-cards-section">
+
+    <div class="credit-cards-container">
+
+        <!-- Section heading -->
+        <div class="credit-section-header">
+
+        <div>
+            <span class="credit-section-label">
+            FINCORE CARDS
+            </span>
+
+            <h2>Choose your Credit Card</h2>
+
+            <p>
+            Find a card that matches your lifestyle and spending needs.
+            </p>
+        </div>
+
+        <a class="credit-view-all">
+            View All Cards
+            <span>→</span>
+        </a>
+
+        </div>
+
+        <!-- Credit card products -->
+        <div class="credit-products-grid">
+
+        <!-- Card 1 -->
+        <div class="credit-product-card">
+
+            <div class="product-image-area">
+
+            <span class="product-badge">
+                Popular
+            </span>
+
+            <div class="fincore-card premium-card">
+
+                <div class="card-brand">
+                FinCore
+                </div>
+
+                <div class="card-chip"></div>
+
+                <div class="card-number">
+                •••• &nbsp; •••• &nbsp; •••• &nbsp; 0000
+                </div>
+
+                <div class="card-details">
+                <span>FINCORE CUSTOMER</span>
+                <strong>VISA</strong>
+                </div>
+
+            </div>
+
+            </div>
+
+            <div class="product-content">
+
+            <div class="product-title-row">
+
+                <h3>FinCore Premium</h3>
+
+                <div class="product-actions">
+                <span>♡</span>
+                <span>⇄</span>
+                </div>
+
+            </div>
+
+            <span class="benefit-tag">
+                Premium lifestyle benefits
+            </span>
+
+            <h4>
+                Rewards for every purchase
+            </h4>
+
+            <p>
+                Exclusive rewards, travel benefits and
+                secure everyday spending.
+            </p>
+
+            <div class="product-benefits">
+                <span>Lounge Access</span>
+                <span>Reward Points</span>
+                <span>Offers</span>
+            </div>
+
+            <div class="product-footer">
+
+                <button class="apply-link">
+                APPLY
+                </button>
+
+                <button class="details-link">
+                Details
+                </button>
+
+            </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Card 2 -->
+        <div class="credit-product-card">
+
+            <div class="product-image-area">
+
+            <span class="product-badge exclusive">
+                Exclusive
+            </span>
+
+            <div class="fincore-card ruby-card">
+
+                <div class="card-brand">
+                FinCore
+                </div>
+
+                <div class="card-chip"></div>
+
+                <div class="card-number">
+                •••• &nbsp; •••• &nbsp; •••• &nbsp; 0000
+                </div>
+
+                <div class="card-details">
+                <span>FINCORE CUSTOMER</span>
+                <strong>VISA</strong>
+                </div>
+
+            </div>
+
+            </div>
+
+            <div class="product-content">
+
+            <div class="product-title-row">
+
+                <h3>FinCore Rewards</h3>
+
+                <div class="product-actions">
+                <span>♡</span>
+                <span>⇄</span>
+                </div>
+
+            </div>
+
+            <span class="benefit-tag">
+                Best for rewards
+            </span>
+
+            <h4>
+                More rewards. More possibilities.
+            </h4>
+
+            <p>
+                Earn reward points on shopping, dining
+                and selected lifestyle purchases.
+            </p>
+
+            <div class="product-benefits">
+                <span>Reward Points</span>
+                <span>Dining Offers</span>
+                <span>Shopping Offers</span>
+            </div>
+
+            <div class="product-footer">
+
+                <button class="apply-link">
+                APPLY
+                </button>
+
+                <button class="details-link">
+                Details
+                </button>
+
+            </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Card 3 -->
+        <div class="credit-product-card">
+
+            <div class="product-image-area">
+
+            <span class="product-badge new">
+                New
+            </span>
+
+            <div class="fincore-card coral-card">
+
+                <div class="card-brand">
+                FinCore
+                </div>
+
+                <div class="card-chip"></div>
+
+                <div class="card-number">
+                •••• &nbsp; •••• &nbsp; •••• &nbsp; 0000
+                </div>
+
+                <div class="card-details">
+                <span>FINCORE CUSTOMER</span>
+                <strong>VISA</strong>
+                </div>
+
+            </div>
+
+            </div>
+
+            <div class="product-content">
+
+            <div class="product-title-row">
+
+                <h3>FinCore Everyday</h3>
+
+                <div class="product-actions">
+                <span>♡</span>
+                <span>⇄</span>
+                </div>
+
+            </div>
+
+            <span class="benefit-tag">
+                Best for everyday spending
+            </span>
+
+            <h4>
+                Simple banking for every day
+            </h4>
+
+            <p>
+                Enjoy convenient payments, everyday offers
+                and secure digital transactions.
+            </p>
+
+            <div class="product-benefits">
+                <span>Cashback</span>
+                <span>Online Offers</span>
+                <span>Secure Payments</span>
+            </div>
+
+            <div class="product-footer">
+
+                <button class="apply-link">
+                APPLY
+                </button>
+
+                <button class="details-link">
+                Details
+                </button>
+
+            </div>
+
+            </div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </section>
+
+    <!-- Account and loan section -->
+    <section class="account-loan-section">
+
+    <div class="account-loan-container">
+
+        <!-- Open account card -->
+        <div class="account-card">
+
+        <h2>Open an Account</h2>
+
+        <div class="account-options">
+
+            <button class="account-option">
+            <span>Savings</span>
+            <span>→</span>
+            </button>
+
+            <button class="account-option">
+            <span>Salary</span>
+            <span>→</span>
+            </button>
+
+            <button class="account-option">
+            <span>NRI</span>
+            <span>→</span>
+            </button>
+
+            <button class="account-option">
+            <span>Business</span>
+            <span>→</span>
+            </button>
+
+            <button class="account-option">
+            <span>Investments</span>
+            <span>→</span>
+            </button>
+
+        </div>
+
+        <a class="account-view-all">
+            View all
+        </a>
+
+        </div>
+
+
+        <!-- Loan calculator card -->
+        <div class="loan-calculator-card">
+
+        <!-- Calculator left side -->
+        <div class="loan-input-section">
+
+            <h2>Choose Your Loan</h2>
+
+            <!-- Loan types -->
+            <div class="loan-types">
+
+            <button
+                type="button"
+                class="loan-type"
+                [class.active]="selectedLoanType === 'Personal'"
+                (click)="selectLoanType('Personal', 9.99)">
+                🔗 Personal
+            </button>
+
+            <button
+                type="button"
+                class="loan-type"
+                [class.active]="selectedLoanType === 'Home'"
+                (click)="selectLoanType('Home', 8.50)">
+                🏠 Home
+            </button>
+
+            <button
+                type="button"
+                class="loan-type"
+                [class.active]="selectedLoanType === 'Vehicle'"
+                (click)="selectLoanType('Vehicle', 10.50)">
+                🚗 Vehicle
+            </button>
+
+            <button
+                type="button"
+                class="loan-type"
+                [class.active]="selectedLoanType === 'Education Loan'"
+                (click)="selectLoanType('Education Loan', 7.50)">
+                🎓 Education Loan
+            </button>
+
+            <button
+                type="button"
+                class="loan-type"
+                [class.active]="selectedLoanType === 'Gold'"
+                (click)="selectLoanType('Gold', 8.99)">
+                🪙 Gold
+            </button>
+
+            </div>
+
+
+            <!-- Loan amount -->
+            <div class="calculator-field amount-field">
+
+            <label>
+                Amount
+            </label>
+
+            <div class="amount-control">
+
+                <!-- Slider section -->
+                <div class="amount-slider-wrapper">
+
+                <input
+                    type="range"
+                    min="50000"
+                    max="5000000"
+                    step="50000"
+                    [(ngModel)]="loanAmount"
+                    (input)="calculateLoan()"
+                    class="amount-slider"
+                />
+
+                <div class="amount-points">
+                    <span>50K</span>
+                    <span>10L</span>
+                    <span>20L</span>
+                    <span>30L</span>
+                    <span>40L</span>
+                    <span>50L</span>
+                </div>
+
+                </div>
+
+                <!-- Amount display -->
+                <div class="amount-display">
+
+                <input
+                    type="number"
+                    [(ngModel)]="loanAmount"
+                    (input)="calculateLoan()"
+                    min="50000"
+                    max="5000000"
+                    step="50000"
+                />
+
+                <span>Fifty Thousand</span>
+
+                </div>
+
+            </div>
+
+            </div>
+
+
+            <!-- Interest rate -->
+            <div class="calculator-field">
+
+            <label>
+                Interest Rate
+            </label>
+
+            <div class="interest-input">
+
+                <input
+                type="number"
+                [(ngModel)]="interestRate"
+                (input)="calculateLoan()"
+                step="0.1"
+                min="1"
+                max="30"
+                />
+
+                <span>% p.a.</span>
+
+            </div>
+
+            </div>
+
+
+            <!-- Duration -->
+            <div class="calculator-field">
+
+            <label>
+                Duration
+            </label>
+
+            <div class="duration-options">
+
+                <button
+                type="button"
+                [class.active]="loanYears === 0.5"
+                (click)="loanYears = 0.5; calculateLoan()">
+                6 Months
+                </button>
+
+                <button
+                type="button"
+                [class.active]="loanYears === 1"
+                (click)="loanYears = 1; calculateLoan()">
+                1 Year
+                </button>
+
+                <button
+                type="button"
+                [class.active]="loanYears === 2"
+                (click)="loanYears = 2; calculateLoan()">
+                2 Years
+                </button>
+
+                <button
+                type="button"
+                [class.active]="loanYears === 3"
+                (click)="loanYears = 3; calculateLoan()">
+                3 Years
+                </button>
+
+                <button
+                type="button"
+                [class.active]="loanYears === 5"
+                (click)="loanYears = 5; calculateLoan()">
+                5 Years
+                </button>
+
+            </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Calculator result -->
+        <div class="loan-result-section">
+
+            <span class="result-interest">
+            Interest rate &#64; {{ interestRate }}%
+            </span>
+
+            <h3>
+            {{ monthlyEmi | currency:'INR':'symbol':'1.0-0' }}
+            </h3>
+
+            <p class="result-label">
+            Monthly EMI
+            </p>
+
+            <div class="result-details">
+
+            <div>
+                <span>Total Interest</span>
+
+                <strong>
+                {{ totalInterest | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Total Amount</span>
+
+                <strong>
+                {{ totalPayment | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+            </div>
+
+            </div>
+
+            <p class="calculator-disclaimer">
+            Estimated EMI based on the selected loan amount,
+            interest rate and duration.
+            </p>
+
+            <div class="loan-actions">
+
+            <button
+                type="button"
+                class="loan-details-button">
+                Details
+            </button>
+
+            <button
+                type="button"
+                class="loan-apply-button">
+                Apply Now
+            </button>
+
+            </div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </section>
+
+</div>

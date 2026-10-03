@@ -1,0 +1,2700 @@
+/* Main home page */
+.home-page {
+  min-height: 100vh;
+  background: #f4f7ff;
+
+  padding-top: 82px;
+  box-sizing: border-box;
+}
+
+/* Main navigation */
+.main-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 1000;
+
+  width: 100%;
+  height: 82px;
+
+  background: #ffffff;
+
+  box-shadow: 0 3px 15px rgba(24, 43, 87, 0.10);
+}
+
+/* Navigation container */
+.navbar-container {
+  max-width: 1450px;
+  min-height: 82px;
+  margin: auto;
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+/* 3D brand icon */
+.brand-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    145deg,
+    #315eea,
+    #172d91
+  );
+
+  color: white;
+
+  font-size: 23px;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 18px rgba(49, 94, 234, 0.35),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Brand text */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  color: #172d91;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.brand-subtitle {
+  color: #7b849d;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-top: 5px;
+}
+
+/* Navigation links */
+.navigation-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-link {
+  position: relative;
+
+  color: #293452;
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+  color: #315eea;
+  transform: translateY(-1px);
+}
+
+/* Navigation hover line */
+.nav-link::after {
+  content: '';
+
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+
+  width: 0;
+  height: 2px;
+
+  background: #315eea;
+
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::after {
+  width: 22px;
+}
+
+/* Right side actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Search button */
+.search-button {
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid #e2e7f4;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 15px rgba(31, 41, 85, 0.08);
+
+  transition: all 0.25s ease;
+}
+
+.search-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(31, 41, 85, 0.14);
+}
+
+/* Login button */
+.login-button {
+  border: none;
+  border-radius: 12px;
+
+  padding: 12px 27px;
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  background: linear-gradient(
+    135deg,
+    #315eea,
+    #172d91
+  );
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(49, 94, 234, 0.3);
+
+  transition: all 0.25s ease;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(49, 94, 234, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+
+  .navigation-links {
+    display: none;
+  }
+
+  .navbar-container {
+    padding: 0 20px;
+  }
+
+}
+
+/* Hero section */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 650px;
+
+  background:
+    radial-gradient(
+      circle at 75% 45%,
+      rgba(63, 94, 251, 0.35),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #0b1535 0%,
+      #142d72 48%,
+      #315eea 100%
+    );
+
+  color: white;
+}
+
+/* Hero container */
+.hero-container {
+  max-width: 1450px;
+  min-height: 650px;
+
+  margin: auto;
+  padding: 70px 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Hero content */
+.hero-content {
+  width: 52%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Hero badge */
+.hero-badge {
+  display: inline-block;
+
+  padding: 8px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(10px);
+
+  color: #dbe6ff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+/* Hero heading */
+.hero-content h1 {
+  margin: 24px 0 18px;
+
+  font-size: clamp(52px, 6vw, 82px);
+
+  line-height: 1.02;
+
+  font-weight: 800;
+
+  letter-spacing: -3px;
+}
+
+.hero-content h1 span {
+  display: block;
+
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    #a8c4ff
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero description */
+.hero-content > p {
+  max-width: 580px;
+
+  color: #d4def7;
+
+  font-size: 18px;
+  line-height: 1.7;
+
+  margin-bottom: 32px;
+}
+
+/* Hero buttons */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.primary-action,
+.secondary-action {
+  padding: 14px 24px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.primary-action {
+  border: none;
+
+  background: white;
+  color: #173b8f;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.primary-action span {
+  margin-left: 12px;
+  font-size: 18px;
+}
+
+.primary-action:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 35px rgba(0, 0, 0, 0.28);
+}
+
+.secondary-action {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+
+  backdrop-filter: blur(10px);
+}
+
+.secondary-action:hover {
+  background: rgba(255, 255, 255, 0.15);
+
+  transform: translateY(-3px);
+}
+
+/* Trust information */
+.hero-trust {
+  display: flex;
+  align-items: center;
+
+  margin-top: 55px;
+}
+
+.trust-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trust-item strong {
+  font-size: 18px;
+}
+
+.trust-item span {
+  color: #aebce0;
+  font-size: 11px;
+}
+
+.trust-divider {
+  width: 1px;
+  height: 32px;
+
+  margin: 0 25px;
+
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Hero visual */
+.hero-visual {
+  position: relative;
+
+  width: 48%;
+  height: 500px;
+}
+
+/* Glow circles */
+.glow-circle {
+  position: absolute;
+
+  border-radius: 50%;
+
+  filter: blur(2px);
+}
+
+.glow-one {
+  width: 400px;
+  height: 400px;
+
+  right: 40px;
+  top: 45px;
+
+  background: rgba(72, 122, 255, 0.28);
+
+  box-shadow:
+    0 0 100px rgba(72, 122, 255, 0.45);
+}
+
+.glow-two {
+  width: 220px;
+  height: 220px;
+
+  right: 10px;
+  bottom: 20px;
+
+  background: rgba(119, 77, 255, 0.2);
+
+  filter: blur(50px);
+}
+
+/* Banking card */
+.bank-card {
+  position: absolute;
+
+  width: 410px;
+  height: 245px;
+
+  top: 90px;
+  right: 80px;
+
+  padding: 28px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0.06)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 35px 70px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35);
+
+  transform:
+    perspective(1000px)
+    rotateY(-12deg)
+    rotateX(5deg)
+    rotateZ(3deg);
+
+  transition: transform 0.4s ease;
+
+  z-index: 3;
+}
+
+.bank-card:hover {
+  transform:
+    perspective(1000px)
+    rotateY(-5deg)
+    rotateX(2deg)
+    rotateZ(1deg)
+    translateY(-8px);
+}
+
+/* Card top */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-brand {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.card-type {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Card chip */
+.chip {
+  width: 45px;
+  height: 34px;
+
+  margin-top: 28px;
+
+  border-radius: 8px;
+
+  background: linear-gradient(
+    135deg,
+    #e9d58a,
+    #b79a48
+  );
+
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Card number */
+.card-number {
+  margin-top: 25px;
+
+  font-size: 21px;
+  font-weight: 500;
+
+  letter-spacing: 2px;
+}
+
+/* Card bottom */
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 20px;
+}
+
+.card-bottom div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-bottom small {
+  color: #c9d5f3;
+
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.card-bottom strong {
+  font-size: 11px;
+}
+
+/* Balance card */
+.balance-card {
+  position: absolute;
+
+  width: 235px;
+
+  right: 0;
+  bottom: 55px;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #172d5f;
+
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.25);
+
+  z-index: 4;
+}
+
+.balance-header,
+.balance-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.balance-header span:first-child {
+  color: #68728b;
+  font-size: 11px;
+}
+
+.balance-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #edf2ff;
+
+  color: #315eea;
+
+  font-weight: 700;
+}
+
+.balance-card h3 {
+  margin: 14px 0;
+
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.balance-footer {
+  color: #7c879f;
+  font-size: 10px;
+}
+
+.balance-footer span:last-child {
+  color: #159447;
+  font-weight: 700;
+}
+
+/* Security feature card */
+.security-card {
+  position: absolute;
+
+  left: 20px;
+  bottom: 65px;
+
+  width: 235px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 16px 18px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.13);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.18);
+
+  z-index: 5;
+
+  transition: all 0.3s ease;
+}
+
+.security-card:hover {
+  transform: translateY(-5px);
+
+  background: rgba(255, 255, 255, 0.18);
+
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+/* Security icon */
+.security-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.16);
+
+  font-size: 19px;
+
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+}
+
+/* Security content */
+.security-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.security-content small {
+  color: #bdc9e8;
+
+  font-size: 9px;
+}
+
+.security-content strong {
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.security-content span {
+  color: #c5d0eb;
+
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+
+  .hero-container {
+    padding: 60px 35px;
+  }
+
+  .hero-content {
+    width: 55%;
+  }
+
+  .hero-visual {
+    width: 45%;
+    transform: scale(0.85);
+  }
+
+  .bank-card {
+    right: 20px;
+  }
+
+}
+
+@media (max-width: 850px) {
+
+  .hero-section {
+    min-height: auto;
+  }
+
+  .hero-container {
+    min-height: auto;
+
+    padding: 70px 25px;
+
+    flex-direction: column;
+  }
+
+  .hero-content {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-content > p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-trust {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    width: 100%;
+    margin-top: 40px;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .hero-content h1 {
+    font-size: 48px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .primary-action,
+  .secondary-action {
+    width: 100%;
+  }
+
+  .hero-visual {
+    transform: scale(0.72);
+    transform-origin: top center;
+    margin-bottom: -80px;
+  }
+
+}
+
+/* Quick access section */
+.quick-access-section {
+  background: #ffffff;
+  padding: 65px 40px;
+}
+
+.quick-access-container {
+  max-width: 1350px;
+  margin: auto;
+}
+
+.quick-access-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.quick-access-header h2 {
+  margin: 0 0 10px;
+  color: #172d5f;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.quick-access-header p {
+  margin: 0;
+  color: #6f7b94;
+  font-size: 15px;
+}
+
+.quick-access-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.quick-access-card {
+  min-height: 220px;
+  padding: 25px 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e3e8f5;
+  border-radius: 14px;
+
+  box-shadow: 0 5px 18px rgba(25, 45, 90, 0.07);
+
+  transition: all 0.25s ease;
+}
+
+.quick-access-card:hover {
+  transform: translateY(-6px);
+
+  border-color: #315eea;
+
+  box-shadow: 0 15px 30px rgba(25, 45, 90, 0.13);
+}
+
+.quick-icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 12px;
+
+  background: #edf2ff;
+
+  font-size: 22px;
+}
+
+.quick-access-card h3 {
+  margin: 0 0 10px;
+
+  color: #172d5f;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.quick-access-card p {
+  min-height: 45px;
+
+  margin: 0 0 15px;
+
+  color: #747f96;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.quick-access-card a {
+  color: #315eea;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+
+  .quick-access-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .quick-access-section {
+    padding: 50px 20px;
+  }
+
+  .quick-access-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* Offers section */
+.offers-section {
+  padding: 80px 40px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f6f8ff 0%,
+      #ffffff 100%
+    );
+}
+
+.offers-container {
+  max-width: 1350px;
+  margin: auto;
+}
+
+/* Offers header */
+.offers-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 35px;
+}
+
+.section-label {
+  color: #315eea;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.offers-header h2 {
+  margin: 8px 0;
+
+  color: #172d5f;
+
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.offers-header p {
+  margin: 0;
+
+  color: #727e97;
+
+  font-size: 14px;
+}
+
+.view-all-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #315eea;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.view-all-link span {
+  font-size: 17px;
+}
+
+/* Offers grid */
+.offers-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 22px;
+}
+
+/* Offer card */
+.offer-card {
+  position: relative;
+
+  min-height: 330px;
+
+  padding: 30px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  color: white;
+
+  box-shadow:
+    0 15px 35px rgba(31, 48, 95, 0.12);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 25px 50px rgba(31, 48, 95, 0.18);
+}
+
+/* Card backgrounds */
+.credit-card-offer {
+  background:
+    linear-gradient(
+      135deg,
+      #172d91,
+      #315eea
+    );
+}
+
+.loan-offer {
+  background:
+    linear-gradient(
+      135deg,
+      #123c61,
+      #1682a5
+    );
+}
+
+.home-loan-offer {
+  background:
+    linear-gradient(
+      135deg,
+      #4b237c,
+      #874bc4
+    );
+}
+
+/* Offer content */
+.offer-content {
+  position: relative;
+
+  max-width: 65%;
+
+  z-index: 2;
+}
+
+.offer-tag {
+  display: inline-block;
+
+  margin-bottom: 18px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.offer-content h3 {
+  margin: 0 0 14px;
+
+  font-size: 25px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+}
+
+.offer-content p {
+  margin: 0 0 25px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: 12px;
+
+  line-height: 1.65;
+}
+
+/* Offer button */
+.offer-button {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  border-radius: 9px;
+
+  padding: 10px 15px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(8px);
+
+  transition: all 0.25s ease;
+}
+
+.offer-button span {
+  margin-left: 8px;
+}
+
+.offer-button:hover {
+  background: white;
+  color: #173b8f;
+}
+
+/* Offer visual */
+.offer-visual {
+  position: absolute;
+
+  right: -10px;
+  bottom: -10px;
+
+  width: 45%;
+  height: 100%;
+}
+
+/* Mini credit card */
+.mini-card {
+  position: absolute;
+
+  right: -25px;
+  top: 85px;
+
+  width: 190px;
+  height: 115px;
+
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0.08)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  backdrop-filter: blur(10px);
+
+  transform:
+    rotate(-14deg);
+
+  box-shadow:
+    0 20px 35px rgba(0, 0, 0, 0.22);
+}
+
+.mini-card span {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mini-card strong {
+  align-self: flex-end;
+
+  font-size: 10px;
+}
+
+.mini-card small {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+/* Loan visual */
+.loan-circle {
+  position: absolute;
+
+  right: -25px;
+  bottom: 30px;
+
+  width: 180px;
+  height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.08)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  color: rgba(255, 255, 255, 0.8);
+
+  font-size: 65px;
+  font-weight: 800;
+
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Home loan visual */
+.home-icon {
+  position: absolute;
+
+  right: 20px;
+  bottom: 45px;
+
+  width: 145px;
+  height: 145px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 35px;
+
+  background: rgba(255, 255, 255, 0.14);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  font-size: 65px;
+
+  transform:
+    rotate(8deg);
+
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+
+  .offers-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .offer-card {
+    min-height: 300px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .offers-section {
+    padding: 60px 20px;
+  }
+
+  .offers-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  .offers-header h2 {
+    font-size: 32px;
+  }
+
+}
+
+/* Credit cards section */
+.credit-cards-section {
+  padding: 85px 40px;
+
+  background: #ffffff;
+}
+
+.credit-cards-container {
+  max-width: 1350px;
+  margin: auto;
+}
+
+/* Section header */
+.credit-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 40px;
+}
+
+.credit-section-label {
+  color: #315eea;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.credit-section-header h2 {
+  margin: 8px 0;
+
+  color: #172d5f;
+
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.credit-section-header p {
+  margin: 0;
+
+  color: #737f98;
+
+  font-size: 14px;
+}
+
+.credit-view-all {
+  color: #315eea;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.credit-view-all span {
+  margin-left: 5px;
+  font-size: 17px;
+}
+
+/* Product grid */
+.credit-products-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 30px;
+}
+
+/* Product card */
+.credit-product-card {
+  overflow: hidden;
+
+  border-radius: 22px;
+
+  background: #f7f8fa;
+
+  border: 1px solid #e4e7ee;
+
+  box-shadow:
+    0 10px 25px rgba(20, 40, 80, 0.06);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.credit-product-card:hover {
+  transform: translateY(-7px);
+
+  box-shadow:
+    0 22px 45px rgba(20, 40, 80, 0.14);
+}
+
+/* Product image area */
+.product-image-area {
+  position: relative;
+
+  height: 260px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      #ffffff 0%,
+      #eef1f7 65%,
+      #e8ebf1 100%
+    );
+}
+
+/* Product badge */
+.product-badge {
+  position: absolute;
+
+  top: 15px;
+  left: 18px;
+
+  padding: 7px 13px;
+
+  border-radius: 6px;
+
+  background: #315eea;
+
+  color: white;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  z-index: 3;
+}
+
+.product-badge.exclusive {
+  background: #8b2638;
+}
+
+.product-badge.new {
+  background: #198754;
+}
+
+/* FinCore card visual */
+.fincore-card {
+  width: 300px;
+  height: 185px;
+
+  padding: 20px;
+
+  position: relative;
+
+  border-radius: 16px;
+
+  color: white;
+
+  transform: rotate(-2deg);
+
+  box-shadow:
+    0 20px 28px rgba(20, 30, 60, 0.28);
+
+  transition:
+    transform 0.35s ease;
+}
+
+.credit-product-card:hover .fincore-card {
+  transform:
+    rotate(-5deg)
+    translateY(-5px);
+}
+
+/* Card variations */
+.premium-card {
+  background:
+    linear-gradient(
+      135deg,
+      #172d91,
+      #315eea
+    );
+}
+
+.ruby-card {
+  background:
+    linear-gradient(
+      135deg,
+      #71172d,
+      #d92d4f
+    );
+}
+
+.coral-card {
+  background:
+    linear-gradient(
+      135deg,
+      #a92b22,
+      #f06b36
+    );
+}
+
+/* Card brand */
+.card-brand {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* Card chip */
+.card-chip {
+  width: 38px;
+  height: 28px;
+
+  margin-top: 25px;
+
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d7b54d,
+      #f0d36e
+    );
+}
+
+/* Card number */
+.card-number {
+  margin-top: 20px;
+
+  font-size: 14px;
+
+  letter-spacing: 2px;
+}
+
+/* Card details */
+.card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  margin-top: 12px;
+}
+
+.card-details span {
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.card-details strong {
+  font-size: 11px;
+}
+
+/* Product content */
+.product-content {
+  padding: 25px 28px 28px;
+}
+
+/* Product title */
+.product-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-title-row h3 {
+  margin: 0;
+
+  color: #172d5f;
+
+  font-size: 27px;
+  font-weight: 500;
+}
+
+/* Product actions */
+.product-actions {
+  display: flex;
+  gap: 12px;
+
+  color: #617494;
+
+  font-size: 23px;
+
+  cursor: pointer;
+}
+
+/* Benefit tag */
+.benefit-tag {
+  display: inline-block;
+
+  margin-top: 20px;
+
+  padding: 7px 10px;
+
+  border-radius: 3px;
+
+  background: #c9f7d7;
+
+  color: #14753d;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Product subtitle */
+.product-content h4 {
+  margin: 18px 0 8px;
+
+  color: #172d5f;
+
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* Product description */
+.product-content p {
+  margin: 0;
+
+  color: #66738b;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+/* Benefits */
+.product-benefits {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-top: 18px;
+}
+
+.product-benefits span {
+  color: #5c6981;
+
+  font-size: 11px;
+}
+
+/* Footer actions */
+.product-footer {
+  display: flex;
+
+  gap: 22px;
+
+  margin-top: 25px;
+}
+
+.product-footer button {
+  border: none;
+
+  background: none;
+
+  padding: 0;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.apply-link {
+  color: #315eea;
+}
+
+.details-link {
+  color: #53627d;
+}
+
+.product-footer button:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 1050px) {
+
+  .credit-products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .credit-product-card {
+    max-width: 600px;
+    margin: auto;
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .credit-cards-section {
+    padding: 60px 20px;
+  }
+
+  .credit-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .credit-section-header h2 {
+    font-size: 32px;
+  }
+
+  .product-image-area {
+    height: 230px;
+  }
+
+}
+
+/* =========================================
+   Account and Loan Section
+   ========================================= */
+
+.account-loan-section {
+  padding: 80px 40px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f7f9fc 0%,
+      #eef2f8 100%
+    );
+}
+
+.account-loan-container {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.9fr 1.5fr;
+
+  gap: 30px;
+}
+
+
+/* =========================================
+   Open Account Card
+   ========================================= */
+
+.account-card {
+  padding: 42px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 15px 40px rgba(20, 40, 80, 0.10);
+
+  border: 1px solid #e9edf4;
+}
+
+.account-card h2,
+.loan-input-section h2 {
+  margin: 0 0 32px;
+
+  color: #182b57;
+
+  font-size: 36px;
+  font-weight: 500;
+}
+
+
+/* Account options */
+
+.account-options {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+.account-option {
+  width: 100%;
+
+  padding: 18px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: none;
+
+  border-radius: 13px;
+
+  background: #f1f3f7;
+
+  color: #1b2945;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.account-option:hover {
+  background: #e7ecf5;
+
+  transform: translateX(4px);
+}
+
+.account-option span:last-child {
+  font-size: 25px;
+
+  color: #53627c;
+}
+
+
+/* View all */
+
+.account-view-all {
+  display: inline-block;
+
+  margin-top: 42px;
+
+  color: #315eea;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  text-decoration: none;
+}
+
+.account-view-all:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   Loan Calculator
+   ========================================= */
+
+.loan-calculator-card {
+  display: grid;
+
+  grid-template-columns: 1.35fr 0.65fr;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 15px 40px rgba(20, 40, 80, 0.10);
+
+  border: 1px solid #e9edf4;
+}
+
+
+/* Left calculator area */
+
+.loan-input-section {
+  padding: 42px;
+}
+
+.loan-input-section h2 {
+  margin-bottom: 25px;
+}
+
+
+/* Loan types */
+
+.loan-types {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-bottom: 30px;
+}
+
+.loan-type {
+  padding: 11px 17px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #f1f3f7;
+
+  color: #26344f;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.loan-type:hover {
+  background: #e4e9f2;
+}
+
+.loan-type.active {
+  background: #315eea;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 15px rgba(49, 94, 234, 0.25);
+}
+
+
+/* Calculator field */
+
+.calculator-field {
+  margin-top: 28px;
+}
+
+.calculator-field label {
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #273650;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+/* Amount */
+
+.amount-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+.amount-row input[type="range"] {
+  flex: 1;
+
+  height: 5px;
+
+  accent-color: #315eea;
+
+  cursor: pointer;
+}
+
+.amount-input {
+  width: 140px;
+
+  padding: 11px 12px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #f1f3f7;
+
+  color: #26344f;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  outline: none;
+}
+
+.amount-input:focus {
+  box-shadow:
+    0 0 0 2px rgba(49, 94, 234, 0.18);
+}
+
+
+/* Range labels */
+
+.range-labels {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 7px;
+
+  color: #65718a;
+
+  font-size: 11px;
+}
+
+
+/* Interest rate */
+
+.interest-input {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.interest-input input {
+  width: 120px;
+
+  padding: 11px 13px;
+
+  border: 1px solid #e0e5ed;
+
+  border-radius: 8px;
+
+  color: #243657;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  outline: none;
+}
+
+.interest-input input:focus {
+  border-color: #315eea;
+
+  box-shadow:
+    0 0 0 3px rgba(49, 94, 234, 0.10);
+}
+
+.interest-input span {
+  color: #68748a;
+
+  font-size: 13px;
+}
+
+
+/* Duration */
+
+.duration-options {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.duration-options button {
+  padding: 11px 16px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #f1f3f7;
+
+  color: #26344f;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.duration-options button:hover {
+  background: #e5eaf2;
+}
+
+.duration-options button.active {
+  background: #315eea;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 15px rgba(49, 94, 234, 0.25);
+}
+
+
+/* =========================================
+   Loan Result Panel
+   ========================================= */
+
+.loan-result-section {
+  min-height: 100%;
+
+  padding: 38px 30px;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ff751f,
+      #f15b13
+    );
+
+  color: #ffffff;
+}
+
+
+/* Interest */
+
+.result-interest {
+  font-size: 14px;
+  font-weight: 600;
+
+  opacity: 0.95;
+}
+
+
+/* EMI */
+
+.loan-result-section h3 {
+  margin: 24px 0 3px;
+
+  font-size: 38px;
+  font-weight: 500;
+
+  letter-spacing: -1px;
+}
+
+.result-label {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.88);
+
+  font-size: 13px;
+}
+
+
+/* Result details */
+
+.result-details {
+  margin-top: 28px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.result-details div {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.result-details span {
+  font-size: 12px;
+
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.result-details strong {
+  font-size: 14px;
+
+  white-space: nowrap;
+}
+
+
+/* Disclaimer */
+
+.calculator-disclaimer {
+  margin-top: 25px;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* Buttons */
+
+.loan-actions {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: auto;
+  padding-top: 30px;
+}
+
+.loan-actions button {
+  flex: 1;
+
+  padding: 13px 15px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.loan-details-button {
+  border: none;
+
+  background: rgba(150, 60, 5, 0.45);
+
+  color: #ffffff;
+}
+
+.loan-details-button:hover {
+  background: rgba(130, 50, 5, 0.65);
+}
+
+.loan-apply-button {
+  border: none;
+
+  background: #ffffff;
+
+  color: #e85b17;
+}
+
+.loan-apply-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(80, 30, 0, 0.18);
+}
+
+
+/* =========================================
+   Responsive Design
+   ========================================= */
+
+@media (max-width: 1200px) {
+
+  .account-loan-container {
+    grid-template-columns: 1fr;
+  }
+
+  .loan-calculator-card {
+    grid-template-columns: 1.4fr 0.6fr;
+  }
+
+}
+
+
+@media (max-width: 850px) {
+
+  .loan-calculator-card {
+    grid-template-columns: 1fr;
+  }
+
+  .loan-result-section {
+    min-height: 400px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .account-loan-section {
+    padding: 55px 20px;
+  }
+
+  .account-card,
+  .loan-input-section {
+    padding: 28px 22px;
+  }
+
+  .account-card h2,
+  .loan-input-section h2 {
+    font-size: 30px;
+  }
+
+  .account-options {
+    grid-template-columns: 1fr;
+  }
+
+  .amount-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .amount-input {
+    width: 100%;
+  }
+
+  .loan-result-section {
+    padding: 30px 25px;
+  }
+
+}
+
+/* Amount section */
+.amount-field {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.amount-field > label {
+  display: block;
+
+  margin-bottom: 22px;
+
+  color: #182b57;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+/* Slider + amount box */
+.amount-control {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 20px;
+}
+
+
+/* Slider area */
+.amount-slider-wrapper {
+  flex: 1;
+
+  min-width: 0;
+
+  padding-top: 10px;
+}
+
+
+/* Slider */
+.amount-slider {
+  width: 100%;
+
+  height: 5px;
+
+  margin: 0;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: #a8a8a8;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+
+/* Slider thumb */
+.amount-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  border: 3px solid #ff7620;
+
+  cursor: pointer;
+}
+
+.amount-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  border: 3px solid #ff7620;
+
+  cursor: pointer;
+}
+
+
+/* Amount labels */
+.amount-points {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-top: 12px;
+
+  color: #182b57;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+.amount-points span {
+  display: block;
+
+  text-align: center;
+}
+
+
+/* Amount input */
+.amount-display {
+  width: 175px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+}
+
+.amount-display input {
+  width: 100%;
+
+  height: 56px;
+
+  box-sizing: border-box;
+
+  padding: 0 14px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #f0f2f6;
+
+  color: #182b57;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  outline: none;
+}
+
+
+/* Amount in words */
+.amount-display span {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #555b68;
+
+  font-size: 13px;
+
+  line-height: 18px;
+
+  text-align: right;
+
+  white-space: nowrap;
+}
+
+/* Promotional slider */
+.promo-slider {
+  width: 100%;
+  padding: 30px 0;
+}
+
+/* Promotional card */
+.promo-card {
+  width: 90%;
+  max-width: 1100px;
+  min-height: 190px;
+  margin: 0 auto;
+  padding: 25px 35px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ffffff;
+  border-radius: 28px;
+
+  box-shadow: 0 10px 30px rgba(24, 43, 87, 0.12);
+
+  overflow: hidden;
+
+  animation: slideFade 0.5s ease;
+}
+
+/* Promotional content */
+.promo-content {
+  flex: 1;
+  padding-right: 30px;
+}
+
+/* Promotional title */
+.promo-content h2 {
+  margin: 0 0 10px;
+
+  color: #182b57;
+  font-size: 23px;
+  font-weight: 500;
+}
+
+/* Promotional description */
+.promo-content p {
+  max-width: 430px;
+  margin: 0 0 20px;
+
+  color: #182b57;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Promotional actions */
+.promo-actions {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+/* Promotional action button */
+.promo-actions button {
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #ff5a00;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* Promotional action hover */
+.promo-actions button:hover {
+  text-decoration: underline;
+}
+
+/* Promotional image section */
+.promo-image {
+  position: relative;
+
+  width: 200px;
+  height: 125px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    135deg,
+    #ff5a00,
+    #ff8a2a
+  );
+
+  border-radius: 12px;
+
+  overflow: visible;
+}
+
+/* Promotional badge */
+.promo-badge {
+  position: absolute;
+
+  top: -10px;
+  right: 0;
+
+  padding: 5px 10px;
+
+  background: #b9f5c7;
+  color: #126b36;
+
+  border-radius: 5px;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+/* Slider navigation */
+.slider-controls {
+  width: 90%;
+  max-width: 1100px;
+
+  margin: 12px auto 0;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Navigation button */
+.slider-controls button {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+
+  background: transparent;
+  color: #ffffff;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* Navigation button hover */
+.slider-controls button:hover {
+  background: #ffffff;
+  color: #ff5a00;
+}
+
+/* Slide animation */
+@keyframes slideFade {
+
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+
+  .promo-card {
+    width: 94%;
+    padding: 20px;
+  }
+
+  .promo-content h2 {
+    font-size: 20px;
+  }
+
+  .promo-content p {
+    font-size: 14px;
+  }
+
+  .promo-image {
+    width: 170px;
+    height: 110px;
+  }
+
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+  .promo-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .promo-content {
+    padding-right: 0;
+  }
+
+  .promo-image {
+    width: 100%;
+    height: 120px;
+  }
+
+  .slider-controls {
+    width: 94%;
+  }
+
+}

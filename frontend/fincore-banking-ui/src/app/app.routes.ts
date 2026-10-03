@@ -11,8 +11,13 @@ import { CardsComponent } from './pages/cards/cards.component';
 import { LoansComponent } from './pages/loans/loans.component';
 import { LoanDetailsComponent } from './pages/loan-details/loan-details.component';
 import { AccountsComponent } from './pages/accounts/accounts.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
+    {
+    path: '',
+    component: HomeComponent
+  },
   {
     path: 'login',
     component: LoginComponent

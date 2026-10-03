@@ -1,0 +1,153 @@
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  backdrop-filter: blur(5px);
+}
+
+
+/* Loading container */
+.loading-container {
+  position: relative;
+
+  width: 220px;
+  height: 220px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* FinCore logo */
+.loading-logo {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 14px 18px;
+
+  background: #ffffff;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 8px 25px rgba(24, 43, 87, 0.15);
+}
+
+
+/* F logo */
+.brand-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: linear-gradient(
+    135deg,
+    #315eea,
+    #1d3fa5
+  );
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 800;
+}
+
+
+/* Brand text */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* FinCore */
+.brand-name {
+  color: #182b57;
+
+  font-size: 22px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+
+/* BANKING */
+.brand-subtitle {
+  margin-top: 4px;
+
+  color: #315eea;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+
+/* Rotating loader */
+.loading-spinner {
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  border-radius: 50%;
+
+  border: 4px solid #e8edf7;
+
+  border-top-color: #315eea;
+
+  border-right-color: #ff7620;
+
+  animation: fincore-spin 1s linear infinite;
+}
+
+
+/* Loading text */
+.loading-text {
+  position: absolute;
+
+  bottom: 5px;
+
+  color: #182b57;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* Spinner animation */
+@keyframes fincore-spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}

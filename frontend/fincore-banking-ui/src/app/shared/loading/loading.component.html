@@ -1,0 +1,37 @@
+<div
+  class="loading-overlay"
+  *ngIf="loading$ | async">
+
+  <div class="loading-container">
+
+    <!-- FinCore logo -->
+    <div class="loading-logo">
+
+      <div class="brand-icon">
+        F
+      </div>
+
+      <div class="brand-text">
+
+        <span class="brand-name">
+          FinCore
+        </span>
+
+        <span class="brand-subtitle">
+          BANKING
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- Loading animation -->
+    <div class="loading-spinner"></div>
+
+    <span class="loading-text">
+      Processing...
+    </span>
+
+  </div>
+
+</div>

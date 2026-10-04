@@ -1,0 +1,757 @@
+/* =========================================================
+   MAIN NAVIGATION
+   ========================================================= */
+
+.main-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 1000;
+
+  width: 100%;
+  height: 82px;
+
+  background: #ffffff;
+
+  box-shadow: 0 3px 15px rgba(24, 43, 87, 0.10);
+}
+
+
+/* Navigation container */
+
+.navbar-container {
+  max-width: 1450px;
+  min-height: 82px;
+
+  margin: auto;
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  text-decoration: none;
+}
+
+
+/* FinCore icon */
+
+.brand-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    145deg,
+    #315eea,
+    #172d91
+  );
+
+  color: #ffffff;
+
+  font-size: 23px;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 18px rgba(49, 94, 234, 0.35),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.30);
+}
+
+
+/* Brand text */
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.brand-name {
+  color: #172d91;
+
+  font-size: 24px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+
+.brand-subtitle {
+  color: #7b849d;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+
+  margin-top: 5px;
+}
+
+
+/* =========================================================
+   NAVIGATION LINKS
+   ========================================================= */
+
+.navigation-links {
+  display: flex;
+  align-items: center;
+
+  gap: 30px;
+}
+
+
+.nav-link {
+  position: relative;
+
+  color: #293452;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+
+.nav-link:hover {
+  color: #315eea;
+
+  transform: translateY(-1px);
+}
+
+
+/* Navigation underline */
+
+.nav-link::after {
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -10px;
+
+  width: 0;
+  height: 2px;
+
+  background: #315eea;
+
+  transform: translateX(-50%);
+
+  transition: width 0.25s ease;
+}
+
+
+.nav-link:hover::after {
+  width: 22px;
+}
+
+
+/* =========================================================
+   PERSONAL + NRI MENU WRAPPERS
+   ========================================================= */
+
+.personal-menu,
+.nri-menu {
+  position: relative;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+
+/* Personal and NRI links */
+
+.personal-link,
+.nri-link {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+}
+
+
+/* =========================================================
+   COMMON MEGA MENU
+   Personal and NRI use exactly the same layout
+   ========================================================= */
+
+.personal-mega-menu,
+.nri-mega-menu {
+  position: fixed;
+
+  top: 82px;
+  left: 0;
+  right: 0;
+
+  z-index: 999;
+
+  box-sizing: border-box;
+
+  padding: 24px 10% 30px;
+
+  background: #ffffff;
+
+  border-radius: 0 0 24px 24px;
+
+  box-shadow:
+    0 15px 35px rgba(24, 43, 87, 0.15);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transform: translateY(-10px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+}
+
+
+/* =========================================================
+   HOVER OPEN
+   ========================================================= */
+
+.personal-menu:hover .personal-mega-menu,
+.nri-menu:hover .nri-mega-menu {
+  opacity: 1;
+
+  visibility: visible;
+
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   CLICK HIDE
+   ========================================================= */
+
+.personal-menu.hide-personal-menu .personal-mega-menu,
+.nri-menu.hide-nri-menu .nri-mega-menu {
+  opacity: 0 !important;
+
+  visibility: hidden !important;
+
+  transform: translateY(-10px) !important;
+
+  pointer-events: none !important;
+}
+
+
+/* =========================================================
+   MEGA MENU TITLE
+   ========================================================= */
+
+.personal-menu-title,
+.nri-menu-title {
+  color: #202020;
+
+  font-size: 32px;
+  font-weight: 400;
+
+  line-height: 1.2;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid #ff8a4c;
+}
+
+
+/* =========================================================
+   MENU CONTENT
+   Same grid for Personal and NRI
+   ========================================================= */
+
+.personal-menu-content,
+.nri-menu-content {
+  display: grid;
+
+  grid-template-columns:
+    1.1fr
+    1.1fr
+    0.9fr
+    300px;
+
+  gap: 25px;
+
+  padding-top: 22px;
+}
+
+
+/* =========================================================
+   MENU COLUMNS
+   ========================================================= */
+
+.personal-menu-column,
+.nri-menu-column {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+
+/* =========================================================
+   MAIN COLUMN
+   ========================================================= */
+
+.personal-main-column,
+.nri-main-column {
+  border-right: 1px solid #f0d5c8;
+
+  padding-right: 25px;
+}
+
+
+/* =========================================================
+   COLUMN HEADINGS
+   ========================================================= */
+
+.personal-menu-column h3,
+.nri-main-column h3 {
+  margin: 0;
+
+  color: #315eea;
+
+  font-size: 30px;
+
+  font-weight: 600;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================================
+   MENU LINKS
+   ========================================================= */
+
+.personal-menu-column a,
+.nri-menu-column a {
+  color: #292929;
+
+  text-decoration: none;
+
+  font-size: 18px;
+
+  line-height: 1.35;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.personal-menu-column a:hover,
+.nri-menu-column a:hover {
+  color: #315eea;
+}
+
+
+/* Active menu option */
+
+.personal-menu-column a.active,
+.nri-menu-column a.active {
+  color: #315eea;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   EXPLORE LINK
+   ========================================================= */
+
+.personal-menu-column .explore-link,
+.nri-menu-column .explore-link {
+  color: #182b57;
+
+  font-weight: 700;
+}
+
+
+.personal-menu-column .explore-link:hover,
+.nri-menu-column .explore-link:hover {
+  color: #315eea;
+}
+
+
+/* =========================================================
+   PERSONAL PROMO CARD
+   ========================================================= */
+
+.personal-promo-card,
+.nri-promo-card {
+  position: relative;
+
+  min-height: 300px;
+
+  box-sizing: border-box;
+
+  padding: 28px 25px;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ff7418,
+      #f65b16
+    );
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   PROMO HEADING
+   ========================================================= */
+
+.personal-promo-card h3,
+.nri-promo-card h3 {
+  margin: 0 0 14px;
+
+  font-size: 28px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PROMO TEXT
+   ========================================================= */
+
+.personal-promo-card p,
+.nri-promo-card p {
+  margin: 0 0 22px;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   PROMO APPLY BUTTON
+   ========================================================= */
+
+.personal-promo-card button,
+.nri-promo-card button {
+  border: none;
+
+  border-radius: 25px;
+
+  padding: 11px 22px;
+
+  background: #ffffff;
+
+  color: #f5661b;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.personal-promo-card button:hover,
+.nri-promo-card button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   PERSONAL PROMO IMAGE
+   ========================================================= */
+
+.personal-promo-image {
+  position: absolute;
+
+  right: 20px;
+  bottom: 12px;
+
+  font-size: 100px;
+}
+
+
+/* =========================================================
+   NRI PROMO IMAGE
+   ========================================================= */
+
+.nri-promo-image {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 52%;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: center;
+
+  font-size: 105px;
+
+  filter: hue-rotate(170deg);
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.personal-menu-close,
+.nri-menu-close {
+  position: absolute;
+
+  left: 50%;
+  bottom: -23px;
+
+  width: 45px;
+  height: 45px;
+
+  transform: translateX(-50%);
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #f4f6fa;
+
+  color: #182b57;
+
+  font-size: 26px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Close button hover */
+
+.personal-menu-close:hover,
+.nri-menu-close:hover {
+  background: #e9edf5;
+
+  color: #315eea;
+}
+
+
+/* =========================================================
+   RIGHT SIDE ACTIONS
+   ========================================================= */
+
+.navbar-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   SEARCH / ACTION BUTTON
+   ========================================================= */
+
+.search-button {
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid #e2e7f4;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 15px rgba(31, 41, 85, 0.08);
+
+  transition: all 0.25s ease;
+}
+
+
+.search-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(31, 41, 85, 0.14);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.login-button {
+  border: none;
+
+  border-radius: 12px;
+
+  padding: 12px 27px;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  background:
+    linear-gradient(
+      135deg,
+      #315eea,
+      #172d91
+    );
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(49, 94, 234, 0.30);
+
+  transition: all 0.25s ease;
+}
+
+
+.login-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(49, 94, 234, 0.40);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .navbar-container {
+    padding: 0 25px;
+  }
+
+  .navigation-links {
+    gap: 20px;
+  }
+
+  .navbar-actions {
+    gap: 8px;
+  }
+
+  .personal-mega-menu,
+  .nri-mega-menu {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .personal-menu-content,
+  .nri-menu-content {
+    grid-template-columns:
+      1fr
+      1fr
+      1fr
+      280px;
+
+    gap: 20px;
+  }
+}
+
+
+/* =========================================================
+   TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .navigation-links {
+    display: none;
+  }
+
+  .navbar-container {
+    padding: 0 20px;
+  }
+
+  .navbar-actions {
+    gap: 8px;
+  }
+
+  .personal-mega-menu,
+  .nri-mega-menu {
+    top: 82px;
+
+    padding: 20px;
+  }
+
+  .personal-menu-content,
+  .nri-menu-content {
+    grid-template-columns: 1fr;
+  }
+
+  .personal-main-column,
+  .nri-main-column {
+    border-right: none;
+
+    border-bottom: 1px solid #f0d5c8;
+
+    padding-right: 0;
+
+    padding-bottom: 20px;
+  }
+
+  .personal-promo-card,
+  .nri-promo-card {
+    min-height: 280px;
+  }
+}

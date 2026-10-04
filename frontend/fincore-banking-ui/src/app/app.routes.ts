@@ -81,6 +81,12 @@ export const routes: Routes = [
   ]
 },
   {
+    path: 'nri',
+    loadComponent: () =>
+      import('./pages/nri/nri.component')
+        .then(m => m.NriComponent)
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'

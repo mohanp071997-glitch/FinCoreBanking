@@ -1,0 +1,282 @@
+<div class="nri-page">
+
+  <!-- NRI hero section -->
+  <section class="nri-hero">
+
+    <!-- Left content -->
+    <div class="nri-hero-left">
+
+      <!-- Search -->
+      <div class="nri-search">
+        <span class="search-icon">⌕</span>
+
+        <input
+          type="text"
+          placeholder='Search for "NRE Account"'
+        />
+
+        <span class="mic-icon">◉</span>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="nri-quick-actions">
+
+        <button type="button">
+          <span>♜</span>
+          Accounts
+        </button>
+
+        <button type="button">
+          <span>▣</span>
+          Deposits
+        </button>
+
+        <button type="button">
+          <span>▥</span>
+          Investment
+        </button>
+
+        <button type="button">
+          <span>↔</span>
+          Money Transfer
+        </button>
+
+        <button type="button">
+          <span>▱</span>
+          Loans
+        </button>
+
+        <button
+          type="button"
+          class="support-button">
+          <span>☎</span>
+          Get Support
+          <br>
+          Overseas
+        </button>
+
+      </div>
+
+      <!-- Pick up where you left off -->
+      <div class="nri-continue">
+
+        <h3>Pick up where you left off</h3>
+
+        <div class="nri-continue-card">
+
+          <div class="continue-content">
+
+            <h4>NRE/NRO Savings Account</h4>
+
+            <p>
+              Manage your savings in India
+              with ease and flexibility.
+            </p>
+
+            <div class="continue-actions">
+              <button type="button">
+                Apply Now
+              </button>
+
+              <button type="button">
+                Details
+              </button>
+            </div>
+
+          </div>
+
+          <div class="continue-image">
+            🏦
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    
+    <!-- NRI promotional slider -->
+    <section
+    class="nri-slider"
+    (mouseenter)="isSliderPaused = true"
+    (mouseleave)="isSliderPaused = false">
+
+    <!-- Current slide -->
+    <div class="nri-slide">
+
+        <!-- Slide image -->
+        <div class="nri-slide-image">
+
+        <img
+            [src]="slides[currentSlide].imageUrl"
+            [alt]="slides[currentSlide].title">
+
+        </div>
+
+        <!-- Slide content -->
+        <div class="nri-slide-content">
+
+        <h1>
+            {{ slides[currentSlide].title }}
+        </h1>
+
+        <p>
+            {{ slides[currentSlide].description }}
+        </p>
+
+        <button
+            type="button"
+            class="nri-slide-button">
+            {{ slides[currentSlide].buttonText }}
+        </button>
+
+        </div>
+
+    <!-- Slider controls -->
+    <div class="nri-slider-controls">
+
+      <button
+        type="button"
+        class="nri-slider-arrow"
+        (click)="previousSlide()"
+        aria-label="Previous slide">
+        ←
+      </button>
+
+      <button
+        type="button"
+        class="nri-slider-arrow"
+        (click)="nextSlide()"
+        aria-label="Next slide">
+        →
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- Slider indicators -->
+  <div class="nri-slider-dots">
+
+    <button
+      *ngFor="let slide of slides; let i = index"
+      type="button"
+      [class.active]="currentSlide === i"
+      (click)="currentSlide = i"
+      [attr.aria-label]="'Go to slide ' + (i + 1)">
+    </button>
+
+  </div>
+
+</section>
+
+  </section>
+
+
+  <!-- Quick service section -->
+  <section class="nri-services-bar">
+
+    <!-- Raise a Query -->
+    <div class="nri-service active">
+
+      <div class="service-icon">
+        !
+      </div>
+
+      <div>
+        <strong>Raise a Query</strong>
+        <p>
+          Get assistance with your
+          banking needs.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Track Applications -->
+    <div class="nri-service">
+
+      <div class="service-icon">
+        ***
+      </div>
+
+      <div>
+        <strong>Track Applications</strong>
+        <p>
+          Track applications and
+          service requests.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Smart Lock -->
+    <div class="nri-service">
+
+      <div class="service-icon">
+        ✓
+      </div>
+
+      <div>
+        <strong>Smart Lock</strong>
+        <p>
+          Secure your account
+          instantly.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Block Card -->
+    <div class="nri-service">
+
+      <div class="service-icon">
+        ▱
+      </div>
+
+      <div>
+        <strong>Block Card</strong>
+        <p>
+          Block your card quickly
+          when required.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Report Fraud -->
+    <div class="nri-service">
+
+      <div class="service-icon">
+        !
+      </div>
+
+      <div>
+        <strong>Report Fraud</strong>
+        <p>
+          Report suspicious
+          transactions.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- NRI information section -->
+  <section class="nri-information">
+
+    <h2>
+      Banking solutions for NRIs
+    </h2>
+
+    <p>
+      FinCore Banking provides secure and convenient
+      banking solutions for customers living abroad.
+    </p>
+
+  </section>
+
+</div>

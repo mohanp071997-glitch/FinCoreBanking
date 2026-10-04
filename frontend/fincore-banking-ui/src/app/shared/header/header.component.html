@@ -1,0 +1,269 @@
+<!-- Main navigation -->
+  <nav class="main-navbar">
+
+    <div class="navbar-container">
+
+      <!-- Brand -->
+      <a class="brand" routerLink="/">
+
+        <div class="brand-icon">
+          F
+        </div>
+
+        <div class="brand-text">
+          <span class="brand-name">FinCore</span>
+          <span class="brand-subtitle">BANKING</span>
+        </div>
+
+      </a>
+
+      <!-- Navigation -->
+      <div class="navigation-links">
+
+        <!-- Personal navigation -->
+        <div
+        class="personal-menu"
+        [class.hide-personal-menu]="hidePersonalMenu"
+        (mouseenter)="enablePersonalMenu()"
+        (mouseleave)="enablePersonalMenu()">
+
+        <!-- Personal link -->
+        <a
+            class="nav-link personal-link"
+            routerLink="/"
+            (click)="closePersonalMenu()">
+            Personal
+        </a>
+
+        <!-- Personal mega menu -->
+        <div class="personal-mega-menu">
+
+            <div class="personal-menu-title">
+            Personal ↗
+            </div>
+
+            <div class="personal-menu-content">
+
+            <!-- First column -->
+            <div class="personal-menu-column personal-main-column">
+
+                <h3>Accounts</h3>
+
+                <a>Savings Account</a>
+                <a>Deposits</a>
+                <a>Payments</a>
+                <a>Cards</a>
+                <a>Loans</a>
+                <a>Investments</a>
+                <a>Insurance</a>
+                <a>Special Services</a>
+
+                <a class="explore-link">
+                Explore Personal Banking ↗
+                </a>
+
+            </div>
+
+            <!-- Second column -->
+            <div class="personal-menu-column">
+
+                <a>Savings Account</a>
+                <a>Salary Account</a>
+                <a>Capital Gains Account Scheme</a>
+                <a>Hindu Undivided Family (HUF) Savings Account</a>
+
+            </div>
+
+            <!-- Third column -->
+            <div class="personal-menu-column">
+
+                <a>Banking Solutions<br>for Doctors</a>
+
+            </div>
+
+            <!-- Promotional card -->
+            <div class="personal-promo-card">
+
+                <h3>
+                Get the best from<br>
+                FinCore Banking
+                </h3>
+
+                <p>
+                Open a Savings Account for
+                seamless payments
+                </p>
+
+                <button type="button">
+                Apply now
+                </button>
+
+                <div class="personal-promo-image">
+                👩‍💼
+                </div>
+
+            </div>
+
+            </div>
+
+            <!-- Close icon -->
+            <button
+            type="button"
+            class="personal-menu-close">
+            ×
+            </button>
+
+        </div>
+
+        </div>
+
+        <!-- NRI navigation -->
+        <div
+        class="nri-menu"
+        [class.hide-nri-menu]="hideNriMenu"
+        (mouseenter)="enableNriMenu()"
+        (mouseleave)="enableNriMenu()">
+
+        <!-- NRI link -->
+        <a
+            class="nav-link nri-link"
+            routerLink="/nri"
+            (click)="closeNriMenu()">
+            NRI
+        </a>
+
+        <!-- NRI mega menu -->
+        <div class="nri-mega-menu">
+
+            <!-- NRI heading -->
+            <div class="nri-menu-title">
+            NRI ↗
+            </div>
+
+            <!-- NRI menu content -->
+            <div class="nri-menu-content">
+
+            <!-- Accounts -->
+            <div class="nri-menu-column nri-main-column">
+
+                <h3>Accounts</h3>
+
+                <a>NRE/NRO Savings Account</a>
+                <a>Deposits</a>
+                <a>Investments</a>
+                <a>Money Transfer</a>
+                <a>Loans and Cards</a>
+                <a>Services</a>
+                <a>NRI Edge</a>
+
+                <a class="explore-link">
+                Explore NRI Banking ↗
+                </a>
+
+            </div>
+
+            <!-- NRI Accounts -->
+            <div class="nri-menu-column">
+
+                <a>NRE/NRO Savings Account</a>
+                <a>Overseas Savings Account</a>
+                <a>Account for Returning NRI</a>
+                <a>GIFT City</a>
+                <a>Capital Gains Account Scheme</a>
+
+            </div>
+
+            <!-- Calculators -->
+            <div class="nri-menu-column">
+
+                <a>
+                Savings Account<br>
+                Interest Calculator
+                </a>
+
+            </div>
+
+            <!-- NRI promotional card -->
+            <div class="nri-promo-card">
+
+                <h3>
+                Get the best from<br>
+                FinCore Banking
+                </h3>
+
+                <p>
+                Open NRE/NRO accounts to
+                manage your banking
+                </p>
+
+                <button type="button">
+                Apply now
+                </button>
+
+                <div class="nri-promo-image">
+                👩‍💼
+                </div>
+
+            </div>
+
+            </div>
+
+            <!-- Close icon -->
+            <button
+            type="button"
+            class="nri-menu-close">
+            ×
+            </button>
+
+        </div>
+
+        </div>
+
+        <a class="nav-link">Business</a>
+
+        <a class="nav-link">Accounts</a>
+
+        <a class="nav-link">Cards</a>
+
+        <a class="nav-link">Loans</a>
+
+      </div>
+
+    <!-- Actions -->
+    <div class="navbar-actions">
+
+    <a class="nav-link">Resources</a>
+
+    <a class="nav-link">About</a>
+
+    <a class="nav-link">Help</a>
+
+    <span>☎ 1800 123 4567</span>
+
+    <button class="search-button">
+        🔍
+    </button>
+
+    <button class="search-button">
+        ✨
+    </button>
+
+    <button class="search-button">
+        ♙
+    </button>
+
+    <button class="search-button">
+        🇮🇳
+    </button>
+
+    <button
+        class="login-button"
+        routerLink="/login">
+        Login
+    </button>
+
+    </div>
+
+    </div>
+
+  </nav>

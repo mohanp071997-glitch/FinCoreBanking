@@ -479,8 +479,12 @@
   display: block;
 }
 
-/* App Store icon */
-.app-button svg {
+
+/* Apple logo */
+.apple-icon {
+  width: 24px;
+  height: 24px;
+
   flex-shrink: 0;
   display: block;
 }

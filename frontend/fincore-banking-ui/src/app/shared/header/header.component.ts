@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
+type DesktopMenu = 'personal' | 'nri' | null;
 
 @Component({
   selector: 'app-header',
@@ -8,31 +10,95 @@ import { RouterLink } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
 
-  hideNriMenu = false;
-  hidePersonalMenu = false;
+  desktopMenuOpen: DesktopMenu = null;
 
-  // Hides the Personal dropdown after clicking Personal.
-  closePersonalMenu(): void {
-    this.hidePersonalMenu = true;
+  mobileMenuOpen = false;
+  mobilePersonalMenuOpen = false;
+  mobileNriMenuOpen = false;
+
+  private desktopCloseTimer: ReturnType<typeof setTimeout> | null = null;
+
+  // Opens the selected desktop menu.
+  openDesktopMenu(menu: 'personal' | 'nri'): void {
+    this.cancelDesktopClose();
+    this.desktopMenuOpen = menu;
   }
 
-  // Allows the Personal dropdown to open again on hover.
-  enablePersonalMenu(): void {
-    this.hidePersonalMenu = false;
+  // Cancels the desktop menu close timer.
+  cancelDesktopClose(): void {
+    if (this.desktopCloseTimer) {
+      clearTimeout(this.desktopCloseTimer);
+      this.desktopCloseTimer = null;
+    }
   }
 
-  // Hides the NRI dropdown after clicking NRI.
-  closeNriMenu(): void {
-    this.hideNriMenu = true;
+  // Delays closing to allow the mouse to reach the dropdown.
+  scheduleDesktopClose(): void {
+    this.cancelDesktopClose();
+
+    this.desktopCloseTimer = setTimeout(() => {
+      this.desktopMenuOpen = null;
+      this.desktopCloseTimer = null;
+    }, 300);
   }
 
-  // Allows the NRI dropdown to open again on hover.
-  enableNriMenu(): void {
-    this.hideNriMenu = false;
+  // Closes the desktop dropdown.
+  closeDesktopMenu(): void {
+    this.cancelDesktopClose();
+    this.desktopMenuOpen = null;
   }
 
-  
+  // Toggles the mobile navigation menu.
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
 
+    if (this.mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      this.restoreBodyScroll();
+    }
+  }
+
+  // Toggles the Personal submenu on mobile.
+  toggleMobilePersonalMenu(): void {
+    this.mobilePersonalMenuOpen = !this.mobilePersonalMenuOpen;
+    this.mobileNriMenuOpen = false;
+  }
+
+  // Toggles the NRI submenu on mobile.
+  toggleMobileNriMenu(): void {
+    this.mobileNriMenuOpen = !this.mobileNriMenuOpen;
+    this.mobilePersonalMenuOpen = false;
+  }
+
+  // Closes the mobile menu.
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+    this.mobilePersonalMenuOpen = false;
+    this.mobileNriMenuOpen = false;
+
+    this.restoreBodyScroll();
+  }
+
+  // Restores normal page scrolling.
+  private restoreBodyScroll(): void {
+    document.body.style.overflow = '';
+  }
+
+  // Resets mobile state when switching to desktop.
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    if (window.innerWidth > 1000) {
+      this.closeMobileMenu();
+      this.closeDesktopMenu();
+    }
+  }
+
+  // Cleans up the timer and body state.
+  ngOnDestroy(): void {
+    this.cancelDesktopClose();
+    this.restoreBodyScroll();
+  }
 }

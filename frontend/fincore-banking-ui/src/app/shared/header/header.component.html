@@ -292,30 +292,36 @@
         🔍
       </button>
 
+      <!-- Shows Login button when user is not logged in -->
       <button
-        type="button"
-        class="search-button">
-        ✨
-      </button>
-
-      <button
-        type="button"
-        class="search-button">
-        ♙
-      </button>
-
-      <button
-        type="button"
-        class="search-button">
-        🇮🇳
-      </button>
-
-      <button
-        type="button"
-        class="login-button mobile-login-button"
+        *ngIf="!isLoggedIn"
+        class="login-button"
         routerLink="/login">
         Login
       </button>
+
+<!-- Shows customer details when user is logged in -->
+<div
+  *ngIf="isLoggedIn"
+  class="header-customer">
+
+  <div class="header-customer-avatar">
+    {{ customerName.charAt(0).toUpperCase() }}
+  </div>
+
+  <div class="header-customer-info">
+
+    <span class="header-customer-name">
+      {{ customerName }}
+    </span>
+
+    <span class="header-customer-role">
+      Customer
+    </span>
+
+  </div>
+
+</div>
 
     </div>
 

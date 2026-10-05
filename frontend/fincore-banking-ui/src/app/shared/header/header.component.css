@@ -3,20 +3,13 @@
    ========================================================= */
 
 .main-navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-
   z-index: 1000;
-
   width: 100%;
   height: 82px;
-
   background: #ffffff;
-
-  box-shadow:
-    0 3px 15px rgba(24, 43, 87, 0.10);
+  box-shadow: 0 3px 15px rgba(24, 43, 87, 0.10);
 }
 
 
@@ -1069,4 +1062,50 @@
     height: 42px;
   }
 
+}
+
+/* Customer information shown after login */
+.header-customer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 4px;
+}
+
+/* Customer avatar */
+.header-customer-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #315eea, #172d91);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Customer text container */
+.header-customer-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 145px;
+}
+
+/* Customer name */
+.header-customer-name {
+  color: #17213f;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Customer role */
+.header-customer-role {
+  color: #7b849d;
+  font-size: 11px;
+  margin-top: 3px;
 }

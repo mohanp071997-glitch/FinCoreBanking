@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { environment } from '../../environments/environment.development';
+import { MobileLoginResponse, MobileVerifyOtpResponse } from '../interfaces/mobile-login-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -105,6 +106,70 @@ export class AuthService {
         request
       );
     }
+
+    // Starts mobile number login and requests an OTP.
+  mobileLogin(mobileNumber: string): Observable<MobileLoginResponse> {
+    return this.http.post<MobileLoginResponse>(
+      `${this.apiUrl}/mobile-login`,
+      {
+        mobileNumber: mobileNumber
+      }
+    );
+  }
+
+  // Verifies the mobile OTP and returns the JWT token.
+  verifyMobileOtp(
+    userId: number,
+    otpCode: string
+  ): Observable<MobileVerifyOtpResponse> {
+    return this.http.post<MobileVerifyOtpResponse>(
+      `${this.apiUrl}/verify-mobile-otp`,
+      {
+        userId: userId,
+        otpCode: otpCode
+      }
+    );
+  }
+
+  // Requests a password reset OTP for the registered email.
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/forgot-password`,
+      {
+        email: email
+      }
+    );
+  }
+
+    resetPassword(
+    email: string,
+    otpCode: string,
+    newPassword: string
+  ): Observable<any> {
+
+    return this.http.post(
+      `${this.apiUrl}/reset-password`,
+      {
+        email: email,
+        otpCode: otpCode,
+        newPassword: newPassword
+      }
+    );
+  }
+
+    verifyPasswordResetOtp(
+    email: string,
+    otpCode: string
+  ): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/verify-password-reset-otp`,
+      {
+        email,
+        otpCode
+      }
+    );
+  }
+      
 
   // Logs out the current user.
   logout(): void {

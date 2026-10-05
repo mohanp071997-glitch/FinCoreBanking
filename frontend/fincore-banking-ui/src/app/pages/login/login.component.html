@@ -1,401 +1,688 @@
 <div class="login-page">
 
-  <!-- Top utility bar -->
-  <div class="top-bar">
-    <div class="container-fluid d-flex justify-content-end align-items-center">
-      <span>Personal Banking</span>
-      <span>Help</span>
-      <span>Contact Us</span>
-      <span>English</span>
+  <!-- Login header -->
+  <header class="login-header">
+
+    <div class="login-header-inner">
+
+      <!-- FinCore brand -->
+
+        <a class="brand" routerLink="/">
+          <div class="brand-icon">
+            F
+          </div>
+
+          <div class="brand-text">
+            <span class="brand-name">
+              FinCore
+            </span>
+
+            <span class="brand-subtitle">
+              BANKING
+            </span>
+          </div>
+        </a>
+
+      <!-- Header links -->
+      <div class="header-links">
+
+        <a>Personal</a>
+        <a>Business</a>
+        <a>Help</a>
+
+        <span class="header-phone">
+          ☎ 1800 123 4567
+        </span>
+
+        <span class="header-language">
+          IN
+        </span>
+
+      </div>
+
     </div>
-  </div>
 
-  <!-- Main navigation -->
-  <nav class="navbar navbar-expand-lg bg-white shadow-sm">
-    <div class="container-fluid px-4">
+  </header>
 
-      <a class="navbar-brand fw-bold" routerLink="/login">
-        <span class="brand-name">FinCore</span>
-        <span class="brand-subtitle">BANKING</span>
+
+  <!-- Main login area -->
+  <main class="login-main">
+
+    <div class="login-container">
+
+
+      <!-- Left banking section -->
+      <section class="banking-showcase">
+
+        <div class="showcase-content">
+
+          <div class="secure-badge">
+            ✦ SECURE DIGITAL BANKING
+          </div>
+
+          <h1>
+            Banking made
+            <span>simple.</span>
+          </h1>
+
+          <p class="showcase-description">
+            Experience secure, smart and seamless digital banking
+            designed around your financial journey.
+          </p>
+
+
+          <!-- 3D banking card -->
+          <div class="card-scene">
+
+            <div class="bank-card">
+
+              <div class="card-top">
+
+                <span class="card-bank">
+                  FinCore
+                </span>
+
+                <span class="card-type">
+                  VISA
+                </span>
+
+              </div>
+
+
+              <div class="chip">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+
+              <div class="card-number">
+                •••• &nbsp; •••• &nbsp; •••• &nbsp; 4521
+              </div>
+
+
+              <div class="card-bottom">
+
+                <div>
+                  <small>
+                    CARD HOLDER
+                  </small>
+
+                  <strong>
+                    FINCORE CUSTOMER
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    VALID THRU
+                  </small>
+
+                  <strong>
+                    09/29
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+
+            
+
+
+            <!-- Floating security card -->
+            <div class="security-floating-card">
+
+              <div class="security-icon">
+                🔒
+              </div>
+
+              <div>
+                <small>
+                  FinCore Security
+                </small>
+
+                <strong>
+                  Banking Protected
+                </strong>
+
+                <span>
+                  Advanced security for every transaction
+                </span>
+              </div>
+
+            </div>
+
+
+            <!-- Floating account card -->
+            <div class="account-floating-card">
+
+              <div class="floating-lock">
+                🔐
+              </div>
+
+              <small>
+                Account Security
+              </small>
+
+              <h3>
+                Secure Banking
+              </h3>
+
+              <span>
+                Login to view your account
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Right login section -->
+      <section class="login-section">
+
+      <!-- Login Card -->
+      <div class="login-card">
+
+        <div class="login-card-header">
+          <div class="login-icon">
+            🔐
+          </div>
+
+          <h3>Login to FinCore</h3>
+
+          <p>Secure digital banking access</p>
+        </div>
+
+        <!-- Login Tabs -->
+        <div class="login-tabs">
+
+          <button
+            type="button"
+            class="login-tab"
+            [class.active]="loginMode === 'username'"
+            (click)="selectLoginMode('username')">
+            <span>👤</span>
+            Username / Password
+          </button>
+
+          <button
+            type="button"
+            class="login-tab"
+            [class.active]="loginMode === 'mobile'"
+            (click)="selectLoginMode('mobile')">
+            <span>📱</span>
+            Mobile Number
+          </button>
+
+        </div>
+
+        <!-- Username / Password Login -->
+        <form
+          *ngIf="loginMode === 'username'"
+          (ngSubmit)="login()"
+          class="login-form">
+
+          <div class="form-group">
+
+            <label for="email">
+              Email / Username
+            </label>
+
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+
+              <input
+                id="email"
+                type="email"
+                name="email"
+                [(ngModel)]="email"
+                placeholder="Enter your email"
+                autocomplete="username"
+                required
+              />
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="password">
+              Password
+            </label>
+
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+
+              <input
+                id="password"
+                type="password"
+                name="password"
+                [(ngModel)]="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+
+          </div>
+
+          <div class="login-options">
+
+            <label class="remember-option">
+              <input type="checkbox" />
+              <span>Remember me</span>
+            </label>
+
+            <a
+              href="#"
+              class="forgot-link"
+              (click)="goToForgotPassword($event)">
+              Forgot Password?
+            </a>
+
+          </div>
+
+          <button
+            type="submit"
+            class="login-submit-button">
+            Login
+            <span>→</span>
+          </button>
+
+        </form>
+
+        <!-- Mobile Login -->
+      <!-- Mobile login section -->
+      <div *ngIf="loginMode === 'mobile'" class="mobile-login-content">
+
+        <!-- Mobile number form -->
+        <form
+          *ngIf="!showMobileOtp"
+          (ngSubmit)="mobileLogin()"
+          class="login-form">
+
+          <div class="form-group">
+            <label for="mobileNumber">Mobile Number</label>
+
+            <div class="input-wrapper mobile-input">
+              <span class="country-code">+91</span>
+
+              <input
+                id="mobileNumber"
+                type="tel"
+                name="mobileNumber"
+                [(ngModel)]="mobileNumber"
+                placeholder="Enter your mobile number"
+                maxlength="10"
+                autocomplete="tel"
+                required />
+            </div>
+          </div>
+
+          <!-- Mobile login information -->
+          <div class="mobile-info">
+            <span class="mobile-info-icon">🔐</span>
+
+            <span>
+              You will receive a secure OTP on your registered mobile number.
+            </span>
+          </div>
+
+          <!-- Continue button -->
+          <button
+            type="submit"
+            class="login-submit-button">
+
+            Continue with Mobile
+            <span>→</span>
+          </button>
+
+        </form>
+
+
+        <!-- Mobile OTP verification -->
+        <form
+          *ngIf="showMobileOtp"
+          (ngSubmit)="verifyMobileOtp()"
+          class="login-form mobile-otp-form">
+
+          <!-- OTP heading -->
+          <div class="otp-heading">
+            <div class="otp-icon">
+              🔐
+            </div>
+
+            <h3>Verify Mobile OTP</h3>
+
+            <p>
+              Enter the 6-digit OTP sent to
+              <strong>
+                +91 ******{{ mobileNumber.slice(-4) }}
+              </strong>
+            </p>
+          </div>
+
+
+          <!-- OTP input -->
+          <div class="form-group">
+            <label for="mobileOtp">Enter OTP</label>
+
+            <div class="input-wrapper otp-input-wrapper">
+
+              <input
+                id="mobileOtp"
+                type="text"
+                name="mobileOtp"
+                [(ngModel)]="mobileOtp"
+                placeholder="Enter 6-digit OTP"
+                maxlength="6"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                required />
+
+            </div>
+          </div>
+
+
+          <!-- OTP error -->
+          <div
+            *ngIf="mobileOtpError"
+            class="otp-error">
+
+            {{ mobileOtpError }}
+
+          </div>
+
+
+          <!-- Verify button -->
+          <button
+            type="submit"
+            class="login-submit-button">
+
+            Verify & Login
+            <span>→</span>
+
+          </button>
+
+
+          <!-- Change mobile number -->
+          <button
+            type="button"
+            class="change-mobile-button"
+            (click)="showMobileOtp = false">
+
+            ← Change Mobile Number
+
+          </button>
+
+        </form>
+
+      </div>
+
+        <!-- Security Information -->
+        <div class="login-security">
+
+          <span>🛡️</span>
+
+          <div>
+            <strong>Secure Banking</strong>
+            <small>Your information is protected</small>
+          </div>
+
+        </div>
+
+      </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+    <!-- Fixed Deposit Section -->
+    <section class="fixed-deposit-section">
+
+              <div class="fixed-deposit-container">
+
+                <!-- Left Content -->
+                <div class="fixed-deposit-content">
+
+                  <div class="fixed-deposit-label">
+                    SMART SAVINGS
+                  </div>
+
+                  <h2>
+                    Fixed Deposits
+                    <span>Features & Benefits</span>
+                  </h2>
+
+                  <div class="fixed-deposit-card">
+
+                    <div class="fd-benefits-grid">
+
+                      <!-- Benefit 1 -->
+                      <div class="fd-benefit-card">
+                        <h3>Additional Interest Rate</h3>
+                        <p>
+                          Senior citizens can enjoy an additional interest rate
+                          on eligible Fixed Deposits.
+                        </p>
+                      </div>
+
+                      <!-- Benefit 2 -->
+                      <div class="fd-benefit-card">
+                        <h3>Overdraft Against FD</h3>
+                        <p>
+                          Access funds during emergencies with an overdraft
+                          facility against your Fixed Deposit.
+                        </p>
+                      </div>
+
+                      <!-- Benefit 3 -->
+                      <div class="fd-benefit-card">
+                        <h3>Flexible Deposit Options</h3>
+                        <p>
+                          Choose a deposit tenure that suits your financial
+                          goals and savings requirements.
+                        </p>
+                      </div>
+
+                      <!-- Benefit 4 -->
+                      <div class="fd-benefit-card">
+                        <h3>Instant FD Creation</h3>
+                        <p>
+                          Create your Fixed Deposit online quickly and securely,
+                          anytime from anywhere.
+                        </p>
+                      </div>
+
+                    </div>
+
+                    <!-- FD Action -->
+                    <div class="fd-action">
+
+                      <div class="fd-action-title">
+                        <strong>FinCore Bank</strong>
+                        <span>Fixed Deposits</span>
+                      </div>
+
+                      <button
+                        type="button"
+                        class="fd-open-button"
+                        routerLink="/login">
+                        OPEN FD
+                        <span>→</span>
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+    </section>
+
+    <!-- Important Notice -->
+    <section class="important-notice-section">
+
+      <div class="important-notice-card">
+
+        <div class="notice-title">
+          <span class="notice-title-icon">📍</span>
+          <span>Important notice</span>
+        </div>
+
+        <div class="notice-item">
+          <span class="notice-dot"></span>
+          <p>
+            The new toll-free number to call our Personal Banking Customer Care
+            and avail our banking services: <strong>1800 123 4567</strong>
+          </p>
+        </div>
+
+        <div class="notice-item">
+          <span class="notice-dot"></span>
+          <p>
+            An additional feature of <strong>CAPTCHA</strong> has been introduced
+            for FinCore Banking login to ensure a safer banking experience.
+          </p>
+        </div>
+
+        <div class="notice-item">
+          <span class="notice-dot"></span>
+          <p>
+            Please ensure that you are using the latest version of your browser
+            to enjoy a seamless banking experience.
+          </p>
+        </div>
+
+        <div class="notice-item">
+          <span class="notice-dot"></span>
+          <p>
+            New registrations on the FinCore mobile banking app may not be
+            available on certain devices as per regulatory guidelines.
+          </p>
+        </div>
+
+        <div class="notice-item">
+          <span class="notice-dot"></span>
+          <p>
+            To enjoy a seamless mobile banking experience, please upgrade to
+            Android 10 and above or iOS 17 and above.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+  <!-- Bottom security bar -->
+  <section class="security-bar">
+
+    <div class="security-bar-inner">
+
+      <div class="security-item">
+
+        <span class="security-item-icon">
+          🔒
+        </span>
+
+        <div>
+          <strong>
+            Secure Banking
+          </strong>
+
+          <small>
+            Protected transactions
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <span class="security-item-icon">
+          🛡️
+        </span>
+
+        <div>
+          <strong>
+            24/7 Protection
+          </strong>
+
+          <small>
+            Always monitoring
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <span class="security-item-icon">
+          ✓
+        </span>
+
+        <div>
+          <strong>
+            Trusted Platform
+          </strong>
+
+          <small>
+            Safe digital banking
+          </small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="login-footer">
+
+    <div class="footer-links">
+
+      <a href="#">
+        Privacy Policy
       </a>
 
-      <div class="navbar-nav ms-5">
-        <a class="nav-link active">Home</a>
-        <a class="nav-link">Accounts</a>
-        <a class="nav-link">Loans</a>
-        <a class="nav-link">Cards</a>
-        <a class="nav-link">Investments</a>
-      </div>
+      <span>|</span>
 
-    </div>
-  </nav>
+      <a href="#">
+        Terms of Service
+      </a>
 
-  <!-- Login section -->
-  <div class="login-content">
+      <span>|</span>
 
-    <div class="container">
+      <a href="#">
+        Security
+      </a>
 
-      <div class="row align-items-center">
+      <span>|</span>
 
-        <!-- Welcome section -->
-        <div class="col-lg-7 welcome-section">
-
-          <h1>Hello!</h1>
-
-          <h2>Welcome to FinCore Banking</h2>
-
-          <h4>Are you a new user?</h4>
-
-          <p>
-            Open an account and experience simple and secure digital banking.
-          </p>
-
-          <div class="welcome-actions">
-            <button class="btn btn-primary btn-lg">
-              Register Now
-            </button>
-
-            <button class="btn btn-outline-primary btn-lg">
-              Open Account
-            </button>
-          </div>
-
-          <p class="existing-account">
-            Don't have an account with FinCore?
-            <a href="#">Open Now!</a>
-          </p>
-
-        </div>
-
-        <!-- Login section -->
-        <div class="col-lg-5">
-
-          <div class="login-card">
-
-            <h3 class="text-center mb-4">
-              Username / Password
-            </h3>
-
-            <form (ngSubmit)="login()">
-
-              <div class="mb-4">
-                <label for="email" class="form-label">
-                  Email
-                </label>
-
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  class="form-control"
-                  [(ngModel)]="email"
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-
-              <div class="mb-4">
-                <label for="password" class="form-label">
-                  Password
-                </label>
-
-                <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  class="form-control"
-                  [(ngModel)]="password"
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-
-              <div class="text-end mb-4">
-                <a href="#" class="forgot-link">
-                  Forgot Password?
-                </a>
-              </div>
-
-              <button
-                type="submit"
-                class="btn btn-primary login-button">
-                Login
-              </button>
-
-            </form>
-
-          </div>
-
-        </div>
-
-      </div>
+      <a href="#">
+        Contact Us
+      </a>
 
     </div>
 
-  </div>
-
-  <!-- Quick actions -->
-  <div class="quick-actions">
-
-    <div class="container">
-
-      <h3>Quick Actions</h3>
-
-      <div class="row g-3 mt-2">
-
-        <div class="col-md-3">
-          <div class="quick-card">
-            Check Balance
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="quick-card">
-            Fund Transfer
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="quick-card">
-            Transaction History
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="quick-card">
-            Customer Support
-          </div>
-        </div>
-
-      </div>
-
+    <div class="footer-copy">
+       © {{ currentYear }} FinCore Banking. All rights reserved.
     </div>
 
-  </div>
-
-  <!-- Important notices and security practices -->
-    <div class="information-section">
-
-    <div class="container">
-
-        <div class="information-card">
-
-        <div class="row">
-
-            <!-- Important notices -->
-            <div class="col-lg-6 notice-section">
-
-            <div class="section-header">
-                <h3>Important Notices</h3>
-                <a href="#">View All</a>
-            </div>
-
-            <div class="notice-item">
-                <span class="notice-icon">→</span>
-                <p>
-                Never share your password, OTP or banking credentials
-                with anyone.
-                </p>
-            </div>
-
-            <div class="notice-item">
-                <span class="notice-icon">→</span>
-                <p>
-                Always verify the beneficiary details before making
-                a fund transfer.
-                </p>
-            </div>
-
-            <div class="notice-item">
-                <span class="notice-icon">→</span>
-                <p>
-                FinCore Banking will never ask for your password or
-                OTP through email or phone.
-                </p>
-            </div>
-
-            </div>
-
-            <!-- Security best practices -->
-            <div class="col-lg-6 security-section">
-
-            <div class="section-header">
-                <h3>Security Best Practices</h3>
-                <a href="#">View All</a>
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-4 security-item">
-
-                <div class="security-icon">
-                    ✓
-                </div>
-
-                <h5>Be Vigilant</h5>
-
-                <p>
-                    Always protect your banking credentials and
-                    personal information.
-                </p>
-
-                </div>
-
-                <div class="col-md-4 security-item">
-
-                <div class="security-icon">
-                    🔒
-                </div>
-
-                <h5>Keep It Secure</h5>
-
-                <p>
-                    Use a strong password and never share it with
-                    anyone.
-                </p>
-
-                </div>
-
-                <div class="col-md-4 security-item">
-
-                <div class="security-icon">
-                    ⚠
-                </div>
-
-                <h5>Beware of Phishing</h5>
-
-                <p>
-                    Do not click suspicious links or share sensitive
-                    banking information.
-                </p>
-
-                </div>
-
-            </div>
-
-            </div>
-
-        </div>
-
-        </div>
-
-    </div>
-
-    </div>
-
-    <!-- Do's and Don'ts -->
-    <div class="dos-donts-section">
-
-    <div class="container">
-
-        <h3 class="dos-donts-title">
-        Do's & Don'ts
-        </h3>
-
-        <div class="row g-3">
-
-        <!-- Do -->
-        <div class="col-lg-3 col-md-6">
-            <div class="security-tip do-tip">
-
-            <div class="tip-icon">
-                ✓
-            </div>
-
-            <div class="tip-content">
-                <strong>Always</strong>
-                <p>
-                Keep your computer free of malware.
-                </p>
-            </div>
-
-            </div>
-        </div>
-
-        <!-- Do -->
-        <div class="col-lg-3 col-md-6">
-            <div class="security-tip do-tip">
-
-            <div class="tip-icon">
-                ✓
-            </div>
-
-            <div class="tip-content">
-                <strong>Always</strong>
-                <p>
-                Change your passwords periodically.
-                </p>
-            </div>
-
-            </div>
-        </div>
-
-        <!-- Don't -->
-        <div class="col-lg-3 col-md-6">
-            <div class="security-tip dont-tip">
-
-            <div class="tip-icon">
-                ×
-            </div>
-
-            <div class="tip-content">
-                <strong>Never</strong>
-                <p>
-                Respond to communication seeking your passwords.
-                </p>
-            </div>
-
-            </div>
-        </div>
-
-        <!-- Don't -->
-        <div class="col-lg-3 col-md-6">
-            <div class="security-tip dont-tip">
-
-            <div class="tip-icon">
-                ×
-            </div>
-
-            <div class="tip-content">
-                <strong>Never</strong>
-                <p>
-                Reveal your passwords or card details to anyone.
-                </p>
-            </div>
-
-            </div>
-        </div>
-
-        </div>
-
-    </div>
-
-    </div>
-
-    <footer class="footer">
-
-  <div class="footer-links">
-    <a href="#">Privacy Policy</a>
-    <span>|</span>
-    <a href="#">Terms of Service</a>
-    <span>|</span>
-    <a href="#">Security</a>
-    <span>|</span>
-    <a href="#">Contact Us</a>
-  </div>
-
-  <div class="footer-bottom">
-
-    <span>
-      © 2026 FinCore Banking. All rights reserved.
-    </span>
-
-    <span>
-      Secure Digital Banking
-    </span>
-
-  </div>
-
-    </footer>
+  </footer>
 
 </div>

@@ -12,83 +12,99 @@ import { LoansComponent } from './pages/loans/loans.component';
 import { LoanDetailsComponent } from './pages/loan-details/loan-details.component';
 import { AccountsComponent } from './pages/accounts/accounts.component';
 import { HomeComponent } from './pages/home/home.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
-    {
+
+  // Home page.
+  {
     path: '',
     component: HomeComponent
   },
+
+  // Login page.
   {
     path: 'login',
     component: LoginComponent
   },
+
+  // Settings page.
   {
     path: 'settings',
     loadComponent: () =>
       import('./pages/settings/settings.component')
         .then(m => m.SettingsComponent)
   },
-  {
-  path: 'verify-otp',
-  loadComponent: () =>
-    import('./pages/verify-otp/verify-otp.component')
-      .then(m => m.VerifyOtpComponent)
-},
 
-    // Protected application layout.
+  // OTP verification page.
   {
-  path: '',
-  component: LayoutComponent,
-  canActivate: [authGuard],
-  children: [
-    {
-      path: 'dashboard',
-      component: DashboardComponent
-    },
-    {
-      path: 'fund-transfer',
-      component: FundTransferComponent
-    },
-    {
-      path: 'beneficiaries',
-      component: BeneficiariesComponent
-    },
-    {
-      path: 'profile',
-      component: ProfileComponent
-    },
-    {
-      path: 'transactions',
-      component: TransactionsComponent
-    },
-    {
-      path: 'cards',
-      component: CardsComponent
-    },
-    {
-      path: 'loans',
-      component: LoansComponent
-    },
-    {
-      path: 'loans/:id',
-      component: LoanDetailsComponent,
-      
-    },
-    {
-      path: 'accounts',
-      component: AccountsComponent
-    },
-  ]
-},
+    path: 'verify-otp',
+    loadComponent: () =>
+      import('./pages/verify-otp/verify-otp.component')
+        .then(m => m.VerifyOtpComponent)
+  },
+
+  // Protected application layout.
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
+
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+
+      {
+        path: 'fund-transfer',
+        component: FundTransferComponent
+      },
+
+      {
+        path: 'beneficiaries',
+        component: BeneficiariesComponent
+      },
+
+      {
+        path: 'profile',
+        component: ProfileComponent
+      },
+
+      {
+        path: 'transactions',
+        component: TransactionsComponent
+      },
+
+      {
+        path: 'cards',
+        component: CardsComponent
+      },
+
+      {
+        path: 'loans',
+        component: LoansComponent
+      },
+
+      {
+        path: 'loans/:id',
+        component: LoanDetailsComponent
+      },
+
+      {
+        path: 'accounts',
+        component: AccountsComponent
+      }
+    ]
+  },
+
+  // NRI page.
   {
     path: 'nri',
     loadComponent: () =>
       import('./pages/nri/nri.component')
         .then(m => m.NriComponent)
   },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  }
+    { path: 'forgot-password', 
+      component: ForgotPasswordComponent },
 ];

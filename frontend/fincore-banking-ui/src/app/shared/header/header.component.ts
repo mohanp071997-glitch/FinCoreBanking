@@ -1,4 +1,10 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy
+} from '@angular/core';
+
+import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 type DesktopMenu = 'personal' | 'nri' | null;
@@ -6,7 +12,7 @@ type DesktopMenu = 'personal' | 'nri' | null;
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, NgIf],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -18,7 +24,52 @@ export class HeaderComponent implements OnDestroy {
   mobilePersonalMenuOpen = false;
   mobileNriMenuOpen = false;
 
+  isLoggedIn = false;
+  customerName = '';
+
   private desktopCloseTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    // Loads login information when the header starts.
+    this.loadLoginDetails();
+  }
+
+  // Loads the logged-in user details.
+  private loadLoginDetails(): void {
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      this.isLoggedIn = false;
+      this.customerName = '';
+      return;
+    }
+
+    this.isLoggedIn = true;
+
+    try {
+      const tokenParts = token.split('.');
+
+      if (tokenParts.length !== 3) {
+        this.customerName = 'Customer';
+        return;
+      }
+
+      const payload = JSON.parse(
+        atob(tokenParts[1])
+      );
+
+      this.customerName =
+        payload.name ||
+        payload.unique_name ||
+        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
+        payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/name'] ||
+        'Customer';
+
+    } catch {
+      this.customerName = 'Customer';
+    }
+  }
 
   // Opens the selected desktop menu.
   openDesktopMenu(menu: 'personal' | 'nri'): void {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -968,6 +969,397 @@ namespace FinCoreBanking.API.Controllers
                 user.Email,
                 "ExpiredOtp",
                 placeholders);
+        }
+
+        // Starts mobile number login and generates an OTP.
+        [HttpPost("mobile-login")]
+        public async Task<IActionResult> MobileLogin(
+            [FromBody] MobileLoginRequest request)
+        {
+            // Validates the mobile number.
+            if (string.IsNullOrWhiteSpace(request.MobileNumber))
+            {
+                return BadRequest(new
+                {
+                    message = "Mobile number is required."
+                });
+            }
+
+            // Removes spaces from the mobile number.
+            var mobileNumber = request.MobileNumber.Trim();
+
+            // Finds the customer using the registered mobile number.
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(x => x.PhoneNumber == mobileNumber);
+
+            // Stops login when the mobile number is not registered.
+            if (customer == null)
+            {
+                return Unauthorized(new
+                {
+                    message = "Mobile number is not registered."
+                });
+            }
+
+            // Finds the related user.
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserId == customer.UserId);
+
+            // Stops login when the user is not found.
+            if (user == null || !user.IsActive)
+            {
+                return Unauthorized(new
+                {
+                    message = "User account is inactive or unavailable."
+                });
+            }
+
+            // Generates a six-digit OTP.
+            var otp = Random.Shared.Next(100000, 1000000).ToString();
+
+            // Creates a five-minute OTP expiry time.
+            var expiresAt = DateTime.UtcNow.AddMinutes(5);
+
+            // Creates the mobile OTP record.
+            var mobileOtp = new MobileLoginOtp
+            {
+                UserId = user.UserId,
+                MobileNumber = mobileNumber,
+                OtpCode = otp,
+                ExpiresAt = expiresAt,
+                IsUsed = false,
+                CreatedDate = DateTime.UtcNow
+            };
+
+            // Saves the OTP in the database.
+            _context.MobileLoginOtps.Add(mobileOtp);
+            await _context.SaveChangesAsync();
+
+            // Temporary local testing output.
+            // Replace this with an SMS provider later.
+            //Console.WriteLine(
+            //    $"Mobile OTP for {mobileNumber}: {otp}");
+            // Displays the generated OTP for local debugging.
+            Debug.WriteLine("======================================");
+            Debug.WriteLine($"Mobile Number : {mobileNumber}");
+            Debug.WriteLine($"Generated OTP : {otp}");
+            Debug.WriteLine($"Expires At    : {expiresAt}");
+            Debug.WriteLine("======================================");
+
+            return Ok(new
+            {
+                message = "OTP generated successfully.",
+                userId = user.UserId,
+                mobileNumber = mobileNumber
+            });
+        }
+
+        // Verifies the mobile login OTP and completes authentication.
+        [HttpPost("verify-mobile-otp")]
+        public async Task<IActionResult> VerifyMobileOtp(
+            [FromBody] MobileVerifyOtpRequest request)
+        {
+            // Validates the OTP request.
+            if (request.UserId <= 0 || string.IsNullOrWhiteSpace(request.OtpCode))
+            {
+                return BadRequest(new
+                {
+                    message = "User ID and OTP are required."
+                });
+            }
+
+            // Finds the latest unused OTP for the user.
+            var otpRecord = await _context.MobileLoginOtps
+                .Where(x =>
+                    x.UserId == request.UserId &&
+                    x.OtpCode == request.OtpCode &&
+                    !x.IsUsed)
+                .OrderByDescending(x => x.CreatedDate)
+                .FirstOrDefaultAsync();
+
+            // Stops authentication when the OTP is invalid.
+            if (otpRecord == null)
+            {
+                return Unauthorized(new
+                {
+                    message = "Invalid OTP."
+                });
+            }
+
+            // Checks whether the OTP has expired.
+            if (otpRecord.ExpiresAt < DateTime.UtcNow)
+            {
+                return Unauthorized(new
+                {
+                    message = "OTP has expired."
+                });
+            }
+
+            // Marks the OTP as used.
+            otpRecord.IsUsed = true;
+            otpRecord.UsedDate = DateTime.UtcNow;
+
+            // Finds the user.
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserId == request.UserId);
+
+            // Stops authentication when the user is unavailable.
+            if (user == null || !user.IsActive)
+            {
+                return Unauthorized(new
+                {
+                    message = "User account is inactive or unavailable."
+                });
+            }
+
+            // Updates the user's last login date.
+            user.LastLoginDate = DateTime.UtcNow;
+
+            // Saves OTP and login changes.
+            await _context.SaveChangesAsync();
+
+            // Gets the user's role.
+            var role = await (
+                from userRole in _context.UserRoles
+                join roleData in _context.Roles
+                    on userRole.RoleId equals roleData.RoleId
+                where userRole.UserId == user.UserId
+                select roleData.RoleName
+            ).FirstOrDefaultAsync();
+
+            // Generates the JWT token.
+            var token = GenerateJwtToken(user, role);
+
+            // Returns the same login information required by Angular.
+            return Ok(new
+            {
+                token = token,
+                userId = user.UserId,
+                userName = user.UserName,
+                email = user.Email,
+                lastLoginDate = user.LastLoginDate,
+                role = role,
+                requiresTwoFactor = false
+            });
+
+        }
+
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(
+        [FromBody] ForgotPasswordRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                return BadRequest(new
+                {
+                    message = "Email is required."
+                });
+            }
+
+            var email = request.Email.Trim();
+
+            // Finds the registered user by email.
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x =>
+                    x.Email.ToLower() == email.ToLower());
+
+            if (user == null || !user.IsActive)
+            {
+                return Unauthorized(new
+                {
+                    message = "Email address is not registered."
+                });
+            }
+
+            // Generates a six-digit OTP.
+            var otp = Random.Shared
+                .Next(100000, 1000000)
+                .ToString();
+
+            var expiresAt = DateTime.UtcNow.AddMinutes(5);
+
+            // Stores the password reset OTP.
+            var passwordResetOtp = new PasswordResetOtp
+            {
+                UserId = user.UserId,
+                Email = user.Email,
+                OtpCode = otp,
+                ExpiresAt = expiresAt,
+                IsUsed = false,
+                CreatedDate = DateTime.UtcNow
+            };
+
+            _context.PasswordResetOtps.Add(passwordResetOtp);
+
+            await _context.SaveChangesAsync();
+
+            // Sends the OTP to the registered email address.
+            await SendPasswordResetOtpEmailAsync(user, otp);
+
+            return Ok(new
+            {
+                message = "Password reset OTP sent successfully.",
+                userId = user.UserId,
+                email = user.Email
+            });
+        }
+
+        // Sends the password reset OTP email.
+        // Sends the password reset OTP email.
+        private async Task SendPasswordResetOtpEmailAsync(
+            User user,
+            string otp)
+        {
+            // Creates the email placeholder values.
+            var placeholders = new Dictionary<string, string>
+            {
+                ["{{UserName}}"] = user.UserName,
+                ["{{OtpCode}}"] = otp,
+                ["{{CurrentYear}}"] = DateTime.UtcNow.Year.ToString()
+            };
+
+            // Sends the password reset OTP using the database template.
+            await _emailService.SendTemplateEmailAsync(
+                user.Email,
+                "PasswordResetOtp",
+                placeholders);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(
+        [FromBody] ResetPasswordRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                return BadRequest(new
+                {
+                    message = "Email is required."
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.OtpCode))
+            {
+                return BadRequest(new
+                {
+                    message = "OTP is required."
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                return BadRequest(new
+                {
+                    message = "New password is required."
+                });
+            }
+
+            // Finds the latest unused OTP.
+            var otpRecord = await _context.PasswordResetOtps
+                .Where(x =>
+                    x.Email.ToLower() == request.Email.Trim().ToLower() &&
+                    x.OtpCode == request.OtpCode &&
+                    !x.IsUsed)
+                .OrderByDescending(x => x.CreatedDate)
+                .FirstOrDefaultAsync();
+
+            if (otpRecord == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Invalid OTP."
+                });
+            }
+
+            // Checks OTP expiry.
+            if (otpRecord.ExpiresAt < DateTime.UtcNow)
+            {
+                return BadRequest(new
+                {
+                    message = "OTP has expired. Please request a new OTP."
+                });
+            }
+
+            // Finds the user.
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x =>
+                    x.UserId == otpRecord.UserId &&
+                    x.IsActive);
+
+            if (user == null)
+            {
+                return Unauthorized(new
+                {
+                    message = "User account is unavailable."
+                });
+            }
+
+            // Updates the password with a new BCrypt hash.
+            user.PasswordHash =
+                BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+            // Marks OTP as used.
+            otpRecord.IsUsed = true;
+            otpRecord.UsedDate = DateTime.UtcNow;
+
+            user.ModifiedDate = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Password reset successfully."
+            });
+        }
+
+        [HttpPost("verify-password-reset-otp")]
+        public async Task<IActionResult> VerifyPasswordResetOtp(
+    [FromBody] VerifyPasswordResetOtpRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                return BadRequest(new
+                {
+                    message = "Email is required."
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.OtpCode))
+            {
+                return BadRequest(new
+                {
+                    message = "OTP is required."
+                });
+            }
+
+            var otpRecord = await _context.PasswordResetOtps
+                .Where(x =>
+                    x.Email.ToLower() == request.Email.Trim().ToLower() &&
+                    x.OtpCode == request.OtpCode &&
+                    !x.IsUsed)
+                .OrderByDescending(x => x.CreatedDate)
+                .FirstOrDefaultAsync();
+
+            if (otpRecord == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Invalid OTP."
+                });
+            }
+
+            if (otpRecord.ExpiresAt < DateTime.UtcNow)
+            {
+                return BadRequest(new
+                {
+                    message = "OTP has expired. Please request a new OTP."
+                });
+            }
+
+            return Ok(new
+            {
+                message = "Password reset OTP verified successfully."
+            });
         }
     }
 }

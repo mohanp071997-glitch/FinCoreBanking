@@ -59,6 +59,12 @@ namespace FinCoreBanking.API.Data
         // Stores email templates used for security and notification emails.
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
 
+        // Stores mobile login OTP records.
+        public DbSet<MobileLoginOtp> MobileLoginOtps { get; set; }
+
+        // Stores password reset OTP records.
+        public DbSet<PasswordResetOtp> PasswordResetOtps { get; set; }
+
         // Configures table relationships and constraints.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -586,6 +592,81 @@ namespace FinCoreBanking.API.Data
                 // Configures the created date.
                 entity.Property(x => x.CreatedDate)
                       .IsRequired();
+            });
+
+            // Configures the mobile login OTP entity.
+            modelBuilder.Entity<MobileLoginOtp>(entity =>
+            {
+                // Configures the primary key.
+                entity.HasKey(x => x.OtpId);
+
+                // Configures the user ID.
+                entity.Property(x => x.UserId)
+                      .IsRequired();
+
+                // Configures the mobile number.
+                entity.Property(x => x.MobileNumber)
+                      .HasMaxLength(15)
+                      .IsRequired();
+
+                // Configures the six-digit OTP.
+                entity.Property(x => x.OtpCode)
+                      .HasMaxLength(6)
+                      .IsRequired();
+
+                // Configures the OTP expiry date.
+                entity.Property(x => x.ExpiresAt)
+                      .IsRequired();
+
+                // Configures whether the OTP has been used.
+                entity.Property(x => x.IsUsed)
+                      .IsRequired();
+
+                // Configures the created date.
+                entity.Property(x => x.CreatedDate)
+                      .IsRequired();
+
+                // Configures the used date.
+                entity.Property(x => x.UsedDate);
+
+                // Configures the relationship between OTPs and Users.
+                entity.HasOne<User>()
+                      .WithMany()
+                      .HasForeignKey(x => x.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configures the password reset OTP entity.
+            modelBuilder.Entity<PasswordResetOtp>(entity =>
+            {
+                entity.HasKey(x => x.PasswordResetOtpId);
+
+                entity.Property(x => x.UserId)
+                    .IsRequired();
+
+                entity.Property(x => x.Email)
+                    .HasMaxLength(255)
+                    .IsRequired();
+
+                entity.Property(x => x.OtpCode)
+                    .HasMaxLength(6)
+                    .IsRequired();
+
+                entity.Property(x => x.ExpiresAt)
+                    .IsRequired();
+
+                entity.Property(x => x.IsUsed)
+                    .IsRequired();
+
+                entity.Property(x => x.CreatedDate)
+                    .IsRequired();
+
+                entity.Property(x => x.UsedDate);
+
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

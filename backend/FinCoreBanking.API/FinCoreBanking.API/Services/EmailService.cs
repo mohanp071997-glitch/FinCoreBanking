@@ -1,5 +1,6 @@
 ﻿using FinCoreBanking.API.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
@@ -66,7 +67,19 @@ public class EmailService
 
         mailMessage.To.Add(recipientEmail);
 
-        await smtpClient.SendMailAsync(mailMessage);
+        try
+        {
+
+            await smtpClient.SendMailAsync(mailMessage);
+
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("EMAIL SENDING FAILED");
+            Debug.WriteLine(ex.ToString());
+
+            throw;
+        }
     }
 
 

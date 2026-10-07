@@ -5,14 +5,14 @@ import {
 } from '@angular/core';
 
 import { NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 type DesktopMenu = 'personal' | 'nri' | null;
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, NgIf],
+  imports: [RouterLink, NgIf,RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnDestroy {
 
   private desktopCloseTimer: ReturnType<typeof setTimeout> | null = null;
 
-  constructor() {
+  constructor(private router: Router) {
     // Loads login information when the header starts.
     this.loadLoginDetails();
   }
@@ -151,5 +151,9 @@ export class HeaderComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.cancelDesktopClose();
     this.restoreBodyScroll();
+  }
+
+    goToBusinessPage(): void {
+    this.router.navigate(['/business']);
   }
 }

@@ -107,4 +107,12 @@ export const routes: Routes = [
   },
     { path: 'forgot-password', 
       component: ForgotPasswordComponent },
+
+  // Business page.
+  {
+  path: 'business',
+  loadComponent: () =>
+    import('./pages/business/business.component')
+      .then(m => m.BusinessComponent)
+  }
 ];

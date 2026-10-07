@@ -1,0 +1,43 @@
+/* =========================================
+   FINCORE - REMOVE SPACE BELOW NAVBAR
+   ========================================= */
+
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+app-root {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Navbar */
+.main-navbar {
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Angular routed page */
+router-outlet + * {
+  display: block !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* NRI routed page */
+router-outlet + app-nri,
+router-outlet + app-nri-page,
+router-outlet + app-nri-banking {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* First element of routed page */
+router-outlet + * > :first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+

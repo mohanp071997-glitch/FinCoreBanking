@@ -581,40 +581,6 @@
 }
 
 
-/* Information section */
-.nri-information {
-  padding: 70px 8%;
-
-  text-align: center;
-
-  background: #ffffff;
-}
-
-
-/* Information heading */
-.nri-information h2 {
-  margin: 0 0 12px;
-
-  color: #182b57;
-
-  font-size: 30px;
-}
-
-
-/* Information paragraph */
-.nri-information p {
-  max-width: 700px;
-
-  margin: 0 auto;
-
-  color: #68738a;
-
-  font-size: 15px;
-
-  line-height: 1.7;
-}
-
-
 /* Tablet */
 @media (max-width: 1100px) {
 
@@ -1096,3 +1062,1323 @@
     font-size: 20px;
   }
 }
+
+/* =========================================================
+   NRI SECTION - CENTERED
+========================================================= */
+
+.nri-banking-section {
+  margin-top: 50px;
+  width: 100%;
+  background: #f7f8fa;
+  padding: 20px 20px 40px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   COMMON CENTER CONTAINER
+========================================================= */
+
+.nri-section-header,
+.nri-profile-tabs,
+.nri-card-grid {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.nri-section-header {
+  margin-bottom: 28px;
+}
+
+.nri-section-header h1 {
+  margin: 0;
+  padding: 0;
+
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 400;
+
+  color: #171717;
+
+  letter-spacing: -1px;
+}
+
+
+/* =========================================================
+   PROFILE BUTTONS
+========================================================= */
+
+.nri-profile-tabs {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 40px;
+
+  flex-wrap: wrap;
+}
+
+
+.nri-profile {
+  height: 56px;
+
+  border: none;
+  border-radius: 30px;
+
+  padding: 4px 18px 4px 5px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  background: #b8babe;
+
+  color: #202020;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.nri-profile img {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+.nri-profile span {
+  font-size: 14px;
+
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+
+/* Active */
+
+.nri-profile.active {
+  background: #f36b21;
+
+  color: #ffffff;
+}
+
+
+/* Hover */
+
+.nri-profile:not(.active):hover {
+  background: #a9abad;
+}
+
+.nri-profile.active:hover {
+  background: #ed641b;
+}
+
+
+/* =========================================================
+   CARD GRID
+========================================================= */
+
+.nri-card-grid {
+  display: grid;
+
+  grid-template-columns:
+    1.25fr
+    0.95fr
+    0.95fr;
+
+  gap: 16px;
+}
+
+
+/* =========================================================
+   COMMON CARD
+========================================================= */
+
+.nri-card {
+  min-height: 282px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.nri-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 25px rgba(24, 43, 87, 0.10);
+}
+
+
+/* =========================================================
+   NORMAL INFO CARD
+========================================================= */
+
+.nri-info-card {
+  padding: 28px 26px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+}
+
+
+.nri-info-card h2 {
+  margin: 0;
+
+  padding-right: 45px;
+
+  font-size: 21px;
+
+  line-height: 1.35;
+
+  font-weight: 500;
+
+  color: #171717;
+}
+
+
+.nri-info-card p {
+  margin: 24px 0 0;
+
+  max-width: 310px;
+
+  font-size: 16px;
+
+  line-height: 1.45;
+
+  color: #505050;
+}
+
+
+/* =========================================================
+   ORANGE ARROW
+========================================================= */
+
+.nri-arrow {
+  position: absolute;
+
+  top: 28px;
+
+  right: 28px;
+
+  font-size: 34px;
+
+  line-height: 1;
+
+  font-weight: 300;
+
+  color: #f36b21;
+}
+
+
+/* =========================================================
+   CARD ACTION
+========================================================= */
+
+.nri-card-action {
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  color: #f36b21;
+
+  letter-spacing: 0.2px;
+}
+
+
+/* =========================================================
+   VIDEO CARD
+========================================================= */
+
+.nri-video-card {
+  display: grid;
+
+  grid-template-columns:
+    1.05fr
+    0.75fr;
+}
+
+
+.nri-video-content {
+  padding: 28px 26px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+}
+
+
+.nri-video-content h2 {
+  margin: 0;
+
+  font-size: 21px;
+
+  line-height: 1.4;
+
+  font-weight: 500;
+
+  color: #171717;
+}
+
+
+/* Video image */
+
+.nri-video-image {
+  position: relative;
+
+  width: 100%;
+
+  height: 100%;
+}
+
+
+.nri-video-image img {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   PLAY BUTTON
+========================================================= */
+
+.nri-play-button {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 44px;
+  height: 44px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #777;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding-left: 4px;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   BLOG CARD
+========================================================= */
+
+.nri-blog-card {
+  padding: 26px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+}
+
+
+/* Blog label */
+
+.nri-blog-label {
+  display: inline-block;
+
+  padding: 4px 9px;
+
+  border-radius: 4px;
+
+  background: #9b3de0;
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* Blog title */
+
+.nri-blog-card h2 {
+  margin: 15px 0 0;
+
+  font-size: 20px;
+
+  line-height: 1.45;
+
+  font-weight: 500;
+
+  color: #171717;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .nri-banking-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nri-card-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .nri-video-card {
+    grid-column: span 2;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .nri-banking-section {
+    padding: 20px 15px 40px;
+  }
+
+  .nri-section-header h1 {
+    font-size: 26px;
+  }
+
+  .nri-profile-tabs {
+    overflow-x: auto;
+
+    flex-wrap: nowrap;
+
+    padding-bottom: 5px;
+  }
+
+  .nri-profile {
+    flex-shrink: 0;
+  }
+
+  .nri-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nri-video-card {
+    grid-column: auto;
+
+    grid-template-columns: 1fr;
+  }
+
+  .nri-video-image {
+    height: 220px;
+  }
+
+  .nri-card {
+    min-height: 220px;
+  }
+
+}
+
+/* =========================================================
+   NRI FINANCE SECTION
+========================================================= */
+
+.nri-finance-section-v2 {
+
+  width: 100%;
+
+  padding: 45px 4% 65px;
+
+  box-sizing: border-box;
+
+  background: #f4f7fb;
+}
+
+
+.nri-finance-container-v2 {
+
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(400px, 0.9fr)
+    minmax(650px, 1.6fr);
+
+  gap: 26px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   ACCOUNT CARD
+========================================================= */
+
+.nri-account-card-v2 {
+
+  min-height: 470px;
+
+  padding: 38px 36px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 10px 28px rgba(24, 43, 87, 0.10);
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.nri-account-card-v2 h2 {
+
+  margin: 0 0 42px;
+
+  font-size: 40px;
+
+  line-height: 1.1;
+
+  font-weight: 400;
+
+  color: #111111;
+}
+
+
+.nri-account-grid-v2 {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 26px;
+}
+
+
+.nri-account-option-v2 {
+
+  min-height: 88px;
+
+  padding: 15px 18px;
+
+  border: none;
+
+  border-radius: 13px;
+
+  background: #f1f3f6;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  text-align: left;
+
+  color: #202020;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.nri-account-option-v2:hover {
+
+  transform: translateY(-2px);
+
+  background: #e9edf2;
+}
+
+
+.nri-account-option-v2 span:last-child {
+
+  font-size: 26px;
+
+  color: #42546d;
+}
+
+
+.nri-view-all-v2 {
+
+  margin-top: auto;
+
+  align-self: flex-start;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #f36b21;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   EMI CARD
+========================================================= */
+
+.nri-emi-card-v2 {
+
+  min-height: 470px;
+
+  padding: 30px 34px;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    315px;
+
+  gap: 30px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 10px 28px rgba(24, 43, 87, 0.10);
+}
+
+
+/* =========================================================
+   EMI LEFT
+========================================================= */
+
+.nri-emi-content-v2 {
+
+  min-width: 0;
+}
+
+
+.nri-emi-title-v2 {
+
+  margin: 0 0 25px;
+
+  font-size: 40px;
+
+  line-height: 1.1;
+
+  font-weight: 400;
+
+  color: #111111;
+}
+
+
+/* =========================================================
+   LOAN TYPE
+========================================================= */
+
+.nri-loan-type-v2 {
+
+  display: flex;
+
+  gap: 12px;
+
+  margin-bottom: 38px;
+}
+
+
+.nri-loan-btn-v2 {
+
+  height: 43px;
+
+  padding: 0 18px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #f0f2f5;
+
+  color: #222222;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.nri-loan-btn-v2.active {
+
+  background: #f36b21;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.nri-emi-field-v2 {
+
+  width: 100%;
+
+  margin-bottom: 30px;
+}
+
+
+.nri-field-label-v2 {
+
+  margin-bottom: 13px;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  color: #171717;
+}
+
+
+/* =========================================================
+   AMOUNT
+========================================================= */
+
+.nri-amount-row-v2 {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    215px;
+
+  gap: 24px;
+
+  align-items: center;
+}
+
+
+.nri-amount-slider-wrapper-v2 {
+
+  width: 100%;
+
+  min-width: 0;
+}
+
+
+/* RANGE */
+
+.nri-amount-slider-v2 {
+
+  width: 100%;
+
+  height: 6px;
+
+  display: block;
+
+  margin: 0;
+
+  padding: 0;
+
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+
+.nri-amount-slider-v2::-webkit-slider-thumb {
+
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  width: 20px;
+
+  height: 20px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: #f36b21;
+
+  cursor: pointer;
+}
+
+
+.nri-amount-slider-v2::-moz-range-thumb {
+
+  width: 20px;
+
+  height: 20px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: #f36b21;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   AMOUNT SCALE
+========================================================= */
+
+.nri-amount-scale-v2 {
+  position: relative;
+  width: 100%;
+  height: 25px;
+  margin-top: 13px;
+
+  font-size: 13px;
+  color: #111111;
+}
+
+.nri-amount-scale-v2 span {
+  position: absolute;
+  top: 0;
+
+  transform: translateX(-50%);
+
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* First label */
+.nri-amount-scale-v2 span:first-child {
+  transform: translateX(0);
+}
+
+/* Last label */
+.nri-amount-scale-v2 span:last-child {
+  transform: translateX(-100%);
+}
+
+
+/* =========================================================
+   AMOUNT VALUE
+========================================================= */
+
+.nri-amount-value-v2 {
+
+  width: 215px;
+
+  height: 64px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+
+  background: #f0f2f5;
+
+  border-radius: 10px;
+}
+
+
+.nri-amount-value-v2 span {
+
+  margin-right: 8px;
+
+  font-size: 17px;
+
+  color: #555555;
+}
+
+
+.nri-amount-value-v2 input {
+
+  width: 100%;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  font-size: 20px;
+
+  color: #111111;
+
+  font-weight: 500;
+}
+
+
+.nri-amount-value-v2 input::-webkit-outer-spin-button,
+.nri-amount-value-v2 input::-webkit-inner-spin-button {
+
+  -webkit-appearance: none;
+
+  margin: 0;
+}
+
+
+/* =========================================================
+   INTEREST
+========================================================= */
+
+.nri-interest-row-v2 {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    50px;
+
+  gap: 18px;
+
+  align-items: center;
+}
+
+
+.nri-interest-row-v2 input[type="range"] {
+
+  width: 100%;
+
+  height: 6px;
+
+  accent-color: #f36b21;
+
+  cursor: pointer;
+}
+
+
+.nri-interest-value-v2 {
+
+  font-size: 16px;
+
+  color: #222222;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TENURE
+========================================================= */
+
+.nri-tenure-buttons-v2 {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+
+.nri-tenure-buttons-v2 button {
+
+  height: 43px;
+
+  padding: 0 17px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #f0f2f5;
+
+  color: #222222;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.nri-tenure-buttons-v2 button.active {
+
+  background: #f36b21;
+
+  color: #ffffff;
+}
+
+
+.nri-tenure-buttons-v2 button:hover {
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   CUSTOM TENURE
+========================================================= */
+
+.nri-custom-tenure-v2 {
+
+  margin-top: 12px;
+}
+
+
+.nri-custom-tenure-v2 input {
+
+  width: 180px;
+
+  height: 42px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d5d9df;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
+
+.nri-emi-result-v2 {
+
+  min-height: 100%;
+
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: linear-gradient(
+    180deg,
+    #ff741d 0%,
+    #f76617 100%
+  );
+
+  border-radius: 18px;
+
+  color: #ffffff;
+}
+
+
+.nri-result-rate-v2 {
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  margin-bottom: 30px;
+}
+
+
+.nri-result-amount-v2 {
+
+  font-size: 44px;
+
+  line-height: 1.05;
+
+  font-weight: 400;
+
+  white-space: nowrap;
+}
+
+
+.nri-result-label-v2 {
+
+  margin-top: 8px;
+
+  font-size: 16px;
+
+  font-weight: 600;
+}
+
+
+.nri-total-interest-v2 {
+
+  margin-top: 35px;
+
+  font-size: 16px;
+
+  font-weight: 600;
+}
+
+
+.nri-result-note-v2 {
+
+  margin: 38px 0 0;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+}
+
+
+.nri-result-actions-v2 {
+
+  margin-top: auto;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+
+.nri-details-btn-v2,
+.nri-apply-btn-v2 {
+
+  height: 52px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.nri-details-btn-v2 {
+
+  background: #d95b0c;
+
+  color: #ffffff;
+}
+
+
+.nri-apply-btn-v2 {
+
+  background: #ffffff;
+
+  color: #222222;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .nri-finance-container-v2 {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .nri-emi-card-v2 {
+
+    grid-template-columns: minmax(0, 1fr) 300px;
+
+  }
+
+}
+
+
+@media (max-width: 850px) {
+
+  .nri-emi-card-v2 {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .nri-emi-result-v2 {
+
+    min-height: 350px;
+
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .nri-finance-section-v2 {
+
+    padding: 25px 12px 40px;
+
+  }
+
+
+  .nri-finance-container-v2 {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .nri-account-card-v2 {
+
+    min-height: auto;
+
+    padding: 28px 22px;
+
+  }
+
+
+  .nri-account-card-v2 h2 {
+
+    font-size: 32px;
+
+  }
+
+
+  .nri-account-grid-v2 {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .nri-emi-card-v2 {
+
+    padding: 25px 20px;
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .nri-emi-title-v2 {
+
+    font-size: 31px;
+
+  }
+
+
+  .nri-amount-row-v2 {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .nri-amount-value-v2 {
+
+    width: 100%;
+
+  }
+
+
+  .nri-interest-row-v2 {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .nri-interest-value-v2 {
+
+    display: none;
+
+  }
+
+
+  .nri-amount-scale-v2 {
+
+    font-size: 11px;
+
+  }
+
+
+  .nri-result-amount-v2 {
+
+    font-size: 38px;
+
+  }
+
+}
+
+

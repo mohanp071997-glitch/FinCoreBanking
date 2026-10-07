@@ -28,10 +28,12 @@
     (mouseleave)="scheduleDesktopClose()">
 
     <a
-        class="nav-link personal-link"
-        routerLink="/"
-        (click)="closeDesktopMenu()">
-        Personal
+      class="nav-link personal-link"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="closeDesktopMenu()">
+      Personal
     </a>
 
     <!-- Personal Mega Menu -->
@@ -136,10 +138,11 @@
     (mouseleave)="scheduleDesktopClose()">
 
     <a
-        class="nav-link nri-link"
-        routerLink="/nri"
-        (click)="closeDesktopMenu()">
-        NRI
+      class="nav-link nri-link"
+      routerLink="/nri"
+      routerLinkActive="active"
+      (click)="closeDesktopMenu()">
+      NRI
     </a>
 
     <!-- NRI Mega Menu -->
@@ -232,22 +235,104 @@
     </div>
 
 
-      <!-- Other Desktop Navigation -->
-      <a class="nav-link">
+      <!-- ==================== BUSINESS ==================== -->
+      <div class="business-menu">
+
+      <a
+        class="nav-link business-link"
+        routerLink="/business"
+        routerLinkActive="active"
+        (click)="closeDesktopMenu()">
         Business
       </a>
 
-      <a class="nav-link">
-        Accounts
-      </a>
+        <!-- Business Mega Menu -->
+        <div class="business-mega-menu">
 
-      <a class="nav-link">
-        Cards
-      </a>
+          <!-- Title -->
+          <div class="business-menu-title">
+            Business ↗
+          </div>
 
-      <a class="nav-link">
-        Loans
-      </a>
+          <div class="business-menu-content">
+
+            <!-- Column 1 -->
+            <div class="business-menu-column business-main-column">
+
+              <h3>Accounts</h3>
+
+              <a>Current Account</a>
+              <a>Deposits</a>
+              <a>Cash Management and Merchant Services</a>
+              <a>Trade</a>
+              <a>Cards</a>
+              <a>Business Loans</a>
+              <a>Global Market Services</a>
+              <a>Capital Market and Securities Market Services</a>
+
+            </div>
+
+            <!-- Column 2 -->
+            <div class="business-menu-column">
+
+              <a>Current Account</a>
+
+              <a>
+                Roaming Current<br>
+                Account
+              </a>
+
+              <a>
+                Real Estate Regulatory<br>
+                Authority (RERA)<br>
+                Account
+              </a>
+
+              <a>Escrow Account</a>
+
+              <a>
+                Government e-<br>
+                Marketplace (GEM)<br>
+                Account
+              </a>
+
+            </div>
+
+            <!-- Promo Card -->
+            <div class="business-promo-card">
+
+              <h3>
+                Accounts that suit<br>
+                business needs!
+              </h3>
+
+              <button type="button">
+                Apply now
+              </button>
+
+              <div class="business-promo-text">
+                Open Current<br>
+                Account instantly
+              </div>
+
+              <div class="business-promo-image">
+                📱
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Close -->
+          <button
+            type="button"
+            class="business-menu-close">
+            ×
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -270,17 +355,106 @@
     <!-- ==================== DESKTOP ACTIONS ==================== -->
     <div class="navbar-actions">
 
-      <a class="nav-link">
-        Resources
-      </a>
+       <!-- =========================================================
+        RESOURCES MENU
+      =========================================================  -->
 
-      <a class="nav-link">
-        About
-      </a>
 
-      <a class="nav-link">
-        Help
-      </a>
+      <div class="resources-menu">
+
+        <a
+          class="nav-link resources-link"
+          href="javascript:void(0);">
+          Resources
+        </a>
+
+        <div class="resources-dropdown">
+
+          <a href="#">Videos (iPlay)</a>
+
+          <a href="#">Calculators</a>
+
+          <a href="#">Eligibility Calculator</a>
+
+          <a href="#">Debenture trusteeship</a>
+
+          <a href="#">Economic Research Desk</a>
+
+          <a href="#">Trade Emerge</a>
+
+        </div>
+
+      </div>
+
+      <!-- =========================================================
+           ABOUT MENU
+      =========================================================  -->
+
+      <div class="about-menu">
+
+        <a
+          class="nav-link about-link"
+          href="javascript:void(0);">
+          About
+        </a>
+
+        <div class="about-dropdown">
+
+          <a href="#" class="about-main-link">
+            About ↗
+          </a>
+
+          <a href="#">ICICI Group Companies</a>
+
+          <a href="#">Board of Directors</a>
+
+          <a href="#">Investor Relations</a>
+
+          <a href="#">News room</a>
+
+          <a href="#">Awards and Recognition</a>
+
+          <a href="#">
+            Environmental, Social and Governance
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- =========================================================
+          HELP MENU
+      ========================================================= -->
+
+      <div class="help-menu">
+
+        <a
+          class="nav-link help-link"
+          href="javascript:void(0);">
+          Help
+        </a>
+
+        <div class="help-dropdown">
+
+          <a href="#" class="help-main-link">
+            Help and Support ↗
+          </a>
+
+          <a href="#">Contact Us</a>
+
+          <a href="#">Customer Care</a>
+
+          <a href="#">Form Center</a>
+
+          <a href="#">Report Suspicious Behaviour</a>
+
+          <a href="#">Report unauthorized transaction</a>
+
+          <a href="#">Complaints and Grievance Redressal</a>
+
+        </div>
+
+      </div>
 
       <span>
         ☎ 1800 123 4567

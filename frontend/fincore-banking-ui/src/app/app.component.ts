@@ -47,7 +47,8 @@ export class AppComponent implements OnInit {
 
     const publicPages = [
       '/',
-      '/nri'
+      '/nri',
+      '/business'
     ];
 
     this.showPublicHeader = publicPages.includes(currentUrl);

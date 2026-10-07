@@ -1,0 +1,538 @@
+<!-- ================= BUSINESS PAGE ================= -->
+<div class="business-page">
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="business-hero">
+
+    <!-- LEFT SIDE -->
+    <div class="business-left">
+
+      <!-- Search -->
+      <div class="business-search">
+
+        <span class="search-icon">⌕</span>
+
+        <input
+          type="text"
+          placeholder='Search for "Fixed Deposit"'
+        />
+
+        <span class="mic-icon">◉</span>
+
+      </div>
+
+
+      <!-- Quick Actions -->
+      <div class="business-quick-links">
+
+        <button type="button">
+          <span class="quick-icon">▣</span>
+          <span>
+            Current<br />
+            Accounts
+          </span>
+        </button>
+
+        <button type="button">
+          <span class="quick-icon">▤</span>
+          <span>
+            Cash<br />
+            Management
+          </span>
+        </button>
+
+        <button type="button">
+          <span class="quick-icon">◈</span>
+          <span>Trade</span>
+        </button>
+
+        <button type="button">
+          <span class="quick-icon">♙</span>
+          <span>
+            Business<br />
+            Loan
+          </span>
+        </button>
+
+        <button type="button">
+          <span class="quick-icon">◎</span>
+          <span>
+            Global<br />
+            Markets
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="support-button">
+
+          <span class="support-icon">☎</span>
+
+          <span>
+            Get Support<br />
+            1800 1080
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- What's New -->
+      <h3 class="whats-new-title">
+        What's New?
+      </h3>
+
+
+      <!-- Business Card -->
+      <div class="business-card">
+
+        <div class="business-card-content">
+
+          <div class="business-card-title">
+            Business Card
+          </div>
+
+          <div class="business-card-description">
+            FinCore Business Card: easy<br />
+            spending, smart rewards
+          </div>
+
+          <div class="business-card-actions">
+
+            <button type="button">
+              Check Eligibility
+            </button>
+
+            <button type="button">
+              DETAILS
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="business-card-image">
+
+          <div class="card-chip"></div>
+
+          <div class="card-brand">
+            FINCORE
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= RIGHT SIDE ================= -->
+    <div class="business-right">
+
+      <!-- Complete Slide Image -->
+      <div class="hero-image-wrapper">
+
+        <img
+          [src]="currentBusinessSlide.image"
+          [alt]="currentBusinessSlide.title"
+        />
+
+      </div>
+
+
+      <!-- Hero Text -->
+      <div class="business-hero-text">
+
+        <h1>
+          {{ currentBusinessSlide.title }}
+        </h1>
+
+        <p>
+          {{ currentBusinessSlide.description }}
+        </p>
+
+      </div>
+
+
+      <!-- Explore Button -->
+      <button
+        type="button"
+        class="explore-button">
+
+        {{ currentBusinessSlide.buttonText }}
+
+      </button>
+
+      <!-- Slider Dots -->
+      <div class="hero-dots">
+
+        <button
+          *ngFor="let slide of slides; let i = index"
+          type="button"
+          [class.active]="currentSlide === i"
+          (click)="goToSlide(i)">
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= SERVICE BAR ================= -->
+  <section class="business-service-bar">
+
+    <div class="service-item active">
+
+      <div class="service-icon">
+        !
+      </div>
+
+      <div class="service-text">
+        <strong>Service</strong>
+        <span>Request</span>
+      </div>
+
+    </div>
+
+
+    <div class="service-item">
+
+      <div class="service-icon">
+        ▤
+      </div>
+
+      <div class="service-text">
+        <strong>Detailed</strong>
+        <span>Statement</span>
+      </div>
+
+    </div>
+
+
+    <div class="service-item">
+
+      <div class="service-icon">
+        ◷
+      </div>
+
+      <div class="service-text">
+        <strong>Track your</strong>
+        <span>requests</span>
+      </div>
+
+    </div>
+
+
+    <div class="service-item">
+
+      <div class="service-icon">
+        ▧
+      </div>
+
+      <div class="service-text">
+        <strong>Consolidated</strong>
+        <span>Statement</span>
+      </div>
+
+    </div>
+
+
+    <div class="service-item">
+
+      <div class="service-icon">
+        ▤
+      </div>
+
+      <div class="service-text">
+        <strong>Bill Payments</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= EXCLUSIVE PROGRAMS ================= -->
+    <section class="exclusive-programs">
+
+    <h2>
+        Enjoy Special Privileges with our Exclusive Programs
+    </h2>
+
+    <div class="exclusive-programs-grid">
+
+        <!-- Private Banking -->
+
+        <div class="exclusive-card">
+
+        <div class="exclusive-image">
+            <img
+            src="https://i.pinimg.com/736x/50/03/60/5003602d01ea6f0cba9b6945ce583151.jpg"
+            alt="Private Banking"
+            />
+        </div>
+
+        <div class="exclusive-card-content">
+
+            <div class="exclusive-title-row">
+
+            <h3>
+                Private Banking↗
+            </h3>
+
+            <button
+                type="button"
+                class="favorite-button">
+                ♡
+            </button>
+
+            </div>
+            <p>
+            Dedicated relationship team | Tailored solutions
+            <span>more</span>
+            </p>
+
+            <div class="exclusive-actions">
+            <button type="button">
+                APPLY
+            </button>
+
+            <button type="button">
+                KNOW MORE
+            </button>
+            </div>
+
+        </div>
+
+        </div>
+
+
+        <!-- Wealth Management -->
+        <div class="exclusive-card">
+
+        <div class="exclusive-image">
+            <img
+            src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=85"
+            alt="Wealth Management"
+            />
+        </div>
+
+        <div class="exclusive-card-content">
+
+            <div class="exclusive-title-row">
+            <h3>
+                Wealth<br />
+                Management↗
+            </h3>
+
+            <button type="button" class="favorite-button">
+                ♡
+            </button>
+            </div>
+
+            <p>
+            Trade solutions | Priority services
+            <span>more</span>
+            </p>
+
+            <div class="exclusive-actions">
+            <button type="button">APPLY</button>
+            <button type="button">KNOW MORE</button>
+            </div>
+
+        </div>
+
+        </div>
+
+
+        <!-- Select Banking -->
+        <div class="exclusive-card">
+
+        <div class="exclusive-image">
+            <img
+            src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=900&q=85"
+            alt="Select Banking"
+            />
+        </div>
+
+        <div class="exclusive-card-content">
+
+            <div class="exclusive-title-row">
+            <h3>
+                Select Banking ↗
+            </h3>
+
+            <button type="button" class="favorite-button">
+                ♡
+            </button>
+            </div>
+
+            <p>
+            Easy payments | Digital Solutions
+            <span>more</span>
+            </p>
+
+            <div class="exclusive-actions">
+            <button type="button">APPLY</button>
+            <button type="button">KNOW MORE</button>
+            </div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </section>
+
+    <!-- Business Credit Cards -->
+    <section class="business-credit-cards">
+
+    <h2>Select a Suitable Business Credit Card for you</h2>
+
+    <div class="credit-card-grid">
+
+        <!-- Card 1 -->
+        <div class="credit-card-item">
+
+        <div class="credit-card-image">
+            <img
+            src="https://www.nicepng.com/png/detail/989-9898630_visa-generic-card-credit-card.png"
+            alt="Business Advantage Blue Card"
+            />
+        </div>
+
+        <div class="credit-card-content">
+
+            <div class="credit-card-title-row">
+            <h3>
+                Business<br>
+                Advantage Blue<br>
+                Card ↗
+            </h3>
+
+            <button class="favorite-card">♡</button>
+            </div>
+
+            <span class="best-for">Best for</span>
+
+            <p class="card-description">
+            Business savings and smart spending
+            </p>
+
+            <p class="card-features">
+            Cashback on transactions | Lounge access |
+            Concierge services
+            <span>more</span>
+            </p>
+
+            <div class="credit-card-actions">
+            <button>Apply</button>
+            <button>Details</button>
+            </div>
+
+        </div>
+        </div>
+
+
+        <!-- Card 2 -->
+        <div class="credit-card-item">
+
+        <div class="credit-card-image">
+            <img
+            src="https://www.nicepng.com/png/detail/839-8392626_card-image-visa-infinite.png"
+            alt="Platinum Business Card"
+            />
+        </div>
+
+        <div class="credit-card-content">
+
+            <div class="credit-card-title-row">
+            <h3>
+                Platinum<br>
+                Business Card ↗
+            </h3>
+
+            <button class="favorite-card">♡</button>
+            </div>
+
+            <span class="best-for">Best for</span>
+
+            <p class="card-description">
+            Business Card<br>
+            Rewards
+            </p>
+
+            <p class="card-features">
+            Reward points | Lounge access |
+            Insurance coverage
+            <span>more</span>
+            </p>
+
+            <div class="credit-card-actions">
+            <button>Apply</button>
+            <button>Details</button>
+            </div>
+
+        </div>
+        </div>
+
+
+        <!-- Card 3 -->
+        <div class="credit-card-item">
+
+        <div class="credit-card-image">
+            <img
+            src="https://www.pngkey.com/png/detail/200-2008537_us-bank-business-credit-card-small-business-credit.png"
+            alt="Business Ascent Card"
+            />
+        </div>
+
+        <div class="credit-card-content">
+
+            <div class="credit-card-title-row">
+            <h3>
+                Business Ascent<br>
+                Card ↗
+            </h3>
+
+            <button class="favorite-card">♡</button>
+            </div>
+
+            <span class="best-for">Best for</span>
+
+            <p class="card-description">
+            Exclusive American Express
+            (AMEX) lifestyle offers for Small
+            and Medium-sized Enterprises
+            (SMEs)
+            </p>
+
+            <p class="card-features">
+            Reward points | SME exclusive benefits |
+            Fuel surcharge waiver
+            <span>more</span>
+            </p>
+
+            <div class="credit-card-actions">
+            <button>Apply</button>
+            <button>Details</button>
+            </div>
+
+        </div>
+        </div>
+
+    </div>
+
+
+    <div class="corporate-card-link">
+        <span>Looking for a Corporate Credit card?</span>
+        <button>VIEW</button>
+    </div>
+
+    </section>
+
+</div>

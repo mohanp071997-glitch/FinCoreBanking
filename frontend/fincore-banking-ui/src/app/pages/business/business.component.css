@@ -1,0 +1,1749 @@
+/* =====================================================
+   BUSINESS BANKING PAGE
+===================================================== */
+
+.business-page {
+  width: 100%;
+  min-height: calc(100vh - 82px);
+  background: #f4f7fb;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+
+/* =====================================================
+   HERO SECTION
+===================================================== */
+
+.business-hero {
+  position: relative;
+
+  width: 100%;
+  min-height: 620px;
+
+  display: grid;
+  grid-template-columns: 45% 55%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #315eea 0%,
+      #315eea 48%,
+      #ed5d0d 100%
+    );
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   LEFT SIDE
+===================================================== */
+
+.business-left {
+  position: relative;
+  z-index: 2;
+
+  padding: 62px 7% 100px 12%;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.business-search {
+  width: 100%;
+  max-width: 530px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 30px;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.06);
+}
+
+.business-search input {
+  flex: 1;
+
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  font-size: 16px;
+
+  color: #17243c;
+}
+
+.business-search input::placeholder {
+  color: #d9d9d9;
+}
+
+.search-icon {
+  width: 25px;
+
+  margin-right: 10px;
+
+  font-size: 28px;
+
+  color: #5a7198;
+}
+
+.mic-icon {
+  font-size: 20px;
+
+  color: #5a7198;
+}
+
+
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
+
+.business-quick-links {
+  width: 100%;
+  max-width: 530px;
+
+  margin-top: 28px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+.business-quick-links button {
+  min-height: 62px;
+
+  border: none;
+
+  border-radius: 21px;
+
+  background: #ffffff;
+
+  color: #17243c;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px 17px;
+
+  text-align: left;
+
+  font-size: 15px;
+
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.business-quick-links button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.13);
+}
+
+.quick-icon {
+  min-width: 25px;
+
+  font-size: 22px;
+
+  color: #52627c;
+}
+
+.support-button {
+  background: #d85b10 !important;
+
+  color: #ffffff !important;
+
+  justify-content: center;
+}
+
+.support-button .quick-icon,
+.support-icon {
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   WHAT'S NEW
+===================================================== */
+
+.whats-new-title {
+  margin: 21px 0 10px;
+
+  color: #ffffff;
+
+  font-size: 18px;
+
+  font-weight: 500;
+}
+
+
+/* =====================================================
+   BUSINESS CARD
+===================================================== */
+
+.business-card {
+  width: 100%;
+  max-width: 530px;
+
+  min-height: 150px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  box-sizing: border-box;
+
+  padding: 20px 24px;
+
+  background: #ffffff;
+
+  border-radius: 25px;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.business-card-content {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.business-card-title {
+  margin-bottom: 5px;
+
+  color: #18253c;
+
+  font-size: 17px;
+
+  font-weight: 500;
+}
+
+.business-card-description {
+  color: #18253c;
+
+  font-size: 15px;
+
+  line-height: 1.3;
+}
+
+.business-card-actions {
+  display: flex;
+
+  gap: 42px;
+
+  margin-top: 20px;
+}
+
+.business-card-actions button {
+  border: none;
+
+  padding: 0;
+
+  background: transparent;
+
+  color: #315eea;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* Fake business card */
+.business-card-image {
+  position: relative;
+
+  width: 145px;
+  height: 82px;
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #101d35,
+      #243b69
+    );
+
+  box-shadow:
+    0 12px 15px rgba(0, 0, 0, 0.35);
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: flex-end;
+
+  padding: 10px;
+
+  box-sizing: border-box;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.card-chip {
+  position: absolute;
+
+  left: 12px;
+  top: 25px;
+
+  width: 25px;
+  height: 19px;
+
+  border-radius: 4px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e5b96b,
+      #f5d38e
+    );
+}
+
+.card-brand {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+
+/* =====================================================
+   RIGHT SIDE
+===================================================== */
+
+.business-right {
+  position: relative;
+
+  min-width: 0;
+
+  padding-right: 7%;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   HERO IMAGE
+===================================================== */
+
+.hero-image-wrapper {
+  width: 100%;
+  height: 440px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-image-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(239, 91, 12, 0.48),
+      rgba(239, 91, 12, 0.12)
+    );
+}
+
+
+/* =====================================================
+   HERO IMAGE TEXT
+===================================================== */
+
+.hero-image-content {
+  position: absolute;
+
+  top: 27px;
+  right: 28px;
+
+  width: 45%;
+
+  color: #ffffff;
+}
+
+.hero-image-content h3 {
+  margin: 0 0 24px;
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  line-height: 1.2;
+}
+
+.hero-feature {
+  margin-bottom: 18px;
+
+  font-size: 15px;
+
+  line-height: 1.35;
+
+  font-weight: 500;
+}
+
+
+/* =====================================================
+   HERO TEXT
+===================================================== */
+
+.business-hero-text {
+  position: relative;
+
+  z-index: 3;
+
+  margin-top: 8px;
+
+  padding-left: 18px;
+
+  color: #ffffff;
+}
+
+.business-hero-text h1 {
+  margin: 0;
+
+  font-size: 40px;
+
+  line-height: 1.16;
+
+  font-weight: 400;
+}
+
+.business-hero-text p {
+  margin: 12px 0 0;
+
+  font-size: 18px;
+
+  line-height: 1.3;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   EXPLORE BUTTON
+===================================================== */
+
+.explore-button {
+  margin: 28px 0 0 18px;
+
+  padding: 13px 20px;
+
+  border: none;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  color: #202020;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.explore-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =====================================================
+   SLIDER CONTROLS
+===================================================== */
+
+.hero-controls {
+  position: absolute;
+
+  right: 25px;
+  bottom: 34px;
+
+  display: flex;
+
+  gap: 10px;
+
+  z-index: 5;
+}
+
+.hero-controls button {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #ffffff;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.hero-controls button:hover {
+  background: #ffffff;
+
+  color: #315eea;
+}
+
+
+/* =====================================================
+   SERVICE BAR
+===================================================== */
+
+.business-service-bar {
+  position: relative;
+
+  left: 12%;
+  right: auto;
+
+  width: 81%;
+
+  margin-top: 25px;
+
+  min-height: 120px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, 1fr);
+
+  align-items: center;
+
+  padding: 16px;
+
+  box-sizing: border-box;
+
+  background: #fff7f4;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.13);
+
+  z-index: 20;
+}
+
+
+
+
+/* =====================================================
+   SERVICE ITEM
+===================================================== */
+
+.service-item {
+  height: 86px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
+
+  border-radius: 22px;
+
+  color: #202020;
+
+  transition: 0.2s ease;
+}
+
+.service-item.active {
+  background: #315eea;
+
+  color: #ffffff;
+}
+
+.service-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #fde8dc;
+
+  color: #5d514b;
+
+  font-size: 21px;
+}
+
+.service-item.active .service-icon {
+  background: rgba(255, 255, 255, 0.18);
+
+  color: #ffffff;
+}
+
+.service-text {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  font-size: 15px;
+
+  line-height: 1.2;
+}
+
+.service-text strong {
+  font-weight: 500;
+}
+
+.service-text span {
+  font-weight: 500;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1200px) {
+
+  .business-hero {
+    grid-template-columns: 48% 52%;
+  }
+
+  .business-left {
+    padding-left: 7%;
+  }
+
+  .business-service-bar {
+    left: 7%;
+    right: 7%;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE / SMALL TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .business-hero {
+    display: block;
+
+    min-height: auto;
+  }
+
+  .business-left {
+    padding: 45px 6% 100px;
+  }
+
+  .business-right {
+    padding: 0 6% 110px;
+  }
+
+  .hero-image-wrapper {
+    height: 330px;
+  }
+
+  .business-service-bar {
+    position: relative;
+
+    left: auto;
+    right: auto;
+    bottom: auto;
+
+    margin: -65px 6% 30px;
+
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .business-left {
+    padding: 30px 20px 90px;
+  }
+
+  .business-right {
+    padding: 0 20px 90px;
+  }
+
+  .business-search {
+    height: 50px;
+  }
+
+  .business-quick-links {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+  }
+
+  .business-quick-links button {
+    min-height: 58px;
+
+    padding: 8px 12px;
+
+    font-size: 13px;
+  }
+
+  .business-card {
+    padding: 18px;
+
+    min-height: 145px;
+  }
+
+  .business-card-image {
+    width: 105px;
+    height: 65px;
+  }
+
+  .business-card-actions {
+    gap: 20px;
+  }
+
+  .hero-image-wrapper {
+    height: 270px;
+  }
+
+  .hero-image-content {
+    width: 52%;
+
+    top: 18px;
+    right: 15px;
+  }
+
+  .hero-image-content h3 {
+    font-size: 16px;
+  }
+
+  .hero-feature {
+    font-size: 12px;
+
+    margin-bottom: 12px;
+  }
+
+  .business-hero-text {
+    padding-left: 8px;
+  }
+
+  .business-hero-text h1 {
+    font-size: 31px;
+  }
+
+  .business-hero-text p {
+    font-size: 15px;
+  }
+
+  .hero-controls {
+    right: 10px;
+
+    bottom: 28px;
+  }
+
+  .hero-controls button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .business-service-bar {
+    grid-template-columns: 1fr;
+
+    margin: -55px 20px 25px;
+
+    padding: 12px;
+  }
+
+  .service-item {
+    height: 70px;
+  }
+
+}
+/* =========================================
+   HERO SLIDER DOTS
+========================================= */
+
+.hero-dots {
+  position: absolute;
+
+  right: 120px;
+  bottom: 50px;
+
+  display: flex;
+
+  gap: 8px;
+
+  z-index: 10;
+}
+
+.hero-dots button {
+  width: 8px;
+  height: 8px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.55);
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.hero-dots button.active {
+  width: 24px;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+}
+
+
+/* Smooth image transition */
+
+.hero-image-wrapper img {
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s ease;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .hero-dots {
+    right: 20px;
+    bottom: 35px;
+  }
+
+}
+
+/* =========================================================
+   EXCLUSIVE PROGRAMS
+   ========================================================= */
+
+.exclusive-programs {
+  width: 80%;
+  margin: 80px auto 60px;
+
+  padding: 42px 38px 36px;
+
+  background: #ffffff;
+
+  border-radius: 30px;
+
+  box-shadow:
+    0 8px 28px rgba(24, 43, 87, 0.10);
+
+  box-sizing: border-box;
+}
+
+.exclusive-programs h2 {
+  margin: 0 0 58px;
+
+  font-size: 40px;
+  line-height: 1.2;
+
+  font-weight: 350;
+
+  color: #151515;
+}
+
+
+/* ================= GRID ================= */
+
+.exclusive-programs-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 40px;
+
+  align-items: stretch;
+}
+
+
+/* ================= CARD ================= */
+
+.exclusive-card {
+  position: relative;
+
+  min-height: 400px;
+
+  background: #f3f5f8;
+
+  border-radius: 26px;
+
+  overflow: visible;
+
+  padding-top: 0;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.exclusive-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 15px 35px rgba(24, 43, 87, 0.12);
+}
+
+
+/* ================= IMAGE ================= */
+
+.exclusive-image {
+  position: relative;
+
+  width: calc(100% - 72px);
+
+  height: 205px;
+
+  margin: 0 auto;
+
+  transform: translateY(-12px);
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 18px 24px rgba(0, 0, 0, 0.20);
+}
+
+.exclusive-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+/* ================= CONTENT ================= */
+
+.exclusive-card-content {
+  padding: 24px 28px 30px;
+}
+
+
+/* ================= TITLE ================= */
+
+.exclusive-title-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.exclusive-title-row h3 {
+  margin: 0;
+
+  font-size: 38px;
+
+  line-height: 1.25;
+
+  font-weight: 400;
+
+  color: #101010;
+}
+
+
+/* ================= FAVORITE ================= */
+
+.favorite-button {
+  border: none;
+
+  background: transparent;
+
+  font-size: 31px;
+
+  color: #637da9;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  line-height: 1;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.favorite-button:hover {
+  color: #315eea;
+
+  transform: scale(1.1);
+}
+
+
+/* ================= ARROW ================= */
+
+.exclusive-arrow {
+  margin-top: 25px;
+
+  font-size: 30px;
+
+  color: #536b91;
+}
+
+
+/* ================= DESCRIPTION ================= */
+
+.exclusive-card-content p {
+  margin: 28px 0 0;
+
+  font-size: 17px;
+
+  line-height: 1.45;
+
+  color: #1e385d;
+}
+
+.exclusive-card-content p span {
+  color: #f05b22;
+
+  margin-left: 8px;
+}
+
+
+/* ================= ACTIONS ================= */
+
+.exclusive-actions {
+  display: flex;
+
+  gap: 22px;
+
+  margin-top: 30px;
+}
+
+.exclusive-actions button {
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  color: #f05b22;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  letter-spacing: 0.3px;
+}
+
+.exclusive-actions button:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .exclusive-programs {
+    width: 94%;
+    padding: 35px 25px;
+  }
+
+  .exclusive-programs h2 {
+    font-size: 34px;
+  }
+
+  .exclusive-programs-grid {
+    gap: 25px;
+  }
+
+  .exclusive-title-row h3 {
+    font-size: 30px;
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .exclusive-programs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exclusive-card {
+    min-height: auto;
+    margin-bottom: 30px;
+  }
+
+  .exclusive-programs h2 {
+    font-size: 30px;
+    margin-bottom: 45px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .exclusive-programs {
+    width: 94%;
+    padding: 30px 18px;
+    border-radius: 22px;
+  }
+
+  .exclusive-programs h2 {
+    font-size: 26px;
+  }
+
+  .exclusive-image {
+    width: calc(100% - 40px);
+    height: 190px;
+  }
+
+  .exclusive-card-content {
+    padding: 20px;
+  }
+
+  .exclusive-title-row h3 {
+    font-size: 28px;
+  }
+
+}
+
+/* =========================================================
+   EXCLUSIVE PROGRAMS - SCREEN SAVER STYLE
+   ========================================================= */
+
+.exclusive-programs {
+  animation: sectionFadeIn 0.8s ease-out both;
+}
+
+.exclusive-programs h2 {
+  animation: titleSlideDown 0.8s ease-out 0.15s both;
+}
+
+
+/* Cards */
+
+.exclusive-card {
+  opacity: 0;
+
+  animation:
+    cardAppear 0.8s cubic-bezier(.22, .61, .36, 1) forwards;
+
+  transform-origin: center bottom;
+}
+
+
+/* Staggered card animation */
+
+.exclusive-card:nth-child(1) {
+  animation-delay: 0.25s;
+}
+
+.exclusive-card:nth-child(2) {
+  animation-delay: 0.45s;
+}
+
+.exclusive-card:nth-child(3) {
+  animation-delay: 0.65s;
+}
+
+
+/* Image animation */
+
+.exclusive-card .exclusive-image {
+  overflow: hidden;
+}
+
+.exclusive-card .exclusive-image img {
+  transform: scale(1.08);
+
+  animation: imageZoomIn 1.2s ease-out forwards;
+}
+
+
+/* Different image delays */
+
+.exclusive-card:nth-child(1)
+.exclusive-image img {
+  animation-delay: 0.25s;
+}
+
+.exclusive-card:nth-child(2)
+.exclusive-image img {
+  animation-delay: 0.45s;
+}
+
+.exclusive-card:nth-child(3)
+.exclusive-image img {
+  animation-delay: 0.65s;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.exclusive-card:hover {
+  transform: translateY(-10px) scale(1.01);
+
+  box-shadow:
+    0 22px 45px rgba(24, 43, 87, 0.16);
+}
+
+.exclusive-card:hover
+.exclusive-image img {
+  transform: scale(1.06);
+}
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes sectionFadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes titleSlideDown {
+
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes cardAppear {
+
+  0% {
+    opacity: 0;
+    transform:
+      translateY(70px)
+      scale(0.94);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes imageZoomIn {
+
+  from {
+    transform: scale(1.12);
+  }
+
+  to {
+    transform: scale(1);
+  }
+
+}
+
+.exclusive-card:nth-child(1) {
+  animation:
+    cardAppear 0.8s cubic-bezier(.22, .61, .36, 1) 0.25s forwards,
+    cardFloat 5s ease-in-out 1.2s infinite;
+}
+
+.exclusive-card:nth-child(2) {
+  animation:
+    cardAppear 0.8s cubic-bezier(.22, .61, .36, 1) 0.45s forwards,
+    cardFloat 5s ease-in-out 1.7s infinite;
+}
+
+.exclusive-card:nth-child(3) {
+  animation:
+    cardAppear 0.8s cubic-bezier(.22, .61, .36, 1) 0.65s forwards,
+    cardFloat 5s ease-in-out 2.2s infinite;
+}
+
+
+@keyframes cardFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+
+}
+
+/* =========================================================
+   BUSINESS CREDIT CARD SECTION
+========================================================= */
+
+.business-credit-cards {
+  width: 100%;
+  max-width: 1200px;
+  margin: 60px auto 70px;
+  padding: 30px 20px 32px;
+
+  background: #ffffff;
+  border-radius: 28px;
+
+  box-shadow: 0 8px 28px rgba(24, 43, 87, 0.10);
+
+  box-sizing: border-box;
+}
+
+.business-credit-cards h2 {
+  margin: 0 0 55px;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #111111;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.credit-card-grid {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.credit-card-item {
+  position: relative;
+
+  min-height: 345px;
+
+  background: #f1f3f6;
+  border-radius: 16px;
+
+  padding: 82px 18px 22px;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.credit-card-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   CARD IMAGE
+========================================================= */
+
+.credit-card-image {
+  position: absolute;
+
+  top: -52px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 78%;
+  height: 125px;
+
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.credit-card-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 10px 8px rgba(0, 0, 0, 0.20)
+  );
+
+  transition: transform 0.3s ease;
+}
+
+.credit-card-item:hover .credit-card-image img {
+  transform: scale(1.04);
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.credit-card-content {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.credit-card-title-row {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 8px;
+}
+
+.credit-card-title-row h3 {
+  margin: 0;
+
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.3;
+
+  color: #111111;
+}
+
+
+/* =========================================================
+   FAVORITE
+========================================================= */
+
+.favorite-card {
+  flex-shrink: 0;
+
+  border: none;
+  background: transparent;
+
+  padding: 3px;
+
+  font-size: 23px;
+  line-height: 1;
+
+  color: #61789d;
+
+  cursor: pointer;
+}
+
+.favorite-card:hover {
+  color: #315eea;
+}
+
+
+/* =========================================================
+   BEST FOR
+========================================================= */
+
+.best-for {
+  display: inline-block;
+
+  margin-top: 12px;
+  padding: 4px 7px;
+
+  background: #c8f8d8;
+  color: #16823b;
+
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.card-description {
+  margin: 10px 0 0;
+
+  font-size: 13px;
+  line-height: 1.4;
+
+  color: #111111;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.card-features {
+  margin: 12px 0 0;
+
+  font-size: 11px;
+  line-height: 1.45;
+
+  color: #28405f;
+}
+
+.card-features span {
+  color: #f05b22;
+  margin-left: 4px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.credit-card-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 18px;
+}
+
+.credit-card-actions button {
+  border: none;
+  background: transparent;
+
+  padding: 0;
+
+  color: #f05b22;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.credit-card-actions button:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   CORPORATE CARD
+========================================================= */
+
+.corporate-card-link {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 35px auto 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 11px;
+  color: #555555;
+}
+
+.corporate-card-link button {
+  border: none;
+  background: transparent;
+
+  padding: 0;
+
+  color: #f05b22;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.corporate-card-link button:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .credit-card-grid {
+    gap: 18px;
+  }
+
+  .credit-card-item {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .credit-card-title-row h3 {
+    font-size: 23px;
+  }
+
+  .credit-card-image {
+    width: 82%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+  .business-credit-cards {
+    padding: 30px 15px;
+  }
+
+  .business-credit-cards h2 {
+    font-size: 25px;
+    margin-bottom: 65px;
+  }
+
+  .credit-card-grid {
+    grid-template-columns: 1fr;
+    gap: 75px;
+  }
+
+  .credit-card-item {
+    min-height: auto;
+    padding-top: 82px;
+  }
+
+  .credit-card-image {
+    width: 70%;
+  }
+}
+
+
+@media (max-width: 500px) {
+
+  .business-credit-cards h2 {
+    font-size: 23px;
+  }
+
+  .credit-card-image {
+    width: 82%;
+  }
+
+  .credit-card-title-row h3 {
+    font-size: 22px;
+  }
+}
+

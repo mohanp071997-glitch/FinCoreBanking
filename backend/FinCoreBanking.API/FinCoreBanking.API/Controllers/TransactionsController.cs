@@ -25,13 +25,21 @@ namespace FinCoreBanking.API.Controllers
         [HttpGet("account/{accountId}")]
         public async Task<IActionResult> GetAccountTransactions(int accountId)
         {
-            //// Adds a temporary delay for loading indicator testing.
-            //await Task.Delay(3000);
-
             var transactions = await _context.Transactions
                 .Where(x => x.AccountId == accountId)
                 .OrderByDescending(x => x.TransactionDate)
                 .ToListAsync();
+
+            // SQL Server DateTime does not preserve UTC kind.
+            // Explicitly mark TransactionDate as UTC before sending to Angular.
+            foreach (var transaction in transactions)
+            {
+                transaction.TransactionDate =
+                    DateTime.SpecifyKind(
+                        transaction.TransactionDate,
+                        DateTimeKind.Utc
+                    );
+            }
 
             return Ok(transactions);
         }

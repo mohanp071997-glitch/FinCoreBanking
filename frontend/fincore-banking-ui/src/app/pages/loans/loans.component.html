@@ -1,97 +1,438 @@
 <div class="loans-page">
 
-    <!-- Navigates back to the previous page. -->
-    <button
-      type="button"
-      class="back-button"
-      (click)="goBack()">
-      ← Back
-    </button>
+  <!-- ================================================= -->
+  <!-- BACK BUTTON -->
+  <!-- ================================================= -->
 
-  <!-- Page header -->
+  <button
+    type="button"
+    class="back-button"
+    (click)="goBack()"
+  >
+    ← Back to Dashboard
+  </button>
+
+
+  <!-- ================================================= -->
+  <!-- PAGE HEADER -->
+  <!-- ================================================= -->
+
   <div class="page-header">
-    <div>
-      <h1>My Loans</h1>
-      <p>View and manage your FinCore Bank loans</p>
-    </div>
-  </div>
 
-  <!-- Loan type groups -->
-  <div
-    class="loan-group"
-    *ngFor="let group of loanGroups">
+    <div class="header-content">
 
-    <!-- Loan type header -->
-    <div
-      class="loan-group-header"
-      (click)="toggleLoanType(group)">
+      <div>
 
-      <div class="loan-group-title">
-        <span
-        class="expand-icon"
-        [class.expanded]="group.expanded">
-        ▶
-        </span>
-
-        <div>
-          <h2>{{ group.loanTypeName }}</h2>
-          <span class="loan-count">
-            {{ group.loans.length }}
-            {{ group.loans.length === 1 ? 'Loan' : 'Loans' }}
-          </span>
+        <div class="header-badge">
+          FINCORE BANK
         </div>
+
+        <h1>
+          My Loans
+        </h1>
+
+        <p>
+          View and manage your loans, repayments and upcoming payments
+        </p>
+
+      </div>
+
+
+      <!-- 3D BANKING ILLUSTRATION -->
+
+      <div class="loan-illustration">
+
+        <div class="illustration-glow"></div>
+
+        <div class="bank-building">
+
+          <div class="bank-roof">
+            LOAN
+          </div>
+
+          <div class="bank-columns">
+
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+          </div>
+
+          <div class="bank-base"></div>
+
+        </div>
+
+
+        <div class="loan-document">
+
+          <div class="document-title">
+            LOAN
+          </div>
+
+          <div class="document-line"></div>
+          <div class="document-line short"></div>
+
+          <div class="document-check">
+            ✓
+          </div>
+
+          <div class="document-check second">
+            ✓
+          </div>
+
+        </div>
+
+
+        <div class="coin coin-one">
+          ₹
+        </div>
+
+        <div class="coin coin-two">
+          ₹
+        </div>
+
       </div>
 
     </div>
 
-    <!-- Expanded loan cards -->
+
+    <!-- ================================================= -->
+    <!-- BANKING BENEFITS -->
+    <!-- ================================================= -->
+
+    <div class="loan-benefits">
+
+      <div class="benefit-item">
+
+        <div class="benefit-icon">
+          ₹
+        </div>
+
+        <div>
+          <strong>
+            Flexible Repayment
+          </strong>
+
+          <small>
+            Manage your EMI easily
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="benefit-item">
+
+        <div class="benefit-icon blue">
+          ✓
+        </div>
+
+        <div>
+          <strong>
+            Transparent Details
+          </strong>
+
+          <small>
+            No hidden charges
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="benefit-item">
+
+        <div class="benefit-icon green">
+          🛡
+        </div>
+
+        <div>
+          <strong>
+            Secure & Trusted
+          </strong>
+
+          <small>
+            Your financial partner
+          </small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- SUMMARY CARDS -->
+  <!-- ================================================= -->
+
+  <div class="loan-summary">
+
+    <!-- Total Loans -->
+
+    <div class="summary-card purple">
+
+      <div class="summary-icon">
+        ₹
+      </div>
+
+      <div class="summary-content">
+
+        <span>
+          Total Loans
+        </span>
+
+        <strong>
+          {{ totalLoans }}
+        </strong>
+
+        <small>
+          Active loan accounts
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- Total Borrowed -->
+
+    <div class="summary-card blue">
+
+      <div class="summary-icon">
+        ₹
+      </div>
+
+      <div class="summary-content">
+
+        <span>
+          Total Borrowed
+        </span>
+
+        <strong>
+          ₹{{ totalBorrowed | number:'1.2-2' }}
+        </strong>
+
+        <small>
+          Principal amount
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- Outstanding -->
+
+    <div class="summary-card orange">
+
+      <div class="summary-icon">
+        ◔
+      </div>
+
+      <div class="summary-content">
+
+        <span>
+          Total Outstanding
+        </span>
+
+        <strong>
+          ₹{{ totalOutstanding | number:'1.2-2' }}
+        </strong>
+
+        <small>
+          Current balance
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- Next Payment -->
+
+    <div class="summary-card green">
+
+      <div class="summary-icon">
+        📅
+      </div>
+
+      <div class="summary-content">
+
+        <span>
+          Next Payment
+        </span>
+
+        <strong
+          *ngIf="nextPaymentLoan"
+        >
+          {{
+            nextPaymentLoan.nextPaymentDate
+              | date:'dd MMM yyyy'
+          }}
+        </strong>
+
+        <small
+          *ngIf="nextPaymentLoan"
+        >
+          ₹{{ nextPaymentLoan.emiAmount | number:'1.2-2' }} EMI
+        </small>
+
+        <strong *ngIf="!nextPaymentLoan">
+          No upcoming payment
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- LOAN GROUPS -->
+  <!-- ================================================= -->
+
+  <div
+    class="loan-group"
+    *ngFor="let group of loanGroups"
+  >
+
+    <!-- Group Header -->
+
+    <div
+      class="loan-group-header"
+      (click)="toggleLoanType(group)"
+    >
+
+      <div class="loan-group-title">
+
+        <span
+          class="expand-icon"
+          [class.expanded]="group.expanded"
+        >
+          ▶
+        </span>
+
+
+        <div class="group-loan-icon">
+          🏦
+        </div>
+
+
+        <div>
+
+          <h2>
+            {{ group.loanTypeName }}
+          </h2>
+
+          <span class="loan-count">
+
+            {{ group.loans.length }}
+
+            {{ group.loans.length === 1
+              ? 'Loan'
+              : 'Loans'
+            }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="group-right">
+
+        <span class="group-label">
+          Your Loans
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- LOAN CARDS -->
+    <!-- ================================================= -->
+
     <div
       class="loan-group-content"
-      *ngIf="group.expanded">
+      *ngIf="group.expanded"
+    >
 
       <div
         class="loan-card"
         *ngFor="let loan of group.loans"
-        (click)="viewLoan(loan.loanId)">
+        (click)="viewLoan(loan.loanId)"
+      >
 
-        <!-- Loan header -->
+
+        <!-- Loan Header -->
+
         <div class="loan-header">
 
-            <div class="loan-title">
+          <div class="loan-title">
 
-            <!-- Loan type -->
             <span class="loan-type">
-                {{ loan.loanTypeName }}
+              {{ loan.loanTypeName }}
             </span>
 
-            <!-- Loan number and details -->
+
             <div class="loan-number-row">
 
-                <h2 class="loan-number">
+              <h2 class="loan-number">
                 {{ loan.loanNumber }}
-                </h2>
+              </h2>
 
-                <button
-                type="button"
-                class="view-details-btn"
-                (click)="viewLoan(loan.loanId); $event.stopPropagation()">
-                View Details
-                </button>
+
+             <button
+              type="button"
+              class="view-details-btn"
+              (click)="
+                viewLoan(loan.loanId);
+                $event.stopPropagation()
+              "
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+
+              <span>View Details</span>
+              </button>
 
             </div>
 
-            </div>
+          </div>
+
+
+          <!-- Status -->
 
           <span
             class="loan-status"
             [class.active]="loan.loanStatus === 'Active'"
             [class.closed]="loan.loanStatus === 'Closed'"
-            [class.pending]="loan.loanStatus === 'Pending'">
+            [class.pending]="loan.loanStatus === 'Pending'"
+          >
 
             <span
               class="status-dot"
-              *ngIf="loan.loanStatus === 'Active'">
-            </span>
+              *ngIf="loan.loanStatus === 'Active'"
+            ></span>
 
             {{ loan.loanStatus }}
 
@@ -99,46 +440,121 @@
 
         </div>
 
-        <!-- Loan details -->
+
+        <!-- ================================================= -->
+        <!-- LOAN METRICS -->
+        <!-- ================================================= -->
+
         <div class="loan-details">
 
+
+          <!-- Principal -->
+
           <div class="detail-item">
-            <span>Principal Amount</span>
+
+            <div class="detail-icon">
+              💰
+            </div>
+
+            <span>
+              Principal Amount
+            </span>
+
             <strong>
               ₹{{ loan.principalAmount | number:'1.2-2' }}
             </strong>
+
           </div>
 
+
+          <!-- Outstanding -->
+
           <div class="detail-item">
-            <span>Outstanding Amount</span>
+
+            <div class="detail-icon orange">
+              💳
+            </div>
+
+            <span>
+              Outstanding Amount
+            </span>
+
             <strong>
               ₹{{ loan.outstandingAmount | number:'1.2-2' }}
             </strong>
+
           </div>
 
+
+          <!-- Interest -->
+
           <div class="detail-item">
-            <span>Interest Rate</span>
+
+            <div class="detail-icon purple">
+              %
+            </div>
+
+            <span>
+              Interest Rate
+            </span>
+
             <strong>
               {{ loan.interestRate }}%
             </strong>
+
           </div>
 
+
+          <!-- EMI -->
+
           <div class="detail-item">
-            <span>EMI</span>
+
+            <div class="detail-icon green">
+              ₹
+            </div>
+
+            <span>
+              Monthly EMI
+            </span>
+
             <strong>
               ₹{{ loan.emiAmount | number:'1.2-2' }}
             </strong>
+
           </div>
 
+
+          <!-- Tenure -->
+
           <div class="detail-item">
-            <span>Tenure</span>
+
+            <div class="detail-icon blue">
+              ⏳
+            </div>
+
+            <span>
+              Tenure
+            </span>
+
             <strong>
               {{ loan.tenureMonths }} Months
             </strong>
+
           </div>
 
+
+          <!-- Next Payment -->
+
           <div class="detail-item">
-            <span>Next Payment</span>
+
+            <div class="detail-icon purple">
+              📅
+            </div>
+
+            <span>
+              Next Payment
+            </span>
+
             <strong>
               {{
                 loan.nextPaymentDate
@@ -146,6 +562,246 @@
                   : 'N/A'
               }}
             </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- REPAYMENT PROGRESS -->
+        <!-- ================================================= -->
+
+        <div class="repayment-section">
+
+          <div class="repayment-header">
+
+            <div>
+
+              <span>
+                Repayment Progress
+              </span>
+
+              <strong>
+                ₹{{ getRepaidAmount(loan) | number:'1.2-2' }}
+                Repaid
+              </strong>
+
+            </div>
+
+
+            <strong class="percentage">
+              {{ getRepaymentPercentage(loan) | number:'1.1-1' }}%
+            </strong>
+
+          </div>
+
+
+          <div class="progress-track">
+
+            <div
+              class="progress-fill"
+              [style.width.%]="getRepaymentPercentage(loan)"
+            ></div>
+
+          </div>
+
+
+          <div class="progress-footer">
+
+            <span>
+              Principal:
+              ₹{{ loan.principalAmount | number:'1.2-2' }}
+            </span>
+
+            <span>
+              Remaining:
+              ₹{{ loan.outstandingAmount | number:'1.2-2' }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- LOAN INFORMATION -->
+        <!-- ================================================= -->
+
+        <div class="loan-information">
+
+          <div class="information-item">
+
+            <span>
+              Applied Date
+            </span>
+
+            <strong>
+              {{
+                loan.appliedDate
+                  ? (loan.appliedDate | date:'dd MMM yyyy')
+                  : 'N/A'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="information-item">
+
+            <span>
+              Approved Date
+            </span>
+
+            <strong>
+              {{
+                loan.approvedDate
+                  ? (loan.approvedDate | date:'dd MMM yyyy')
+                  : 'N/A'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="information-item">
+
+            <span>
+              Loan Type
+            </span>
+
+            <strong>
+              {{ loan.loanTypeName }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- PAYMENT SCHEDULE -->
+        <!-- ================================================= -->
+
+        <div class="payment-section">
+
+          <div class="payment-header">
+
+            <div>
+
+              <h3>
+                Upcoming Payments
+              </h3>
+
+              <p>
+                Keep your EMI payments on track
+              </p>
+
+            </div>
+
+            <span class="payment-count">
+              {{ loan.tenureMonths }} Payments
+            </span>
+
+          </div>
+
+
+          <!-- Payment table -->
+
+          <div class="payment-table">
+
+            <div class="payment-table-header">
+
+              <span>#</span>
+              <span>Due Date</span>
+              <span>EMI Amount</span>
+              <span>Status</span>
+
+            </div>
+
+
+            <!-- Current next payment -->
+
+            <div class="payment-row">
+
+              <span>
+                1
+              </span>
+
+              <span>
+                {{
+                  loan.nextPaymentDate
+                    ? (loan.nextPaymentDate | date:'dd MMM yyyy')
+                    : 'N/A'
+                }}
+              </span>
+
+              <span>
+                ₹{{ loan.emiAmount | number:'1.2-2' }}
+              </span>
+
+              <span>
+
+                <span class="payment-status upcoming">
+                  ● Upcoming
+                </span>
+
+              </span>
+
+            </div>
+
+
+            <!-- Future payment -->
+
+            <div class="payment-row">
+
+              <span>
+                2
+              </span>
+
+              <span>
+                Next Month
+              </span>
+
+              <span>
+                ₹{{ loan.emiAmount | number:'1.2-2' }}
+              </span>
+
+              <span>
+
+                <span class="payment-status pending">
+                  ● Pending
+                </span>
+
+              </span>
+
+            </div>
+
+
+            <div class="payment-row">
+
+              <span>
+                3
+              </span>
+
+              <span>
+                Future Payment
+              </span>
+
+              <span>
+                ₹{{ loan.emiAmount | number:'1.2-2' }}
+              </span>
+
+              <span>
+
+                <span class="payment-status pending">
+                  ● Pending
+                </span>
+
+              </span>
+
+            </div>
+
           </div>
 
         </div>
@@ -156,13 +812,31 @@
 
   </div>
 
-  <!-- No loans -->
+
+  <!-- ================================================= -->
+  <!-- NO LOANS -->
+  <!-- ================================================= -->
+
   <div
     class="no-loans"
-    *ngIf="loanGroups.length === 0">
+    *ngIf="loanGroups.length === 0"
+  >
 
-    <h3>No Loans Available</h3>
-    <p>You currently do not have any loans.</p>
+    <div class="no-loan-icon">
+      🏦
+    </div>
+
+    <h3>
+      No Loans Available
+    </h3>
+
+    <p>
+      You currently do not have any active loans with FinCore Bank.
+    </p>
+
+    <button type="button">
+      Explore Loan Options →
+    </button>
 
   </div>
 

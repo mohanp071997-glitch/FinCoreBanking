@@ -95,6 +95,57 @@ export class CardsComponent implements OnInit {
     });
   }
 
+  // Calculates the percentage of the card limit that has been used.
+  getCardUsagePercentage(card: Card): number {
+
+    const usedAmount = Number(card.usedAmount || 0);
+
+    const availableLimit = Number(card.availableLimit || 0);
+
+    const totalLimit = usedAmount + availableLimit;
+
+    if (totalLimit <= 0) {
+      return 0;
+    }
+
+    return Math.min(
+      100,
+      Math.max(
+        0,
+        (usedAmount / totalLimit) * 100
+      )
+    );
+  }
+
+  // Calculates the total card limit.
+  getTotalCardLimit(card: Card): number {
+
+    return (
+      Number(card.availableLimit || 0) +
+      Number(card.usedAmount || 0)
+    );
+  }
+
+  // Navigates to the selected card details page.
+  viewCardDetails(card: Card): void {
+
+    if (!card || !card.cardId) {
+      return;
+    }
+
+    this.router.navigate([
+      '/cards',
+      card.cardId
+    ]);
+  }
+
+  // Opens the add new card flow.
+  addNewCard(): void {
+
+    console.log('Add New Card clicked');
+
+  }
+
   // Navigates back to the dashboard.
   goBack(): void {
     this.router.navigate(['/dashboard']);

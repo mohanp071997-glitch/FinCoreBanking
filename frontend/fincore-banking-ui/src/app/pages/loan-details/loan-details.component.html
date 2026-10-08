@@ -39,41 +39,6 @@
 
     </div>
 
-    <!-- Repayment progress -->
-    <div class="repayment-progress">
-
-    <div class="progress-header">
-        <div>
-        <span class="progress-label">Repayment Progress</span>
-        <strong>
-            ₹{{ getRepaidAmount() | number:'1.2-2' }} Repaid
-        </strong>
-        </div>
-
-        <span class="progress-percentage">
-        {{ getRepaymentPercentage() | number:'1.1-1' }}%
-        </span>
-    </div>
-
-    <div class="progress-bar">
-        <div
-        class="progress-fill"
-        [style.width.%]="getRepaymentPercentage()">
-        </div>
-    </div>
-
-    <div class="progress-footer">
-        <span>
-        Principal: ₹{{ loan?.principalAmount | number:'1.2-2' }}
-        </span>
-
-        <span>
-        Outstanding: ₹{{ loan?.outstandingAmount | number:'1.2-2' }}
-        </span>
-    </div>
-
-    </div>
-
   <!-- Loan details -->
   <div
     class="loan-container"
@@ -102,66 +67,6 @@
         {{ loan.loanStatus }}
 
       </span>
-
-    </div>
-
-    <!-- Financial information -->
-    <div class="section">
-
-      <h3>Loan Summary</h3>
-
-      <div class="details-grid">
-
-        <div class="detail-item">
-          <span>Principal Amount</span>
-          <strong>
-            ₹{{ loan.principalAmount | number:'1.2-2' }}
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Outstanding Amount</span>
-          <strong>
-            ₹{{ loan.outstandingAmount | number:'1.2-2' }}
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Interest Rate</span>
-          <strong>
-            {{ loan.interestRate }}%
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span>EMI Amount</span>
-          <strong>
-            ₹{{ loan.emiAmount | number:'1.2-2' }}
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Tenure</span>
-          <strong>
-            {{ loan.tenureMonths }} Months
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span>Next Payment Date</span>
-
-          <strong>
-            {{ loan.nextPaymentDate | date:'dd MMM yyyy' }}
-
-            <small
-              *ngIf="getDaysUntilPayment(loan.nextPaymentDate) !== null"
-              class="payment-days">
-              Due in {{ getDaysUntilPayment(loan.nextPaymentDate) }} days
-            </small>
-          </strong>
-        </div>
-
-      </div>
 
     </div>
 

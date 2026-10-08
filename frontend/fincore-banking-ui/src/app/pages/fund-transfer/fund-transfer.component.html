@@ -71,6 +71,19 @@
 
       </div>
 
+      <!-- Salary Account -->
+      <div class="balance-card">
+
+        <div class="balance-label">
+          Salary Account
+        </div>
+
+        <div class="balance-amount">
+          ₹{{ salaryBalance | number:'1.2-2' }}
+        </div>
+
+      </div>
+
     </div>
 
 
@@ -109,6 +122,20 @@
             </span>
             CURRENT
           </button>
+
+           <!-- Salary -->
+            <button
+              type="button"
+              class="account-option"
+              [class.selected]="selectedAccountType === 'Salary'"
+              (click)="selectAccount('Salary')"
+            >
+              <span *ngIf="selectedAccountType === 'Salary'">
+                ✓
+              </span>
+
+              SALARY
+            </button>
 
         </div>
 

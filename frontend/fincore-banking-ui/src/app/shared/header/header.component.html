@@ -18,7 +18,6 @@
     </a>
 
 
-    <!-- Desktop Navigation -->
     <div class="navigation-links">
 
       <!-- ==================== PERSONAL ==================== -->
@@ -28,6 +27,7 @@
     (mouseleave)="scheduleDesktopClose()">
 
     <a
+      *ngIf="!isLoginPage"
       class="nav-link personal-link"
       routerLink="/"
       routerLinkActive="active"
@@ -138,6 +138,7 @@
     (mouseleave)="scheduleDesktopClose()">
 
     <a
+      *ngIf="!isLoginPage"
       class="nav-link nri-link"
       routerLink="/nri"
       routerLinkActive="active"
@@ -239,6 +240,7 @@
       <div class="business-menu">
 
       <a
+        *ngIf="!isLoginPage"
         class="nav-link business-link"
         routerLink="/business"
         routerLinkActive="active"
@@ -363,6 +365,7 @@
       <div class="resources-menu">
 
         <a
+          *ngIf="!isLoginPage"
           class="nav-link resources-link"
           href="javascript:void(0);">
           Resources
@@ -523,6 +526,7 @@
       <div class="mobile-menu-item">
 
         <button
+         *ngIf="!isLoginPage"
           type="button"
           class="mobile-nav-link mobile-menu-toggle"
           (click)="toggleMobilePersonalMenu()">
@@ -632,6 +636,7 @@
       <div class="mobile-menu-item">
 
         <button
+          *ngIf="!isLoginPage"
           type="button"
           class="mobile-nav-link mobile-menu-toggle"
           (click)="toggleMobileNriMenu()">
@@ -737,55 +742,295 @@
       </div>
 
 
-      <!-- ==================== MOBILE OTHER OPTIONS ==================== -->
+      
 
-      <a
-        class="mobile-nav-link"
-        (click)="toggleMobileMenu()">
-        Business
-      </a>
+      <!-- ==================== MOBILE BUSINESS ==================== -->
 
-      <a
-        class="mobile-nav-link"
-        (click)="toggleMobileMenu()">
-        Accounts
-      </a>
+      <div class="mobile-menu-item">
 
-      <a
-        class="mobile-nav-link"
-        (click)="toggleMobileMenu()">
-        Cards
-      </a>
+        <button
+          *ngIf="!isLoginPage"
+          type="button"
+          class="mobile-nav-link mobile-menu-toggle"
+          (click)="toggleMobileBusinessMenu()">
 
-      <a
-        class="mobile-nav-link"
-        (click)="toggleMobileMenu()">
-        Loans
-      </a>
+          <span>
+            Business
+          </span>
 
+          <span
+            class="mobile-arrow"
+            [class.mobile-arrow-open]="mobileBusinessMenuOpen">
+            ›
+          </span>
+
+        </button>
+
+
+        <!-- Business Mobile Submenu -->
+        <div
+          class="mobile-submenu business-mobile-submenu"
+          [class.mobile-submenu-open]="mobileBusinessMenuOpen">
+
+          <div class="mobile-submenu-section">
+
+            <div class="mobile-submenu-heading">
+              Accounts
+            </div>
+
+            <a class="mobile-submenu-link">
+              Current Account
+            </a>
+
+            <a class="mobile-submenu-link">
+              Deposits
+            </a>
+
+            <a class="mobile-submenu-link">
+              Cash Management and Merchant Services
+            </a>
+
+            <a class="mobile-submenu-link">
+              Trade
+            </a>
+
+            <a class="mobile-submenu-link">
+              Cards
+            </a>
+
+            <a class="mobile-submenu-link">
+              Business Loans
+            </a>
+
+            <a class="mobile-submenu-link">
+              Global Market Services
+            </a>
+
+            <a class="mobile-submenu-link">
+              Capital Market and Securities Market Services
+            </a>
+
+          </div>
+
+
+          <!-- Business Account Options -->
+
+          <div class="mobile-submenu-section">
+
+            <a class="mobile-submenu-link">
+              Current Account
+            </a>
+
+            <a class="mobile-submenu-link">
+              Roaming Current Account
+            </a>
+
+            <a class="mobile-submenu-link">
+              RERA Account
+            </a>
+
+            <a class="mobile-submenu-link">
+              Escrow Account
+            </a>
+
+            <a class="mobile-submenu-link">
+              Government e-Marketplace (GEM) Account
+            </a>
+
+          </div>
+
+
+          <!-- Explore -->
+
+          <div class="mobile-submenu-section">
+
+            <a class="mobile-submenu-link mobile-explore-link">
+              Explore Business Banking ↗
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
 
       <!-- Divider -->
       <div class="mobile-menu-divider"></div>
 
 
-      <!-- Secondary Options -->
-      <a
-        class="mobile-nav-link"
-        (click)="toggleMobileMenu()">
-        Resources
-      </a>
+    <!-- ==================== MOBILE RESOURCES ==================== -->
 
-      <a
-        class="mobile-nav-link"
-        (click)="toggleMobileMenu()">
-        About
-      </a>
+      <div class="mobile-menu-item">
 
-      <a
-        class="mobile-nav-link"
-        (click)="toggleMobileMenu()">
-        Help
-      </a>
+        <button
+          *ngIf="!isLoginPage"
+          type="button"
+          class="mobile-nav-link mobile-menu-toggle"
+          (click)="toggleMobileResourcesMenu()">
+
+          <span>Resources</span>
+
+          <span
+            class="mobile-arrow"
+            [class.mobile-arrow-open]="mobileResourcesMenuOpen">
+            ›
+          </span>
+
+        </button>
+
+        <div
+          class="mobile-submenu"
+          [class.mobile-submenu-open]="mobileResourcesMenuOpen">
+
+          <div class="mobile-submenu-section">
+
+            <a class="mobile-submenu-link">
+              Videos (iPlay)
+            </a>
+
+            <a class="mobile-submenu-link">
+              Calculators
+            </a>
+
+            <a class="mobile-submenu-link">
+              Eligibility Calculator
+            </a>
+
+            <a class="mobile-submenu-link">
+              Debenture trusteeship
+            </a>
+
+            <a class="mobile-submenu-link">
+              Economic Research Desk
+            </a>
+
+            <a class="mobile-submenu-link">
+              Trade Emerge
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    <!-- ==================== MOBILE ABOUT ==================== -->
+
+    <div class="mobile-menu-item">
+
+      <button
+        type="button"
+        class="mobile-nav-link mobile-menu-toggle"
+        (click)="toggleMobileAboutMenu()">
+
+        <span>About</span>
+
+        <span
+          class="mobile-arrow"
+          [class.mobile-arrow-open]="mobileAboutMenuOpen">
+          ›
+        </span>
+
+      </button>
+
+      <div
+        class="mobile-submenu"
+        [class.mobile-submenu-open]="mobileAboutMenuOpen">
+
+        <div class="mobile-submenu-section">
+
+          <a class="mobile-submenu-link mobile-explore-link">
+            About ↗
+          </a>
+
+          <a class="mobile-submenu-link">
+            ICICI Group Companies
+          </a>
+
+          <a class="mobile-submenu-link">
+            Board of Directors
+          </a>
+
+          <a class="mobile-submenu-link">
+            Investor Relations
+          </a>
+
+          <a class="mobile-submenu-link">
+            News room
+          </a>
+
+          <a class="mobile-submenu-link">
+            Awards and Recognition
+          </a>
+
+          <a class="mobile-submenu-link">
+            Environmental, Social and Governance
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== MOBILE HELP ==================== -->
+
+    <div class="mobile-menu-item">
+
+      <button
+        type="button"
+        class="mobile-nav-link mobile-menu-toggle"
+        (click)="toggleMobileHelpMenu()">
+
+        <span>Help</span>
+
+        <span
+          class="mobile-arrow"
+          [class.mobile-arrow-open]="mobileHelpMenuOpen">
+          ›
+        </span>
+
+      </button>
+
+      <div
+        class="mobile-submenu"
+        [class.mobile-submenu-open]="mobileHelpMenuOpen">
+
+        <div class="mobile-submenu-section">
+
+          <a class="mobile-submenu-link mobile-explore-link">
+            Help and Support ↗
+          </a>
+
+          <a class="mobile-submenu-link">
+            Contact Us
+          </a>
+
+          <a class="mobile-submenu-link">
+            Customer Care
+          </a>
+
+          <a class="mobile-submenu-link">
+            Form Center
+          </a>
+
+          <a class="mobile-submenu-link">
+            Report Suspicious Behaviour
+          </a>
+
+          <a class="mobile-submenu-link">
+            Report unauthorized transaction
+          </a>
+
+          <a class="mobile-submenu-link">
+            Complaints and Grievance Redressal
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
 
 
       <!-- Phone -->

@@ -179,6 +179,8 @@ app-root {
 }
 
 
+
+
 /* =========================================================
    NORMAL NAV LINK
    ========================================================= */
@@ -747,7 +749,7 @@ app-root {
 
   align-items: center;
 
-  gap: 12px;
+  gap: 14px;
 
   flex-shrink: 0;
 }
@@ -1584,3 +1586,175 @@ app-root {
 
   padding-bottom: 18px;
 }
+
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  /* Hide desktop Resources / About / Help */
+  .navbar-actions .resources-menu,
+  .navbar-actions .about-menu,
+  .navbar-actions .help-menu {
+    display: none !important;
+  }
+
+    .login-button {
+    margin-right: 14px;
+  }
+
+    .mobile-search-box {
+    margin-left: 15px;
+  }
+
+}
+
+/* =========================================================
+   MOBILE BUSINESS SUBMENU
+========================================================= */
+
+.business-mobile-submenu {
+  display: none;
+}
+
+.business-mobile-submenu.mobile-submenu-open {
+  display: block;
+}
+
+
+/* Business submenu links */
+
+.business-mobile-submenu .mobile-submenu-link {
+  display: block;
+
+  padding: 13px 18px;
+
+  color: #293f91;
+
+  font-size: 15px;
+
+  text-decoration: none;
+
+  border-radius: 4px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.business-mobile-submenu .mobile-submenu-link:hover {
+  background: #f1f4ff;
+  color: #244bd1;
+}
+
+
+/* Heading */
+
+.business-mobile-submenu .mobile-submenu-heading {
+  padding: 12px 18px 8px;
+
+  color: #315eea;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+/* Arrow */
+
+.mobile-arrow {
+  transition: transform 0.25s ease;
+}
+
+.mobile-arrow-open {
+  transform: rotate(90deg);
+}
+
+/* =========================================================
+   MOBILE RESOURCES / ABOUT / HELP
+========================================================= */
+
+.mobile-submenu {
+  display: none;
+  overflow: hidden;
+}
+
+.mobile-submenu.mobile-submenu-open {
+  display: block;
+}
+
+
+/* Main mobile menu button */
+
+.mobile-menu-toggle {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+
+/* Arrow */
+
+.mobile-arrow {
+  display: inline-block;
+
+  font-size: 24px;
+
+  transition: transform 0.25s ease;
+}
+
+.mobile-arrow-open {
+  transform: rotate(90deg);
+}
+
+
+/* Submenu */
+
+.mobile-submenu-section {
+  padding: 5px 0 10px 20px;
+}
+
+
+/* Submenu links */
+
+.mobile-submenu-link {
+  display: block;
+
+  padding: 12px 18px;
+
+  color: #293f91;
+
+  font-size: 14px;
+
+  text-decoration: none;
+
+  border-radius: 4px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.mobile-submenu-link:hover {
+  background: #f1f4ff;
+  color: #244bd1;
+}
+
+
+/* Main heading link */
+
+.mobile-explore-link {
+  font-weight: 600;
+}
+

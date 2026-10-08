@@ -46,6 +46,7 @@ export class FundTransferComponent implements OnInit {
 
   savingsBalance = 0;
   currentBalance = 0;
+  salaryBalance: number = 0;
 
   constructor(
     private beneficiaryService: BeneficiaryService,
@@ -103,8 +104,26 @@ export class FundTransferComponent implements OnInit {
       account => account.accountTypeName === 'Current'
     );
 
+    const salaryAccount = this.accounts.find(
+     account => account.accountTypeName === 'Salary'
+    );
+
     this.savingsBalance = savingsAccount?.currentBalance ?? 0;
     this.currentBalance = currentAccount?.currentBalance ?? 0;
+    this.salaryBalance =salaryAccount?.currentBalance ?? 0;
+  }
+
+  isAccountActive(accountType: string): boolean {
+
+    const account = this.accounts.find(
+      account => account.accountTypeName === accountType
+    );
+
+    if (!account) {
+      return false;
+    }
+
+    return account.accountStatus?.toLowerCase() === 'active';
   }
 
   // Loads beneficiaries for the customer.

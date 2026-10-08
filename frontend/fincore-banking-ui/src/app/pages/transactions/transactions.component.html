@@ -18,7 +18,107 @@
       <p>View and track your account transactions</p>
     </div>
 
+    <!-- Banking Animation -->
+    <div class="banking-animation">
+
+      <div class="glow-circle glow-one"></div>
+      <div class="glow-circle glow-two"></div>
+
+      <div class="floating-card">
+
+        <div class="card-top">
+          <span>FINCORE</span>
+          <span>💳</span>
+        </div>
+
+        <div class="card-chip">
+          ▦
+        </div>
+
+        <div class="card-number">
+          •••• &nbsp; •••• &nbsp; •••• &nbsp; 8890
+        </div>
+
+        <div class="card-bottom">
+          <span>SECURE BANKING</span>
+          <span>VISA</span>
+        </div>
+
+      </div>
+
+      <div class="coin coin-one">₹</div>
+      <div class="coin coin-two">₹</div>
+
+    </div>
+
   </div>
+
+    <!-- ================= BANKING INFO STRIP ================= -->
+
+    <div class="banking-info-strip">
+
+      <div class="banking-info-main">
+
+        <div class="banking-icon">
+          🏦
+        </div>
+
+        <div>
+          <span class="banking-badge">
+            SECURE DIGITAL BANKING
+          </span>
+
+          <h3>
+            Your Money. Your Transactions. Your Control.
+          </h3>
+
+          <p>
+            Monitor your account activity securely with real-time
+            transaction tracking.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="banking-security">
+
+        <div class="security-icon">
+          🛡️
+        </div>
+
+        <div>
+          <strong>
+            Bank-Grade Security
+          </strong>
+
+          <small>
+            Your transactions are protected
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="banking-security">
+
+        <div class="security-icon blue">
+          ⚡
+        </div>
+
+        <div>
+          <strong>
+            Real-Time Monitoring
+          </strong>
+
+          <small>
+            Track every transaction instantly
+          </small>
+        </div>
+
+      </div>
+
+    </div>
 
     <!-- Account selection -->
     <div class="account-selector">
@@ -151,7 +251,7 @@
         >
         <!-- Transaction date -->
         <div>
-            {{ transaction.transactionDate | date:'dd MMM yyyy' }}
+            {{ transaction.transactionDate | date:'dd MMM yyyy, hh:mm a':'+0530' }}
         </div>
 
         <!-- Description -->

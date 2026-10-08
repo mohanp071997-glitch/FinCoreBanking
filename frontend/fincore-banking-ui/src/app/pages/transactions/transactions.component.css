@@ -1,312 +1,1213 @@
-/* Main transaction page */
-.transactions-page {
-  min-height: 100vh;
-  padding: 30px 40px;
-  background: #f5f7fb;
-  color: #1e293b;
-}
+/* =========================================================
+   FINCORE - TRANSACTION HISTORY
+   Premium Banking UI + 3D Animation
+   ========================================================= */
 
-/* Back button */
-.back-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 18px;
-  padding: 6px 8px;
-  border: none;
-  background: transparent;
-  color: #475569;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.back-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  line-height: 15px;
-  height: 18px;
-}
-
-.back-button:hover {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-
-/* Page header */
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.page-header h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.page-header p {
-  margin: 6px 0 0;
-  font-size: 15px;
-  color: #64748b;
-}
-
-/* Account summary */
-.account-summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 28px;
-  margin-bottom: 25px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
-}
-
-.account-info {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.account-label {
-  font-size: 17px;
-  font-weight: 600;
-  color: #334155;
-}
-
-.account-number {
-  font-size: 14px;
-  color: #64748b;
-  letter-spacing: 1px;
-}
-
-.account-balance {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
-}
-
-.account-balance small {
-  font-size: 13px;
-  color: #64748b;
-}
-
-.account-balance strong {
-  font-size: 25px;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-/* Transaction card */
-.transaction-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 25px;
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
-}
-
-/* Card header */
-.card-header {
-  margin-bottom: 22px;
-}
-
-.card-header h2 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 650;
-  color: #1e293b;
-}
-
-.card-header p {
-  margin: 6px 0 0;
-  font-size: 14px;
-  color: #64748b;
-}
-
-/* Filters */
-.transaction-filters {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 22px;
-}
-
-/* Search */
-.global-search {
-  position: relative;
-  width: 320px;
-}
-
-.global-search input {
+:host {
+  display: block;
   width: 100%;
-  height: 44px;
-  padding: 0 42px 0 50px;
-  border: 1px solid #dbe2ea;
-  border-radius: 7px;
-  outline: none;
-  font-size: 14px;
-  color: #334155;
-  background: #ffffff;
+  min-height: 100%;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
+
+.transactions-page {
+  position: relative;
+  min-height: 100vh;
+
+  padding: 14px 28px 35px;
+
   box-sizing: border-box;
-  transition: border-color 0.2s ease;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 88% 5%,
+      rgba(58, 111, 245, 0.20),
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 8% 92%,
+      rgba(92, 72, 225, 0.12),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #f7faff 0%,
+      #edf4ff 48%,
+      #f8faff 100%
+    );
 }
 
-.global-search input::placeholder {
-  color: #94a3b8;
-}
 
-.global-search input:focus {
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
-}
+/* =========================================================
+   BACKGROUND 3D SHAPES
+   ========================================================= */
 
-/* Search icon */
-.search-icon {
+.transactions-page::before {
+  content: "";
+
   position: absolute;
-  left: 18px;
-  top: 50%;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #94a3b8;
+
+  width: 480px;
+  height: 480px;
+
+  right: -230px;
+  top: -250px;
+
   border-radius: 50%;
-  transform: translateY(-60%);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(53, 108, 242, 0.18),
+      rgba(91, 73, 226, 0.04)
+    );
+
+  filter: blur(2px);
+
+  animation: backgroundFloat 9s ease-in-out infinite;
+
   pointer-events: none;
 }
 
-.search-icon::after {
-  content: '';
+
+.transactions-page::after {
+  content: "";
+
   position: absolute;
-  width: 8px;
+
+  width: 300px;
+  height: 300px;
+
+  left: -170px;
+  bottom: -150px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(61, 108, 239, 0.11),
+      rgba(102, 82, 227, 0.03)
+    );
+
+  animation: backgroundFloatReverse 10s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-button {
+  position: relative;
+  z-index: 20;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 10px;
+  margin-left: 18px;
+  margin-bottom: 4px;
+
+  padding: 9px 16px;
+
+  border: 1px solid #d4e1f5;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  color: #21457e;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 20px rgba(36, 75, 140, 0.10);
+
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-3px) translateY(-2px);
+
+  background: #ffffff;
+
+  box-shadow:
+    0 12px 28px rgba(36, 75, 140, 0.17);
+}
+
+.back-icon {
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header {
+  position: relative;
+
+  min-height: 118px;
+
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+
+  z-index: 5;
+
+  overflow: visible;
+}
+
+
+.page-header h1 {
+  margin: 0;
+
+  color: #123b78;
+
+  font-size: 31px;
+  font-weight: 850;
+
+  letter-spacing: -0.8px;
+
+  animation: titleReveal 0.7s ease both;
+}
+
+
+.page-header p {
+  margin: 6px 0 0;
+
+  color: #6980a5;
+
+  font-size: 13px;
+
+  animation: titleReveal 0.9s ease both;
+}
+
+
+/* =========================================================
+   RIGHT SIDE 3D BANK CARD
+   ========================================================= */
+
+.banking-animation {
+  position: absolute;
+
+  right: 5px;
+  top: -20px;
+
+  width: 350px;
+  height: 155px;
+
+  pointer-events: none;
+
+  overflow: visible;
+
+  z-index: 10;
+}
+
+
+/* Glow */
+
+.glow-circle {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+.glow-one {
+  width: 190px;
+  height: 190px;
+
+  right: -15px;
+  top: -30px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(72, 119, 255, 0.23),
+      rgba(72, 119, 255, 0.07) 45%,
+      transparent 72%
+    );
+
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+
+.glow-two {
+  width: 105px;
+  height: 105px;
+
+  left: 15px;
+  bottom: -25px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(76, 190, 255, 0.15),
+      transparent 70%
+    );
+
+  animation: glowPulse 5s ease-in-out infinite reverse;
+}
+
+
+/* =========================================================
+   FLOATING BANK CARD
+   ========================================================= */
+
+.floating-card {
+  position: absolute;
+
+  right: 55px;
+  top: 10px;
+
+  width: 255px;
+  height: 150px;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3977f5 0%,
+      #2859da 55%,
+      #234cc4 100%
+    );
+
+  color: white;
+
+  box-shadow:
+    0 25px 45px rgba(36, 83, 200, 0.30);
+
+  transform:
+    perspective(800px)
+    rotateY(-12deg)
+    rotateX(5deg)
+    rotateZ(2deg);
+
+  animation:
+    floatingBankCard 4s ease-in-out infinite;
+
+  z-index: 3;
+
+  overflow: hidden;
+}
+
+
+/* Card shine */
+
+.floating-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 90px;
+  height: 240px;
+
+  top: -50px;
+  left: -150px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.30),
+      transparent
+    );
+
+  transform: rotate(25deg);
+
+  animation:
+    cardShine 5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.card-chip {
+  margin-top: 15px;
+
+  width: 35px;
+  height: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffe07a,
+      #e7a92d
+    );
+
+  color: #815b0e;
+
+  font-size: 15px;
+
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,0.5);
+}
+
+
+.card-number {
+  margin-top: 13px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 2px;
+
+  white-space: nowrap;
+}
+
+
+.card-bottom {
+  position: absolute;
+
+  left: 18px;
+  right: 18px;
+  bottom: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   COINS
+   ========================================================= */
+
+.coin {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #95640b;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffe58a,
+      #e8ae35
+    );
+
+  border: 3px solid #f7cf67;
+
+  box-shadow:
+    0 12px 25px rgba(180, 125, 20, 0.30);
+
+  font-weight: 900;
+
+  z-index: 5;
+}
+
+
+.coin-one {
+  width: 48px;
+  height: 48px;
+
+  right: 8px;
+  bottom: 0;
+
+  font-size: 20px;
+
+  animation:
+    coinFloatOne 3.5s ease-in-out infinite;
+}
+
+
+.coin-two {
+  width: 32px;
+  height: 32px;
+
+  right: 70px;
+  bottom: -8px;
+
+  font-size: 14px;
+
+  animation:
+    coinFloatTwo 4s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   BANKING INFORMATION STRIP
+   ========================================================= */
+
+.banking-info-strip {
+  position: relative;
+  z-index: 6;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 13px;
+
+  padding: 11px 18px;
+
+  min-height: 67px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(207, 222, 247, 0.9);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,0.98),
+      rgba(242,247,255,0.96)
+    );
+
+  box-shadow:
+    0 14px 32px rgba(45, 82, 145, 0.09);
+
+  overflow: hidden;
+
+  animation: cardReveal 0.65s ease both;
+}
+
+
+.banking-info-strip::before {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  right: -90px;
+  top: -140px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(65, 112, 245, 0.16),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+
+/* Left content */
+
+.banking-info-main {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  flex: 1;
+}
+
+
+.banking-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3269ed,
+      #594ee8
+    );
+
+  font-size: 23px;
+
+  box-shadow:
+    0 9px 20px rgba(55, 91, 220, 0.22);
+
+  animation:
+    bankingIconFloat 4s ease-in-out infinite;
+}
+
+
+.banking-badge {
+  display: inline-flex;
+
+  padding: 3px 8px;
+
+  margin-bottom: 2px;
+
+  border-radius: 20px;
+
+  background: #eaf1ff;
+
+  color: #3c68cf;
+
+  font-size: 8px;
+  font-weight: 850;
+
+  letter-spacing: 0.7px;
+}
+
+
+.banking-info-main h3 {
+  margin: 0;
+
+  color: #14386f;
+
+  font-size: 14px;
+  font-weight: 850;
+}
+
+
+.banking-info-main p {
+  margin: 3px 0 0;
+
+  color: #7a8eac;
+
+  font-size: 10px;
+}
+
+
+/* Security blocks */
+
+.banking-security {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 175px;
+
+  padding: 8px 12px;
+
+  border-left: 1px solid #dce5f3;
+}
+
+
+.security-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #e5faf1;
+
+  font-size: 16px;
+
+  transition: transform 0.25s ease;
+}
+
+
+.security-icon.blue {
+  background: #e8efff;
+}
+
+
+.banking-security strong {
+  display: block;
+
+  color: #254879;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+
+.banking-security small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #8a9bb5;
+
+  font-size: 8px;
+}
+
+
+.banking-info-strip:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 20px 40px rgba(45, 82, 145, 0.13);
+
+  transition: all 0.3s ease;
+}
+
+
+.banking-security:hover .security-icon {
+  transform: scale(1.08);
+}
+
+
+/* =========================================================
+   ACCOUNT SELECTOR
+   ========================================================= */
+
+.account-selector {
+  position: relative;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 13px;
+
+  animation: slideUp 0.55s ease both;
+}
+
+
+.account-selector label {
+  color: #294c80;
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+
+.account-selector select {
+  min-width: 260px;
+  height: 42px;
+
+  padding: 0 38px 0 14px;
+
+  border: 1px solid #d3e0f5;
+  border-radius: 11px;
+
+  background: rgba(255,255,255,0.96);
+
+  color: #234475;
+
+  font-size: 12px;
+
+  outline: none;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 16px rgba(38, 77, 139, 0.06);
+
+  transition: all 0.25s ease;
+}
+
+
+.account-selector select:hover,
+.account-selector select:focus {
+  border-color: #4774ed;
+
+  box-shadow:
+    0 0 0 3px rgba(67, 108, 231, 0.10),
+    0 8px 20px rgba(38, 77, 139, 0.08);
+}
+
+
+/* =========================================================
+   ACCOUNT SUMMARY
+   ========================================================= */
+
+.account-summary {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 82px;
+
+  padding: 17px 25px;
+
+  margin-bottom: 15px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.98),
+      rgba(244,248,255,0.95)
+    );
+
+  border: 1px solid rgba(207, 221, 244, 0.9);
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 16px 35px rgba(38, 76, 137, 0.10);
+
+  overflow: hidden;
+
+  animation: cardReveal 0.65s ease both;
+}
+
+
+.account-summary::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 5px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #2869ee,
+      #6354e9
+    );
+}
+
+
+.account-summary::after {
+  content: "";
+
+  position: absolute;
+
+  width: 250px;
+  height: 250px;
+
+  right: 20%;
+  top: -210px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(70, 112, 240, 0.10),
+      transparent 65%
+    );
+}
+
+
+.account-info {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.account-label {
+  color: #153d78;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+
+.account-number {
+  color: #7890b2;
+
+  font-size: 11px;
+
+  letter-spacing: 0.5px;
+}
+
+
+.account-balance {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  padding-left: 38px;
+
+  border-left: 1px solid #dce5f3;
+}
+
+
+.account-balance small {
+  color: #7a8dab;
+
+  font-size: 10px;
+
+  margin-bottom: 4px;
+}
+
+
+.account-balance strong {
+  color: #123e82;
+
+  font-size: 25px;
+  font-weight: 850;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* =========================================================
+   TRANSACTION CARD
+   ========================================================= */
+
+.transaction-card {
+  position: relative;
+  z-index: 2;
+
+  background:
+    rgba(255,255,255,0.98);
+
+  border: 1px solid rgba(209, 222, 243, 0.9);
+
+  border-radius: 20px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 20px 45px rgba(38, 75, 132, 0.11);
+
+  overflow: hidden;
+
+  animation: cardReveal 0.75s ease both;
+}
+
+
+.transaction-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2867ec,
+      #6254e9,
+      #328dff
+    );
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 12px;
+}
+
+
+.card-header h2 {
+  margin: 0;
+
+  color: #133568;
+
+  font-size: 20px;
+  font-weight: 850;
+}
+
+
+.card-header p {
+  margin: 4px 0 0;
+
+  color: #7a8eac;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SEARCH + FILTER
+   ========================================================= */
+
+.transaction-filters {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-bottom: 12px;
+}
+
+
+.global-search {
+  position: relative;
+
+  width: 270px;
+}
+
+
+.global-search input {
+  width: 100%;
+  height: 40px;
+
+  box-sizing: border-box;
+
+  padding: 0 15px 0 39px;
+
+  border: 1px solid #d4e1f4;
+  border-radius: 11px;
+
+  background: #fbfdff;
+
+  color: #183d75;
+
+  font-size: 11px;
+
+  outline: none;
+
+  transition: all 0.3s ease;
+}
+
+
+.global-search input::placeholder {
+  color: #91a5c4;
+}
+
+
+.global-search input:focus {
+  border-color: #4674ed;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(66, 108, 232, 0.09),
+    0 8px 20px rgba(42, 82, 150, 0.08);
+}
+
+
+.search-icon {
+  position: absolute;
+
+  left: 13px;
+  top: 12px;
+
+  width: 13px;
+  height: 13px;
+
+  border: 2px solid #7892b7;
+
+  border-radius: 50%;
+
+  z-index: 2;
+}
+
+
+.search-icon::after {
+  content: "";
+
+  position: absolute;
+
+  width: 6px;
   height: 2px;
-  background: #94a3b8;
-  right: -6px;
-  bottom: -4px;
+
+  background: #7892b7;
+
+  right: -5px;
+  bottom: -2px;
+
   transform: rotate(45deg);
+
   border-radius: 2px;
 }
 
-/* Transaction type dropdown */
+
 .transaction-type-filter {
-  height: 44px;
-  min-width: 180px;
-  padding: 0 35px 0 14px;
-  border: 1px solid #dbe2ea;
-  border-radius: 7px;
-  outline: none;
+  height: 40px;
+
+  min-width: 150px;
+
+  padding: 0 13px;
+
+  border: 1px solid #d4e1f4;
+  border-radius: 11px;
+
   background: #ffffff;
-  color: #334155;
-  font-size: 14px;
+
+  color: #244675;
+
+  font-size: 11px;
+
+  outline: none;
+
   cursor: pointer;
+
+  transition: all 0.25s ease;
 }
 
+
+.transaction-type-filter:hover,
 .transaction-type-filter:focus {
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+  border-color: #4774ed;
+
+  box-shadow:
+    0 0 0 3px rgba(65, 106, 231, 0.08);
 }
 
-/* Transaction table */
+
+/* =========================================================
+   TRANSACTION TABLE
+   ========================================================= */
+
 .transaction-table {
   width: 100%;
-  overflow-x: auto;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+
+  overflow: hidden;
+
+  border: 1px solid #dce5f2;
+
+  border-radius: 13px;
+
+  background: #ffffff;
 }
 
-/* Table header */
 
 .table-header {
   display: grid;
 
-  /* Gives equal space to all six columns. */
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns:
+    1fr
+    1.2fr
+    1.65fr
+    0.8fr
+    0.95fr
+    1fr;
 
-  min-width: 1200px;
+  align-items: center;
 
-  padding: 15px 22px;
+  min-height: 43px;
 
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-
-  color: #475569;
-  font-size: 13px;
-  font-weight: 650;
-
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
+  padding: 0 16px;
 
   box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      90deg,
+      #f0f6ff,
+      #eaf2fc
+    );
+
+  color: #3c5980;
+
+  font-size: 9px;
+  font-weight: 850;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+
+  border-bottom: 1px solid #dce5f2;
 }
 
-
-/* Transaction row */
 
 .transaction-row {
   display: grid;
 
-  /* Gives equal space to all six columns. */
-  grid-template-columns: repeat(6, 1fr);
-
-  min-width: 1200px;
-  min-height: 82px;
-
-  padding: 18px 22px;
+  grid-template-columns:
+    1fr
+    1.2fr
+    1.65fr
+    0.8fr
+    0.95fr
+    1fr;
 
   align-items: center;
 
-  border-bottom: 1px solid #eef2f7;
+  min-height: 61px;
 
-  color: #334155;
-  font-size: 14px;
+  padding: 0 16px;
 
   box-sizing: border-box;
 
-  transition: background 0.2s ease;
+  color: #29486f;
+
+  font-size: 10px;
+
+  border-bottom: 1px solid #edf1f7;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-
-/* Prevents long references from touching other columns. */
-
-.transaction-row > div:nth-child(3) {
-  padding-right: 20px;
-
-  overflow-wrap: anywhere;
-  word-break: break-word;
-
-  line-height: 1.5;
-}
-
-
-/* Aligns the Type column consistently. */
-
-.table-header span:nth-child(4) {
-  text-align: center;
-}
-
-
-/* Keeps Type value in the center of its column. */
-
-.transaction-row > div:nth-child(4) {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-}
-
-
-/* Keeps every transaction row consistent. */
 
 .transaction-row:last-child {
   border-bottom: none;
@@ -314,11 +1215,23 @@
 
 
 .transaction-row:hover {
-  background: #f8fafc;
+  background:
+    linear-gradient(
+      90deg,
+      #f8fbff,
+      #eef5ff
+    );
+
+  transform: translateX(4px);
+
+  box-shadow:
+    inset 4px 0 0 #4271ea;
 }
 
 
-/* Transaction status */
+/* =========================================================
+   TRANSACTION STATUS
+   ========================================================= */
 
 .transaction-status {
   display: inline-flex;
@@ -326,208 +1239,76 @@
   align-items: center;
   justify-content: center;
 
-  width: 80px;
-  height: 36px;
+  gap: 6px;
 
-  padding: 0;
+  min-width: 62px;
+
+  padding: 6px 9px;
 
   border-radius: 20px;
 
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 750;
+}
 
-  box-sizing: border-box;
+
+.transaction-status::before {
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
 }
 
 
 .transaction-status.credit {
-  background: #dcfce7;
-  color: #15803d;
+  background: #e2faef;
+  color: #07945d;
+}
+
+
+.transaction-status.credit::before {
+  background: #19c77b;
 }
 
 
 .transaction-status.debit {
-  background: #fee2e2;
-  color: #dc2626;
+  background: #ffe8eb;
+  color: #e32e3d;
 }
 
 
-/* Amount */
+.transaction-status.debit::before {
+  background: #ef4050;
+}
+
+
+/* =========================================================
+   AMOUNTS
+   ========================================================= */
 
 .amount {
-  font-weight: 650;
-  font-size: 14px;
+  font-weight: 850;
 }
 
 
 .credit-amount {
-  color: #16a34a;
+  color: #07945d;
 }
 
 
 .debit-amount {
-  color: #dc2626;
+  color: #e92b3b;
 }
 
-/* Amount */
-.amount {
-  font-weight: 650;
-  font-size: 14px;
-}
 
-.credit-amount {
-  color: #16a34a;
-}
-
-.debit-amount {
-  color: #dc2626;
-}
-
-/* Pagination */
-.pagination-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  padding-top: 17px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.page-size-container {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
-.page-size-container label {
-  font-size: 14px;
-  color: #475569;
-}
-
-.page-size-container select {
-  min-width: 65px;
-  padding: 6px 8px;
-  border: 1px solid #cbd5e1;
-  border-radius: 5px;
-  background: #ffffff;
-  color: #334155;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-}
-
-/* Page navigation */
-.page-navigation {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.page-navigation button {
-  min-width: 42px;
-  height: 38px;
-  padding: 0 13px;
-  border: 1px solid #dbe2ea;
-  border-radius: 7px;
-  background: #ffffff;
-  color: #475569;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.page-navigation button:first-child,
-.page-navigation button:last-child {
-  min-width: 80px;
-}
-
-.page-navigation button:not(:disabled):hover {
-  background: #e0e7ff;
-  border-color: #818cf8;
-  color: #3730a3;
-}
-
-.page-navigation button.active-page {
-  background: #4f46e5;
-  color: #ffffff;
-  border-color: #4f46e5;
-}
-
-.page-navigation button:disabled {
-  background: #f8fafc;
-  color: #94a3b8;
-  border-color: #e2e8f0;
-  cursor: not-allowed;
-}
-
-/* Responsive design */
-@media (max-width: 900px) {
-
-  .transactions-page {
-    padding: 25px 20px;
-  }
-
-  .transaction-filters {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .global-search {
-    width: 100%;
-  }
-
-  .transaction-type-filter {
-    width: 100%;
-  }
-
-  .account-summary {
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .account-balance {
-    align-items: flex-start;
-  }
-}
-
-@media (max-width: 600px) {
-
-  .transactions-page {
-    padding: 20px 15px;
-  }
-
-  .page-header {
-    align-items: flex-start;
-  }
-
-  .page-header h1 {
-    font-size: 24px;
-  }
-
-  .account-summary {
-    flex-direction: column;
-  }
-
-  .account-balance {
-    align-items: flex-start;
-  }
-
-  .transaction-card {
-    padding: 18px;
-  }
-
-  .pagination-container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-}
-
-/* Empty transaction state */
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
 
 .empty-transaction-state {
-  min-height: 240px;
+  min-height: 210px;
 
   display: flex;
   flex-direction: column;
@@ -535,93 +1316,61 @@
   align-items: center;
   justify-content: center;
 
-  padding: 30px 20px;
-
   text-align: center;
 
-  background: #ffffff;
+  color: #7487a5;
 }
 
 
 .empty-transaction-icon {
-  display: flex;
+  width: 58px;
+  height: 58px;
 
+  display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 50px;
-  height: 50px;
-
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 
   border-radius: 50%;
 
-  background: #f1f5f9;
+  background:
+    linear-gradient(
+      135deg,
+      #edf4ff,
+      #e6edff
+    );
 
-  color: #64748b;
+  color: #4671df;
 
   font-size: 26px;
+
+  box-shadow:
+    0 10px 25px rgba(65, 105, 215, 0.12);
 }
 
 
 .empty-transaction-state h3 {
-  margin: 0;
+  margin: 0 0 6px;
 
-  color: #334155;
+  color: #244372;
 
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
 }
 
 
 .empty-transaction-state p {
-  margin: 8px 0 0;
+  margin: 0;
 
-  color: #64748b;
+  color: #8a9bb5;
 
-  font-size: 14px;
+  font-size: 11px;
 }
 
-/* Account selection */
 
-.account-selector {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  margin-bottom: 18px;
-}
-
-.account-selector label {
-  color: #475569;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.account-selector select {
-  min-width: 280px;
-  height: 40px;
-
-  padding: 0 12px;
-
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-
-  background: #ffffff;
-  color: #334155;
-
-  font-size: 14px;
-
-  outline: none;
-  cursor: pointer;
-}
-
-.account-selector select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-/* Transaction loading indicator */
+/* =========================================================
+   LOADING
+   ========================================================= */
 
 .transaction-loading {
   min-height: 220px;
@@ -629,28 +1378,530 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background: #ffffff;
 }
 
-.loading-spinner {
-  width: 38px;
-  height: 38px;
 
-  border: 4px solid #e2e8f0;
-  border-top-color: #4f46e5;
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+
+  border: 4px solid #dce7fb;
+
+  border-top-color: #3569e8;
 
   border-radius: 50%;
 
-  animation: transactionSpin 0.8s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
 
-@keyframes transactionSpin {
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.pagination-container {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding-top: 13px;
+}
+
+
+.page-size-container {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.page-size-container label {
+  color: #597193;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+.page-size-container select {
+  width: 54px;
+  height: 32px;
+
+  padding: 0 7px;
+
+  border: 1px solid #d4e0ef;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #294875;
+
+  font-size: 11px;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+
+.page-navigation {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+
+.page-navigation button {
+  min-width: 37px;
+  height: 32px;
+
+  padding: 0 10px;
+
+  border: 1px solid #d8e2f1;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #38557f;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+
+.page-navigation button:hover:not(:disabled) {
+  border-color: #4b72e8;
+
+  color: #315fd5;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 15px rgba(50, 90, 180, 0.13);
+}
+
+
+.page-navigation button.active-page {
+  border-color: #4169e1;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3267e9,
+      #4d55e8
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 9px 20px rgba(55, 90, 220, 0.27);
+}
+
+
+.page-navigation button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes titleReveal {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(16px);
   }
 
   to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform:
+      translateY(20px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes floatingBankCard {
+  0%,
+  100% {
+    transform:
+      perspective(800px)
+      rotateY(-12deg)
+      rotateX(5deg)
+      rotateZ(2deg)
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      perspective(800px)
+      rotateY(-8deg)
+      rotateX(3deg)
+      rotateZ(1deg)
+      translateY(-9px);
+  }
+}
+
+
+@keyframes cardShine {
+  0% {
+    left: -150px;
+  }
+
+  55% {
+    left: 330px;
+  }
+
+  100% {
+    left: 330px;
+  }
+}
+
+
+@keyframes coinFloatOne {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(0deg);
+  }
+
+  50% {
+    transform:
+      translateY(-10px)
+      rotate(8deg);
+  }
+}
+
+
+@keyframes coinFloatTwo {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(0deg);
+  }
+
+  50% {
+    transform:
+      translateY(9px)
+      rotate(-8deg);
+  }
+}
+
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+
+@keyframes bankingIconFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+
+@keyframes backgroundFloat {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-22px, 18px);
+  }
+}
+
+
+@keyframes backgroundFloatReverse {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(18px, -14px);
+  }
+}
+
+
+@keyframes spin {
+  to {
     transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 1200px
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .transactions-page {
+    padding: 14px 20px 30px;
+  }
+
+  .banking-animation {
+    right: 0;
+    transform: scale(0.85);
+    transform-origin: top right;
+  }
+
+  .transaction-table {
+    overflow-x: auto;
+  }
+
+  .table-header,
+  .transaction-row {
+    min-width: 950px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 900px
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .page-header {
+    min-height: 105px;
+  }
+
+  .page-header h1 {
+    font-size: 27px;
+  }
+
+  .banking-animation {
+    width: 280px;
+    transform: scale(0.72);
+    transform-origin: top right;
+  }
+
+  .banking-security {
+    min-width: 145px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 800px
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .transactions-page {
+    padding: 15px 15px 30px;
+  }
+
+  .page-header {
+    min-height: 90px;
+  }
+
+  .page-header h1 {
+    font-size: 25px;
+  }
+
+  .page-header::after,
+  .page-header::before {
+    display: none;
+  }
+
+  .banking-animation {
+    display: none;
+  }
+
+  .account-selector {
+    flex-wrap: wrap;
+  }
+
+  .account-selector select {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .transaction-filters {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .global-search {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .banking-info-strip {
+    flex-wrap: wrap;
+  }
+
+  .banking-security {
+    border-left: none;
+    border-top: 1px solid #dce5f3;
+
+    padding-left: 0;
+    padding-top: 8px;
+
+    width: 100%;
+  }
+
+  .account-summary {
+    padding: 17px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 600px
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .transactions-page {
+    padding: 12px 10px 25px;
+  }
+
+  .back-button {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .page-header {
+    min-height: 75px;
+
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+  }
+
+  .page-header p {
+    font-size: 11px;
+  }
+
+  .banking-info-strip {
+    padding: 10px 13px;
+  }
+
+  .banking-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .banking-info-main h3 {
+    font-size: 12px;
+  }
+
+  .banking-info-main p {
+    font-size: 9px;
+  }
+
+  .account-summary {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 13px;
+  }
+
+  .account-balance {
+    width: 100%;
+
+    align-items: flex-start;
+
+    padding-left: 0;
+    padding-top: 10px;
+
+    border-left: none;
+    border-top: 1px solid #dbe4f3;
+  }
+
+  .transaction-card {
+    padding: 13px;
+  }
+
+  .card-header h2 {
+    font-size: 17px;
+  }
+
+  .transaction-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .global-search,
+  .transaction-type-filter {
+    width: 100%;
+    max-width: none;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 13px;
+  }
+
+  .page-navigation {
+    justify-content: flex-end;
+
+    flex-wrap: wrap;
   }
 }

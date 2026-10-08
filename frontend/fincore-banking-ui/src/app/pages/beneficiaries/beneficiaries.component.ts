@@ -37,6 +37,12 @@ export class BeneficiariesComponent implements OnInit {
   validationMessage = '';
   successMessage = '';
 
+  currentPage = 1;
+
+  pageSize = 5;
+
+  searchTerm = '';
+
   constructor(
     private beneficiaryService: BeneficiaryService,
     private customerService: CustomerService,private route: ActivatedRoute
@@ -157,6 +163,11 @@ export class BeneficiariesComponent implements OnInit {
 
           // Refreshes the beneficiary list.
           this.loadBeneficiaries();
+
+          // Hide success message after 3 seconds
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 3000);
         },
 
         error: (error) => {
@@ -201,4 +212,127 @@ export class BeneficiariesComponent implements OnInit {
     this.showAddBeneficiary = true;
   }
 
+    // ================= PAGINATION =================
+
+
+  // Total number of pages
+  get totalPages(): number {
+
+    return Math.ceil(
+      this.filteredBeneficiaries.length / this.pageSize
+    );
+
+  }
+
+
+  // Records displayed on current page
+  get paginatedBeneficiaries(): Beneficiary[] {
+
+    const startIndex =
+      (this.currentPage - 1) * this.pageSize;
+
+    const endIndex =
+      startIndex + this.pageSize;
+
+    return this.filteredBeneficiaries.slice(
+      startIndex,
+      endIndex
+    );
+
+  }
+
+
+  // Starting record number
+    get startResult(): number {
+
+    if (this.filteredBeneficiaries.length === 0) {
+      return 0;
+    }
+
+    return (
+      (this.currentPage - 1) *
+        this.pageSize
+      + 1
+    );
+
+  }
+
+
+  // Ending record number
+  get endResult(): number {
+
+    return Math.min(
+      this.currentPage * this.pageSize,
+      this.filteredBeneficiaries.length
+    );
+
+  }
+
+
+  // Page numbers
+  get paginationPages(): number[] {
+
+    return Array.from(
+      {
+        length: this.totalPages
+      },
+      (_, index) => index + 1
+    );
+
+  }
+
+
+  // Change page
+  changePage(page: number): void {
+
+    if (
+      page < 1 ||
+      page > this.totalPages
+    ) {
+      return;
+    }
+
+    this.currentPage = page;
+
+  }
+
+
+  // Change page size
+  onPageSizeChange(): void {
+
+    this.currentPage = 1;
+
+  }
+
+  // Global search across all beneficiary fields.
+  get filteredBeneficiaries(): Beneficiary[] {
+
+    const search = this.searchTerm
+      .trim()
+      .toLowerCase();
+
+    if (!search) {
+      return this.beneficiaries;
+    }
+
+    return this.beneficiaries.filter(beneficiary => {
+
+      return (
+        beneficiary.beneficiaryName?.toLowerCase().includes(search) ||
+        beneficiary.beneficiaryAccountNumber?.toLowerCase().includes(search) ||
+        beneficiary.bankName?.toLowerCase().includes(search) ||
+        beneficiary.ifscCode?.toLowerCase().includes(search) ||
+        beneficiary.beneficiaryStatus?.toLowerCase().includes(search)
+      );
+
+    });
+  }
+
+    onSearchChange(): void {
+
+    this.currentPage = 1;
+
+  }
+
+  
 }

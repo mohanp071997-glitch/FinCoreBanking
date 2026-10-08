@@ -1,42 +1,199 @@
 <div class="cards-page">
 
+  <!-- ================= PAGE HEADER ================= -->
+
   <div class="page-header">
 
-     <button
-    type="button"
-    class="back-button"
-    (click)="goBack()">
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()">
 
-    ← Back
+      ← Back to Dashboard
 
-  </button>
-  
-    <div>
-      <h1>My Cards</h1>
-      <p>Manage your FinCore Bank cards</p>
-    </div>
+    </button>
+
+    <h1>My Cards</h1>
+
+    <p>
+      Manage your FinCore Bank cards securely
+    </p>
+
   </div>
+
+
+  <!-- ================= HERO ================= -->
+
+  <section class="cards-hero">
+
+    <div class="hero-content">
+
+      <span class="hero-bank-name">
+        FINCORE BANK
+      </span>
+
+      <h2>
+        Your Card,
+        <span>Your Control</span>
+      </h2>
+
+      <p class="hero-description">
+        Secure. Flexible. Always with you.
+      </p>
+
+
+      <div class="hero-features">
+
+        <div class="hero-feature">
+          <div class="hero-feature-icon secure-icon">
+            🛡
+          </div>
+
+          <div>
+            <strong>Secure</strong>
+            <span>Transactions</span>
+          </div>
+        </div>
+
+
+        <div class="hero-feature">
+          <div class="hero-feature-icon contact-icon">
+            ⚡
+          </div>
+
+          <div>
+            <strong>Contactless</strong>
+            <span>Payments</span>
+          </div>
+        </div>
+
+
+        <div class="hero-feature">
+          <div class="hero-feature-icon global-icon">
+            🌐
+          </div>
+
+          <div>
+            <strong>Accepted</strong>
+            <span>Worldwide</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= 3D ANIMATION ================= -->
+
+    <div class="banking-animation">
+
+      <div class="animation-glow"></div>
+
+      <div class="floating-coin coin-one">₹</div>
+      <div class="floating-coin coin-two">₹</div>
+      <div class="floating-coin coin-three">₹</div>
+
+
+      <div class="hero-card-back">
+        <div class="hero-card-strip"></div>
+      </div>
+
+
+      <div class="hero-bank-card">
+
+        <div class="hero-card-top">
+
+          <div>
+            🏦 FinCore Bank
+          </div>
+
+          <span>VISA</span>
+
+        </div>
+
+        <div class="hero-card-chip"></div>
+
+        <div class="hero-card-number">
+          •••• •••• •••• 4521
+        </div>
+
+        <div class="hero-card-bottom">
+
+          <div>
+            <small>CARD HOLDER</small>
+            <strong>FINCORE BANK</strong>
+          </div>
+
+          <div>
+            <small>VALID THRU</small>
+            <strong>09/29</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="security-shield">
+        🔒
+      </div>
+
+      <div class="hero-platform"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= YOUR CARDS ================= -->
 
   <section class="cards-section">
 
-    <div class="section-header">
-      <div>
-        <h2>Your Cards</h2>
-        <p>View and manage your active cards</p>
-      </div>
+  <div class="section-header">
+
+    <div>
+      <h2>Your Cards</h2>
+
+      <p>
+        View and manage your active cards
+      </p>
     </div>
 
-    <div class="cards-grid">
+    <button
+      type="button"
+      class="add-card-button"
+      (click)="addNewCard()">
 
-      <div
-        class="bank-card"
-        *ngFor="let card of cards">
+      <span>+</span>
+      Add New Card
+
+    </button>
+
+  </div>
+
+
+    <div
+      class="cards-container"
+      *ngFor="let card of cards">
+
+
+      <!-- ================= CARD ================= -->
+
+      <div class="bank-card">
 
         <div class="card-top">
 
           <div class="card-brand">
-            <span class="bank-icon">🏦</span>
-            <span>FinCore Bank</span>
+
+            <span class="bank-icon">
+              🏦
+            </span>
+
+            <span>
+              FinCore Bank
+            </span>
+
           </div>
 
           <span class="card-type">
@@ -45,70 +202,479 @@
 
         </div>
 
+
         <div class="card-chip">
           <span></span>
         </div>
 
+
         <div class="card-number-row">
 
-        <div class="card-number">
+          <div class="card-number">
+
             {{
-            showCardNumber
+              showCardNumber
                 ? card.cardNumber
-                : '•••• •••• •••• ' + card.cardNumber.slice(-4)
+                : '•••• •••• •••• ' +
+                  card.cardNumber.slice(-4)
             }}
-        </div>
+
+          </div>
+
 
         <button
-            type="button"
-            class="card-number-toggle"
-            (click)="toggleCardNumber()"
-            [attr.aria-label]="showCardNumber ? 'Hide card number' : 'Show card number'">
+          type="button"
+          class="card-number-toggle"
+          (click)="toggleCardNumber()"
+          [attr.aria-label]="showCardNumber ? 'Hide card number' : 'Show card number'">
 
-            <svg
+          <!-- Eye icon -->
+          <svg
             *ngIf="!showCardNumber"
             width="20"
             height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2">
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
 
-            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
-            <circle cx="12" cy="12" r="3"/>
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
 
-            </svg>
+            <circle
+              cx="12"
+              cy="12"
+              r="3">
+            </circle>
 
-            <svg
+          </svg>
+
+
+          <!-- Eye off icon -->
+          <svg
             *ngIf="showCardNumber"
             width="20"
             height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2">
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
 
-            <path d="M3 3l18 18"/>
-            <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
-            <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c7 0 10 8 10 8a17.2 17.2 0 0 1-3.1 4.4"/>
-            <path d="M6.1 6.1C3.6 7.8 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 3.2-.5"/>
-            </svg>
+            <path d="M3 3l18 18"></path>
+
+            <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+
+            <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c7 0 10 8 10 8a17.2 17.2 0 0 1-3.1 4.4"></path>
+
+            <path d="M6.1 6.1C3.6 7.8 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 3.2-.5"></path>
+
+          </svg>
 
         </button>
 
         </div>
 
+
         <div class="card-bottom">
 
           <div>
-            <small>CARD HOLDER</small>
-            <strong>{{ card.cardHolderName }}</strong>
+
+            <small>
+              CARD HOLDER
+            </small>
+
+            <strong>
+              {{ card.cardHolderName }}
+            </strong>
+
           </div>
 
+
           <div>
-            <small>VALID THRU</small>
-            <strong>{{ card.expiryDate | date:'MM/yy' }}</strong>
+
+            <small>
+              VALID THRU
+            </small>
+
+            <strong>
+              {{ card.expiryDate | date:'MM/yy' }}
+            </strong>
+
           </div>
+
+        </div>
+
+
+        <div
+          class="card-status-badge"
+          [class.card-active]="card.cardStatus === 'Active'"
+          [class.card-blocked]="card.cardStatus === 'Blocked'">
+
+          <span></span>
+
+          {{ card.cardStatus }}
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= RIGHT SIDE ================= -->
+
+      <div class="card-right-content">
+
+
+        <!-- ===== SUMMARY ===== -->
+
+        <div class="card-details">
+
+
+          <div class="detail-item">
+
+            <div class="detail-icon purple">
+              💳
+            </div>
+
+            <div>
+              <span>Card Type</span>
+
+              <strong>
+                {{ card.cardType }}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-icon green">
+              🛡
+            </div>
+
+            <div>
+              <span>Card Status</span>
+
+              <strong
+                [class.active-status]="
+                  card.cardStatus === 'Active'
+                "
+                [class.blocked-status]="
+                  card.cardStatus === 'Blocked'
+                ">
+
+                {{ card.cardStatus }}
+
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-icon blue">
+              📊
+            </div>
+
+            <div>
+              <span>Available Limit</span>
+
+              <strong>
+                ₹{{ card.availableLimit | number:'1.2-2' }}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-icon violet">
+              💰
+            </div>
+
+            <div>
+              <span>Used Amount</span>
+
+              <strong>
+                ₹{{ card.usedAmount | number:'1.2-2' }}
+              </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===== USAGE + SECURITY ===== -->
+
+        <div class="lower-content">
+
+
+          <!-- CARD USAGE -->
+
+          <div class="card-usage-panel">
+
+            <div class="panel-title">
+              <span>📊</span>
+              <strong>Card Usage</strong>
+            </div>
+
+
+            <div class="usage-content">
+
+              <div class="usage-circle">
+
+                <div>
+
+                  <strong>
+                    {{
+                      getCardUsagePercentage(card)
+                      | number:'1.0-0'
+                    }}%
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="usage-values">
+
+                <div>
+
+                  <strong>
+                    ₹{{ card.usedAmount | number:'1.2-2' }}
+                  </strong>
+
+                  <span>
+                    Used Amount
+                  </span>
+
+                </div>
+
+
+                <div>
+
+                  <strong>
+                    ₹{{
+                      getTotalCardLimit(card)
+                      | number:'1.2-2'
+                    }}
+                  </strong>
+
+                  <span>
+                    Total Limit
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="usage-progress">
+
+              <div
+                class="usage-progress-fill"
+                [style.width.%]="
+                  getCardUsagePercentage(card)
+                ">
+              </div>
+
+            </div>
+
+
+            <div class="usage-labels">
+
+              <span>
+                ₹{{ card.usedAmount | number:'1.2-2' }} used
+              </span>
+
+              <span>
+                ₹{{
+                  getTotalCardLimit(card)
+                  | number:'1.2-2'
+                }} limit
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- SECURITY -->
+
+          <div class="card-security-panel">
+
+            <div class="panel-title">
+
+              <span>🛡</span>
+
+              <strong>
+                Card Features & Security
+              </strong>
+
+            </div>
+
+
+            <div class="security-list">
+
+
+              <div class="security-item">
+
+                <div class="security-item-icon green">
+                  ✓
+                </div>
+
+                <div>
+                  <strong>
+                    Card is {{ card.cardStatus }}
+                  </strong>
+
+                  <span>
+                    Your card is ready for use
+                  </span>
+                </div>
+
+                <span class="enabled-badge">
+                  Enabled
+                </span>
+
+              </div>
+
+
+              <div class="security-item">
+
+                <div class="security-item-icon blue">
+                  ◉
+                </div>
+
+                <div>
+                  <strong>
+                    Online Transactions
+                  </strong>
+
+                  <span>
+                    Enabled
+                  </span>
+                </div>
+
+                <span class="enabled-badge">
+                  Enabled
+                </span>
+
+              </div>
+
+
+              <div class="security-item">
+
+                <div class="security-item-icon purple">
+                  ◉
+                </div>
+
+                <div>
+                  <strong>
+                    Contactless Payments
+                  </strong>
+
+                  <span>
+                    Enabled
+                  </span>
+                </div>
+
+                <span class="enabled-badge">
+                  Enabled
+                </span>
+
+              </div>
+
+
+              <div class="security-item">
+
+                <div class="security-item-icon orange">
+                  🌐
+                </div>
+
+                <div>
+                  <strong>
+                    International Transactions
+                  </strong>
+
+                  <span>
+                    Enabled
+                  </span>
+                </div>
+
+                <span class="enabled-badge">
+                  Enabled
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= QUICK ACTIONS ================= -->
+
+        <div class="card-action">
+
+          <div class="quick-action-title">
+
+            <span>⚙</span>
+
+            <strong>
+              Quick Actions
+            </strong>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="card-status-button"
+            [class.block-button]="
+              card.cardStatus === 'Active'
+            "
+            [class.unblock-button]="
+              card.cardStatus === 'Blocked'
+            "
+            (click)="updateCardStatus(card)">
+
+            {{ card.cardStatus === 'Active'
+              ? '🔒 Block Card'
+              : '🔓 Unblock Card' }}
+
+          </button>
+
+
+          <button
+            type="button"
+            class="secondary-action"
+            (click)="toggleCardNumber()">
+
+            👁 View Card Number
+
+          </button>
+
+
+          <button
+            type="button"
+            class="secondary-action"
+            (click)="viewCardDetails(card)">
+
+            📄 View Card Details
+
+          </button>
 
         </div>
 
@@ -116,149 +682,122 @@
 
     </div>
 
-    <div
-    class="card-details"
-    *ngFor="let card of cards">
 
-    <div class="detail-item">
-        <span>Card Type</span>
-        <strong>{{ card.cardType }}</strong>
-    </div>
-
-    <div class="detail-item">
-        <span>Card Status</span>
-
-        <strong
-        [class.active-status]="card.cardStatus === 'Active'"
-        [class.blocked-status]="card.cardStatus === 'Blocked'">
-
-        {{ card.cardStatus }}
-
-        </strong>
-    </div>
-
-    <div class="detail-item">
-        <span>Available Limit</span>
-
-        <strong>
-        ₹{{ card.availableLimit | number:'1.2-2' }}
-        </strong>
-    </div>
-
-    <div class="detail-item">
-        <span>Used Amount</span>
-
-        <strong>
-        ₹{{ card.usedAmount | number:'1.2-2' }}
-        </strong>
-    </div>
-
-    <div class="card-action">
-
-        <button
-        type="button"
-        class="card-status-button"
-        [class.block-button]="card.cardStatus === 'Active'"
-        [class.unblock-button]="card.cardStatus === 'Blocked'"
-        (click)="updateCardStatus(card)">
-
-        {{ card.cardStatus === 'Active'
-            ? 'Block Card'
-            : 'Unblock Card' }}
-
-        </button>
-
-    </div>
-
-    </div>
+    <!-- ================= EMPTY ================= -->
 
     <div
       class="no-cards"
       *ngIf="cards.length === 0">
 
-      <p>No cards available.</p>
+      <div class="empty-card-icon">
+        💳
+      </div>
+
+      <h3>No Cards Available</h3>
+
+      <p>
+        You currently don't have any active cards.
+      </p>
 
     </div>
 
   </section>
 
-  <!-- Card status confirmation popup. -->
-    <div
+
+  <!-- ================= BLOCK POPUP ================= -->
+
+  <div
     class="modal-overlay"
     *ngIf="showStatusPopup">
 
     <div class="status-modal">
 
-        <div class="modal-header">
+      <div class="modal-header">
 
         <div>
-            <h3>
+
+          <div class="modal-icon">
+            🔒
+          </div>
+
+          <h3>
+
             {{
-                selectedCard?.cardStatus === 'Active'
+              selectedCard?.cardStatus === 'Active'
                 ? 'Block Card'
                 : 'Unblock Card'
             }}
-            </h3>
 
-            <p>
+          </h3>
+
+          <p>
+
             {{
-                selectedCard?.cardStatus === 'Active'
+              selectedCard?.cardStatus === 'Active'
                 ? 'Are you sure you want to block this card?'
                 : 'Do you want to unblock this card?'
             }}
-            </p>
+
+          </p>
+
         </div>
 
-        <button
-            type="button"
-            class="modal-close"
-            (click)="closeStatusPopup()">
 
-            ×
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeStatusPopup()">
+
+          ×
 
         </button>
 
-        </div>
+      </div>
 
-        <div class="modal-card-info">
+
+      <div class="modal-card-info">
 
         <span>Card</span>
 
         <strong>
-            •••• {{ selectedCard?.cardNumber?.slice(-4) }}
+          •••• {{ selectedCard?.cardNumber?.slice(-4) }}
         </strong>
 
-        </div>
+      </div>
 
-        <div class="modal-actions">
+
+      <div class="modal-actions">
 
         <button
-            type="button"
-            class="cancel-button"
-            (click)="closeStatusPopup()">
+          type="button"
+          class="cancel-button"
+          (click)="closeStatusPopup()">
 
-            Cancel
+          Cancel
 
         </button>
 
-        <button
-            type="button"
-            class="confirm-button"
-            [class.unblock-confirm]="selectedCard?.cardStatus === 'Blocked'"
-            (click)="confirmStatusUpdate()">
 
-            {{
+        <button
+          type="button"
+          class="confirm-button"
+          [class.unblock-confirm]="
+            selectedCard?.cardStatus === 'Blocked'
+          "
+          (click)="confirmStatusUpdate()">
+
+          {{
             selectedCard?.cardStatus === 'Active'
-                ? 'Block Card'
-                : 'Unblock Card'
-            }}
+              ? 'Block Card'
+              : 'Unblock Card'
+          }}
 
         </button>
 
-        </div>
+      </div>
 
     </div>
 
-    </div>
+  </div>
 
 </div>

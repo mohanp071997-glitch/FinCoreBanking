@@ -1,390 +1,1768 @@
-/* Defines the account page layout. */
+/* =========================================================
+   FINCORE BANKING - MY ACCOUNTS
+   PREMIUM BANKING UI
+========================================================= */
+
 .accounts-page {
   min-height: 100vh;
-  padding: 30px 36px;
-  background: #f5f7fc;
+  position: relative;
+  overflow: hidden;
+
+  padding: 32px 42px 60px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef4ff 0%,
+      #f7faff 45%,
+      #eaf1ff 100%
+    );
+
+  color: #172b50;
 }
 
-/* Styles the page header. */
+
+/* =========================================================
+   BACKGROUND BANKING GLOW
+========================================================= */
+
+.accounts-page::before {
+  content: "";
+
+  position: fixed;
+
+  width: 500px;
+  height: 500px;
+
+  top: -230px;
+  right: -150px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(49, 94, 234, 0.18),
+      rgba(49, 94, 234, 0.04) 55%,
+      transparent 72%
+    );
+
+  pointer-events: none;
+
+  animation:
+    accountBackgroundFloat 8s ease-in-out infinite;
+}
+
+
+.accounts-page::after {
+  content: "";
+
+  position: fixed;
+
+  width: 400px;
+  height: 400px;
+
+  bottom: -220px;
+  left: 100px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(23, 58, 145, 0.10),
+      transparent 70%
+    );
+
+  pointer-events: none;
+
+  animation:
+    accountBackgroundFloatReverse 10s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
 .page-header {
-  margin-bottom: 26px;
+  position: relative;
+  z-index: 2;
+
+  margin-bottom: 32px;
+
+  animation:
+    accountPageEnter 0.7s ease both;
 }
 
-/* Styles the back button. */
+
+/* Back button */
+
 .back-button {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 18px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: #54248c;
-  font-size: 14px;
-  font-weight: 600;
+  gap: 7px;
+
+  margin-bottom: 20px;
+
+  padding: 9px 15px;
+
+  border: 1px solid #d7e2f7;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,0.75);
+
+  color: #3158b7;
+
+  font-size: 13px;
+  font-weight: 650;
+
   cursor: pointer;
-  transition: color 0.2s ease;
+
+  box-shadow:
+    0 5px 14px rgba(31,58,115,0.06);
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* Changes the back button on hover. */
+
 .back-button:hover {
-  color: #7c3aed;
-  text-decoration: underline;
+  background: #ffffff;
+
+  transform:
+    translateX(-4px);
+
+  box-shadow:
+    0 8px 18px rgba(49,94,234,0.12);
 }
 
-/* Styles the page title. */
+
+/* Title */
+
 .page-header h1 {
   margin: 0;
-  color: #172033;
-  font-size: 30px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
+
+  color: #142d67;
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.8px;
 }
 
-/* Styles the page description. */
+
+.page-header h1::after {
+  content: "";
+
+  display: block;
+
+  width: 55px;
+  height: 4px;
+
+  margin-top: 9px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #315eea,
+      #6b8ff5
+    );
+
+  box-shadow:
+    0 4px 10px rgba(49,94,234,0.22);
+}
+
+
 .page-header p {
-  margin: 7px 0 0;
-  color: #6b7280;
-  font-size: 15px;
+  margin: 10px 0 0;
+
+  color: #71809a;
+
+  font-size: 14px;
 }
 
-/* Displays account cards in a vertical layout. */
+
+/* =========================================================
+   ACCOUNT LIST
+========================================================= */
+
 .account-list {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   flex-direction: column;
-  gap: 22px;
+
+  gap: 25px;
 }
 
-/* Styles the main account card. */
+
+/* =========================================================
+   ACCOUNT CARD
+========================================================= */
+
 .account-card {
   position: relative;
+
   overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
+
   padding: 28px;
-  box-shadow: 0 8px 30px rgba(48, 38, 90, 0.07);
+
+  border-radius: 24px;
+
+  border: 1px solid rgba(255,255,255,0.85);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.98),
+      rgba(239,245,255,0.96)
+    );
+
+  box-shadow:
+    0 12px 30px rgba(25,55,115,0.10),
+    0 28px 65px rgba(25,55,115,0.06);
+
+  transform-style: preserve-3d;
+
+  animation:
+    accountCardReveal 0.75s cubic-bezier(.22,.61,.36,1) both;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
 
-/* Adds the purple top border. */
+
+/* Banking blue top line */
+
 .account-card::before {
-  content: '';
+  content: "";
+
   position: absolute;
-  top: 0;
+
   left: 0;
+  top: 0;
+
   width: 100%;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    #54248c,
-    #7c3aed,
-    #a855f7
-  );
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #173b9f,
+      #315eea,
+      #7195ff,
+      #315eea
+    );
+
+  background-size: 200% 100%;
+
+  animation:
+    accountLineMove 4s linear infinite;
 }
 
-/* Aligns the account header. */
+
+/* Card shine */
+
+.account-card::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 60%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.70),
+      transparent
+    );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.8s ease;
+
+  pointer-events: none;
+}
+
+
+.account-card:hover::after {
+  left: 140%;
+}
+
+
+.account-card:hover {
+  transform:
+    translateY(-7px)
+    rotateX(1deg)
+    scale(1.008);
+
+  border-color:
+    rgba(49,94,234,0.20);
+
+  box-shadow:
+    0 20px 42px rgba(25,55,115,0.14),
+    0 35px 70px rgba(49,94,234,0.08);
+}
+
+
+/* =========================================================
+   ACCOUNT HEADER
+========================================================= */
+
 .account-card-header {
+  position: relative;
+  z-index: 2;
+
   display: flex;
+
   align-items: center;
   justify-content: space-between;
+
   gap: 20px;
+
   padding-bottom: 22px;
-  border-bottom: 1px solid #e8eaf0;
+
+  border-bottom:
+    1px solid #e1e8f5;
 }
 
-/* Aligns the account icon and title. */
+
 .account-title {
   display: flex;
+
   align-items: center;
-  gap: 14px;
+
+  gap: 15px;
 }
 
-/* Styles the account icon. */
+
+/* Account icon */
+
 .account-icon {
-  width: 48px;
-  height: 48px;
+  width: 54px;
+  height: 54px;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  background: #f3e8ff;
-  font-size: 22px;
+
+  border-radius: 16px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #416df5,
+      #17358f
+    );
+
+  font-size: 24px;
+
+  box-shadow:
+    0 10px 22px rgba(49,94,234,0.28),
+    inset 1px 1px 2px rgba(255,255,255,0.35);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-/* Styles the account type title. */
+
+.account-card:hover .account-icon {
+  transform:
+    translateY(-4px)
+    rotate(-5deg)
+    scale(1.06);
+
+  box-shadow:
+    0 14px 28px rgba(49,94,234,0.34);
+}
+
+
 .account-title h2 {
   margin: 0 0 5px;
-  color: #172033;
-  font-size: 20px;
-  font-weight: 700;
+
+  color: #18366f;
+
+  font-size: 21px;
+
+  font-weight: 750;
 }
 
-/* Styles the account number. */
+
 .account-title span {
-  color: #6b7280;
+  color: #71809a;
+
   font-size: 13px;
+
+  letter-spacing: 0.4px;
 }
 
-/* Styles the account status. */
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 .account-status {
   display: inline-flex;
+
   align-items: center;
+
   gap: 8px;
+
   padding: 8px 14px;
+
   border-radius: 20px;
-  background: #f3f4f6;
-  color: #6b7280;
-  font-size: 13px;
-  font-weight: 600;
-}
 
-/* Styles the active status. */
-.account-status.active {
-  background: #d1fae5;
-  color: #047857;
-}
+  background:
+    #f0f3f8;
 
-/* Creates the status indicator. */
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-}
+  color: #71809a;
 
-/* Styles the balance section. */
-.balance-section {
-  padding: 25px 0;
-}
+  border: 1px solid #e0e6ef;
 
-/* Styles the balance label. */
-.balance-label {
-  display: block;
-  margin-bottom: 8px;
-  color: #6b7280;
-  font-size: 13px;
-  font-weight: 500;
-}
+  font-size: 12px;
 
-/* Styles the balance amount. */
-.balance-amount {
-  color: #172033;
-  font-size: 32px;
   font-weight: 700;
-  letter-spacing: -0.5px;
+
+  box-shadow:
+    0 4px 10px rgba(30,50,90,0.05);
 }
 
-/* Creates the account information grid. */
+
+.account-status.active {
+  color: #08783e;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e6f9ed,
+      #d5f2e0
+    );
+
+  border-color: #bfe5ce;
+
+  box-shadow:
+    0 6px 14px rgba(8,120,62,0.10);
+}
+
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+
+  box-shadow:
+    0 0 0 4px rgba(8,120,62,0.08);
+
+  animation:
+    statusPulse 2s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   BALANCE
+========================================================= */
+
+.balance-section {
+  position: relative;
+  z-index: 2;
+
+  margin: 22px 0;
+
+  padding: 22px 25px;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #173b9f,
+      #2858d8 55%,
+      #153486
+    );
+
+  box-shadow:
+    0 13px 30px rgba(23,59,159,0.22);
+}
+
+
+/* balance decorative circle */
+
+.balance-section::before {
+  content: "";
+
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  right: -75px;
+  top: -90px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,0.18),
+      transparent 68%
+    );
+
+  animation:
+    balanceOrb 5s ease-in-out infinite;
+}
+
+
+.balance-section::after {
+  content: "";
+
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  right: 80px;
+  bottom: -60px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,0.13);
+}
+
+
+.balance-label {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: rgba(255,255,255,0.72);
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+}
+
+
+.balance-amount {
+  position: relative;
+  z-index: 2;
+
+  color: #ffffff;
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
+
+  text-shadow:
+    0 5px 12px rgba(0,0,0,0.14);
+}
+
+
+/* =========================================================
+   ACCOUNT DETAILS
+========================================================= */
+
 .account-details {
+  position: relative;
+  z-index: 2;
+
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 15px;
+
+  margin-top: 20px;
 }
 
-/* Styles each account detail. */
+
 .detail-item {
-  min-height: 70px;
+  min-height: 72px;
+
   display: flex;
+
   flex-direction: column;
+
   justify-content: center;
+
   padding: 15px 17px;
-  background: #f8f9fd;
-  border: 1px solid #e8ebf2;
-  border-radius: 11px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f0f5ff
+    );
+
+  border: 1px solid #dfe7f5;
+
+  box-shadow:
+    0 5px 13px rgba(31,58,115,0.05);
+
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
-/* Adds hover effect to details. */
+
 .detail-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 16px rgba(48, 38, 90, 0.07);
+  transform:
+    translateY(-4px);
+
+  border-color:
+    #a9bdf0;
+
+  box-shadow:
+    0 11px 23px rgba(49,94,234,0.10);
 }
 
-/* Styles detail labels. */
+
 .detail-item span {
   margin-bottom: 7px;
-  color: #6b7280;
-  font-size: 12px;
-  font-weight: 500;
-}
 
-/* Styles detail values. */
-.detail-item strong {
-  color: #172033;
-  font-size: 15px;
-  font-weight: 650;
-}
+  color: #77869e;
 
-/* Styles the quick action section. */
-.quick-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 22px;
-  border-top: 1px solid #e8eaf0;
-}
+  font-size: 11px;
 
-/* Styles quick action buttons. */
-.action-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 1px solid #ddd6fe;
-  border-radius: 8px;
-  background: #faf5ff;
-  color: #6d28d9;
-  font-size: 13px;
   font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
 }
 
-/* Changes the action button on hover. */
-.action-button:hover {
-  transform: translateY(-1px);
-  background: #6d28d9;
-  color: #ffffff;
-}
 
-/* Styles the primary action button. */
-.action-button.primary {
-  background: #54248c;
-  border-color: #54248c;
-  color: #ffffff;
-}
+.detail-item strong {
+  color: #203b70;
 
-/* Changes the primary action on hover. */
-.action-button.primary:hover {
-  background: #6d28d9;
-  border-color: #6d28d9;
-}
+  font-size: 14px;
 
-/* Styles the loading container. */
-.account-loading {
-  min-height: 420px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Creates the loading spinner. */
-.loading-spinner {
-  width: 38px;
-  height: 38px;
-  border: 4px solid #e9e5f2;
-  border-top-color: #6d28d9;
-  border-right-color: #8b5cf6;
-  border-radius: 50%;
-  animation: accountSpinner 0.8s linear infinite;
-}
-
-/* Styles the loading text. */
-.account-loading p {
-  margin-top: 13px;
-  color: #6b7280;
-  font-size: 13px;
-}
-
-/* Rotates the spinner. */
-@keyframes accountSpinner {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Styles the error container. */
-.account-error,
-.no-account {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 50px 25px;
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(48, 38, 90, 0.06);
-}
-
-/* Styles the error icon. */
-.error-icon {
-  width: 42px;
-  height: 42px;
-  margin: 0 auto 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #fee2e2;
-  color: #b91c1c;
-  font-size: 20px;
   font-weight: 700;
 }
 
-/* Styles error and empty headings. */
-.account-error h3,
-.no-account h3 {
-  margin: 0 0 8px;
-  color: #374151;
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.quick-actions {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  gap: 13px;
+
+  margin-top: 23px;
+
+  padding-top: 22px;
+
+  border-top:
+    1px solid #e0e7f3;
 }
 
-/* Styles error and empty descriptions. */
+
+.action-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 11px 18px;
+
+  border: 1px solid #cddbf5;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #edf3ff
+    );
+
+  color: #3158b7;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 13px rgba(31,58,115,0.06);
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.action-button:hover {
+  transform:
+    translateY(-4px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #315eea,
+      #193a9e
+    );
+
+  border-color:
+    #315eea;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 11px 23px rgba(49,94,234,0.22);
+}
+
+
+.salary-action {
+  color: #8b5a12;
+
+  border-color: #ecd9a9;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fffdf5,
+      #fff7dc
+    );
+}
+
+
+.salary-action:hover {
+  color: #ffffff;
+
+  border-color: #d79a25;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d79a25,
+      #a96b08
+    );
+
+  box-shadow:
+    0 11px 23px rgba(190,130,25,0.20);
+}
+
+
+/* =========================================================
+   SALARY DETAILS
+========================================================= */
+
+.salary-details-card {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 25px;
+
+  padding: 26px;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f1f6ff
+    );
+
+  border: 1px solid #dce6f5;
+
+  box-shadow:
+    0 10px 28px rgba(25,55,115,0.08);
+
+  animation:
+    accountPageEnter 0.7s ease both;
+}
+
+
+.salary-details-header {
+  margin-bottom: 20px;
+
+  padding-bottom: 15px;
+
+  border-bottom:
+    1px solid #e1e8f4;
+}
+
+
+.salary-details-header h3 {
+  margin: 0;
+
+  color: #18366f;
+
+  font-size: 20px;
+
+  font-weight: 750;
+}
+
+
+.salary-details-header p {
+  margin: 6px 0 0;
+
+  color: #71809a;
+
+  font-size: 13px;
+}
+
+
+.salary-details-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 15px;
+}
+
+
+.salary-detail-item {
+  padding: 18px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #edf3ff
+    );
+
+  border: 1px solid #dfe8f6;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.salary-detail-item:hover {
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    0 10px 22px rgba(49,94,234,0.08);
+}
+
+
+.salary-detail-item span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #71809a;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+  text-transform: uppercase;
+}
+
+
+.salary-detail-item strong {
+  display: block;
+
+  color: #1e3a70;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.account-loading {
+  min-height: 500px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+.loading-spinner {
+  width: 46px;
+  height: 46px;
+
+  border: 4px solid #dce6f8;
+
+  border-top-color: #315eea;
+
+  border-right-color: #173b9f;
+
+  border-radius: 50%;
+
+  animation:
+    accountSpinner 0.8s linear infinite;
+
+  box-shadow:
+    0 7px 18px rgba(49,94,234,0.12);
+}
+
+
+.account-loading p {
+  margin-top: 15px;
+
+  color: #71809a;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   ERROR / NO ACCOUNT
+========================================================= */
+
+.account-error,
+.no-account {
+  position: relative;
+  z-index: 2;
+
+  max-width: 600px;
+
+  margin: 70px auto;
+
+  padding: 55px 30px;
+
+  text-align: center;
+
+  background:
+    rgba(255,255,255,0.90);
+
+  border:
+    1px solid #dfe7f4;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 15px 40px rgba(25,55,115,0.09);
+
+  animation:
+    accountPageEnter 0.6s ease both;
+}
+
+
+.error-icon {
+  width: 48px;
+  height: 48px;
+
+  margin: 0 auto 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffe7e7,
+      #ffd3d3
+    );
+
+  color: #c62828;
+
+  font-size: 21px;
+  font-weight: 800;
+
+  box-shadow:
+    0 7px 16px rgba(198,40,40,0.10);
+}
+
+
+.account-error h3,
+.no-account h3 {
+  margin: 0 0 9px;
+
+  color: #1d3768;
+
+  font-size: 20px;
+}
+
+
 .account-error p,
 .no-account p {
   margin: 0;
-  color: #6b7280;
-  font-size: 14px;
+
+  color: #71809a;
+
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-/* Styles the retry button. */
+
+.no-account-icon {
+  margin-bottom: 17px;
+
+  font-size: 48px;
+
+  filter:
+    drop-shadow(
+      0 8px 10px
+      rgba(49,94,234,0.15)
+    );
+
+  animation:
+    iconFloat 3s ease-in-out infinite;
+}
+
+
+/* Retry */
+
 .retry-button {
-  margin-top: 20px;
-  padding: 10px 18px;
+  margin-top: 22px;
+
+  padding: 11px 20px;
+
   border: none;
-  border-radius: 8px;
-  background: #54248c;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #315eea,
+      #193a9e
+    );
+
   color: #ffffff;
+
   font-size: 13px;
-  font-weight: 600;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px rgba(49,94,234,0.22);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.retry-button:hover {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 12px 24px rgba(49,94,234,0.30);
+}
+
+
+/* =========================================================
+   SALARY MODAL
+========================================================= */
+
+.salary-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background:
+    rgba(9,25,62,0.58);
+
+  backdrop-filter:
+    blur(9px);
+
+  animation:
+    backdropIn 0.25s ease both;
+}
+
+
+.salary-modal {
+  width: 100%;
+
+  max-width: 540px;
+
+  overflow: hidden;
+
+  border-radius: 23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f4f7ff
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.85);
+
+  box-shadow:
+    0 25px 80px rgba(8,27,70,0.28);
+
+  animation:
+    salaryModalOpen 0.35s cubic-bezier(.22,.61,.36,1) both;
+}
+
+
+.salary-modal-header {
+  position: relative;
+
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 25px 27px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #173b9f,
+      #315eea
+    );
+
+  color: #ffffff;
+}
+
+
+.salary-modal-header::after {
+  content: "";
+
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  right: -50px;
+  top: -70px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,0.10);
+}
+
+
+.salary-modal-header h2 {
+  position: relative;
+  z-index: 2;
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 19px;
+
+  font-weight: 750;
+}
+
+
+.salary-modal-header p {
+  position: relative;
+  z-index: 2;
+
+  margin: 6px 0 0;
+
+  color: rgba(255,255,255,0.72);
+
+  font-size: 12px;
+}
+
+
+.modal-close-button {
+  position: relative;
+  z-index: 3;
+
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid rgba(255,255,255,0.20);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,0.13);
+
+  color: #ffffff;
+
+  font-size: 21px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+
+.modal-close-button:hover {
+  background:
+    rgba(255,255,255,0.24);
+
+  transform:
+    rotate(90deg);
+}
+
+
+/* Modal body */
+
+.salary-modal-body {
+  padding: 25px 27px;
+}
+
+
+.form-field {
+  margin-bottom: 19px;
+}
+
+
+.form-field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #29446f;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.form-field label span {
+  color: #dc2626;
+}
+
+
+.form-field input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px 14px;
+
+  border: 1px solid #d5dfef;
+
+  border-radius: 11px;
+
+  outline: none;
+
+  background:
+    #ffffff;
+
+  color: #20385f;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.form-field input:focus {
+  border-color: #315eea;
+
+  box-shadow:
+    0 0 0 4px rgba(49,94,234,0.10);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.form-field input[readonly] {
+  background:
+    #eef3fb;
+
+  color: #6e7d96;
+
+  cursor: not-allowed;
+}
+
+
+.salary-input-wrapper {
+  position: relative;
+}
+
+
+.salary-input-wrapper > span {
+  position: absolute;
+
+  left: 14px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  color: #526987;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  z-index: 2;
+}
+
+
+.salary-input-wrapper input {
+  padding-left: 34px;
+}
+
+
+/* Confirmation */
+
+.salary-confirmation {
+  padding: 15px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f3f7ff,
+      #eaf1ff
+    );
+
+  border: 1px solid #dce6f6;
+}
+
+
+.salary-confirmation label {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
   cursor: pointer;
 }
 
-/* Changes retry button on hover. */
-.retry-button:hover {
-  background: #6d28d9;
+
+.salary-confirmation input {
+  width: 16px;
+  height: 16px;
+
+  margin-top: 2px;
+
+  accent-color: #315eea;
 }
 
-/* Styles the empty account icon. */
-.no-account-icon {
-  margin-bottom: 15px;
-  font-size: 40px;
+
+.salary-confirmation span {
+  color: #536987;
+
+  font-size: 12px;
+
+  line-height: 1.5;
 }
 
-/* Responsive layout for tablets. */
-@media (max-width: 900px) {
-  .account-details {
-    grid-template-columns: repeat(2, 1fr);
+
+/* Validation */
+
+.salary-error {
+  margin-top: 12px;
+
+  padding: 11px 13px;
+
+  border-radius: 10px;
+
+  background:
+    #fff0f0;
+
+  border: 1px solid #ffd4d4;
+
+  color: #b91c1c;
+
+  font-size: 12px;
+}
+
+
+/* Modal footer */
+
+.salary-modal-footer {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 11px;
+
+  padding: 18px 27px;
+
+  border-top:
+    1px solid #e0e7f2;
+
+  background:
+    #f8faff;
+}
+
+
+.modal-cancel-button,
+.modal-confirm-button {
+  padding: 11px 19px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.modal-cancel-button {
+  border: 1px solid #d6dfed;
+
+  background: #ffffff;
+
+  color: #53657f;
+}
+
+
+.modal-cancel-button:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    #f1f5fb;
+}
+
+
+.modal-confirm-button {
+  border: 1px solid #315eea;
+
+  background:
+    linear-gradient(
+      135deg,
+      #315eea,
+      #193a9e
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 16px rgba(49,94,234,0.20);
+}
+
+
+.modal-confirm-button:hover:not(:disabled) {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 11px 23px rgba(49,94,234,0.28);
+}
+
+
+.modal-confirm-button:disabled {
+  background: #aebbd8;
+
+  border-color: #aebbd8;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes accountPageEnter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
   }
 }
 
-/* Responsive layout for mobile. */
-@media (max-width: 600px) {
+
+@keyframes accountCardReveal {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(45px)
+      rotateX(8deg)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      rotateX(0)
+      scale(1);
+  }
+}
+
+
+.account-card:nth-child(1) {
+  animation-delay: 0.12s;
+}
+
+.account-card:nth-child(2) {
+  animation-delay: 0.24s;
+}
+
+.account-card:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+
+@keyframes accountBackgroundFloat {
+
+  0%,
+  100% {
+    transform:
+      translate(0,0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(-30px,35px)
+      scale(1.10);
+  }
+}
+
+
+@keyframes accountBackgroundFloatReverse {
+
+  0%,
+  100% {
+    transform:
+      translate(0,0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(35px,-25px)
+      scale(1.08);
+  }
+}
+
+
+@keyframes accountLineMove {
+
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+
+@keyframes statusPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px rgba(8,120,62,0.06);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(8,120,62,0.02);
+  }
+}
+
+
+@keyframes balanceOrb {
+
+  0%,
+  100% {
+    transform:
+      translate(0,0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(-15px,12px)
+      scale(1.08);
+  }
+}
+
+
+@keyframes iconFloat {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-7px);
+  }
+}
+
+
+@keyframes backdropIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes salaryModalOpen {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(25px)
+      scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes accountSpinner {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
   .accounts-page {
-    padding: 20px;
+    padding: 28px;
+  }
+
+  .account-details {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .salary-details-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .accounts-page {
+    padding: 20px 16px 40px;
+  }
+
+  .page-header h1 {
+    font-size: 27px;
   }
 
   .account-card {
-    padding: 22px;
+    padding: 21px;
+    border-radius: 20px;
   }
 
   .account-card-header {
     align-items: flex-start;
+
     flex-direction: column;
   }
 
@@ -393,6 +1771,10 @@
   }
 
   .account-details {
+    grid-template-columns: 1fr;
+  }
+
+  .salary-details-grid {
     grid-template-columns: 1fr;
   }
 
@@ -409,230 +1791,26 @@
   }
 }
 
-/* Salary conversion popup */
-.salary-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(23, 32, 51, 0.45);
-  backdrop-filter: blur(4px);
-}
 
-.salary-modal {
-  width: 100%;
-  max-width: 520px;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 20px 60px rgba(23, 32, 51, 0.2);
-  overflow: hidden;
-  animation: salaryModalOpen 0.2s ease-out;
-}
+@media (max-width: 480px) {
 
-.salary-modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 24px 26px;
-  border-bottom: 1px solid #e8eaf0;
-}
-
-.salary-modal-header h2 {
-  margin: 0;
-  color: #172033;
-  font-size: 19px;
-  font-weight: 700;
-}
-
-.salary-modal-header p {
-  margin: 6px 0 0;
-  color: #6b7280;
-  font-size: 13px;
-}
-
-.modal-close-button {
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 8px;
-  background: #f3f4f6;
-  color: #6b7280;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.modal-close-button:hover {
-  background: #ede9fe;
-  color: #6d28d9;
-}
-
-.salary-modal-body {
-  padding: 24px 26px;
-}
-
-.form-field {
-  margin-bottom: 20px;
-}
-
-.form-field label {
-  display: block;
-  margin-bottom: 8px;
-  color: #374151;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.form-field label span {
-  color: #dc2626;
-}
-
-.form-field input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 11px 13px;
-  border: 1px solid #d9dce5;
-  border-radius: 9px;
-  outline: none;
-  background: #ffffff;
-  color: #172033;
-  font-size: 14px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-field input:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
-}
-
-.form-field input[readonly] {
-  background: #f5f7fc;
-  color: #6b7280;
-  cursor: not-allowed;
-}
-
-.salary-input-wrapper {
-  position: relative;
-}
-
-.salary-input-wrapper > span {
-  position: absolute;
-  left: 13px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6b7280;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.salary-input-wrapper input {
-  padding-left: 32px;
-}
-
-.salary-confirmation {
-  padding: 14px;
-  background: #f8f7fc;
-  border: 1px solid #e5e1f0;
-  border-radius: 10px;
-}
-
-.salary-confirmation label {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  cursor: pointer;
-}
-
-.salary-confirmation input {
-  width: 16px;
-  height: 16px;
-  margin-top: 2px;
-  accent-color: #6d28d9;
-  cursor: pointer;
-}
-
-.salary-confirmation span {
-  color: #4b5563;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.salary-error {
-  margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #fef2f2;
-  color: #b91c1c;
-  font-size: 12px;
-}
-
-.salary-modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 18px 26px;
-  border-top: 1px solid #e8eaf0;
-  background: #fafbfc;
-}
-
-.modal-cancel-button,
-.modal-confirm-button {
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.modal-cancel-button {
-  border: 1px solid #d9dce5;
-  background: #ffffff;
-  color: #4b5563;
-}
-
-.modal-cancel-button:hover {
-  background: #f3f4f6;
-}
-
-.modal-confirm-button {
-  border: 1px solid #54248c;
-  background: #54248c;
-  color: #ffffff;
-}
-
-.modal-confirm-button:hover:not(:disabled) {
-  background: #6d28d9;
-  border-color: #6d28d9;
-}
-
-.modal-confirm-button:disabled {
-  background: #c4b5d9;
-  border-color: #c4b5d9;
-  cursor: not-allowed;
-}
-
-@keyframes salaryModalOpen {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
+  .accounts-page {
+    padding: 16px 12px 30px;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  .account-title h2 {
+    font-size: 18px;
   }
-}
 
-@media (max-width: 600px) {
+  .balance-section {
+    padding: 20px;
+  }
+
   .salary-modal-header,
   .salary-modal-body,
   .salary-modal-footer {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 19px;
+    padding-right: 19px;
   }
 
   .salary-modal-footer {
@@ -642,64 +1820,5 @@
   .modal-cancel-button,
   .modal-confirm-button {
     width: 100%;
-  }
-}
-
-/* Salary account details */
-.salary-details-card {
-  margin-top: 24px;
-  padding: 24px;
-  background: #ffffff;
-  border: 1px solid #e3e7ef;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(31, 41, 55, 0.06);
-}
-
-.salary-details-header {
-  margin-bottom: 20px;
-}
-
-.salary-details-header h3 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  color: #102a43;
-}
-
-.salary-details-header p {
-  margin: 6px 0 0;
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.salary-details-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.salary-detail-item {
-  padding: 18px;
-  background: #f7f8fc;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-}
-
-.salary-detail-item span {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  color: #64748b;
-}
-
-.salary-detail-item strong {
-  display: block;
-  font-size: 16px;
-  color: #102a43;
-}
-
-@media (max-width: 768px) {
-  .salary-details-grid {
-    grid-template-columns: 1fr;
   }
 }

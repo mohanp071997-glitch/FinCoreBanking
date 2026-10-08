@@ -1,11 +1,12 @@
 import {
   Component,
   HostListener,
-  OnDestroy
+  OnDestroy,
+  OnInit
 } from '@angular/core';
 
 import { NgIf } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 type DesktopMenu = 'personal' | 'nri' | null;
 
@@ -16,16 +17,21 @@ type DesktopMenu = 'personal' | 'nri' | null;
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   desktopMenuOpen: DesktopMenu = null;
 
   mobileMenuOpen = false;
   mobilePersonalMenuOpen = false;
   mobileNriMenuOpen = false;
+  mobileBusinessMenuOpen = false;
+  mobileResourcesMenuOpen = false;
+  mobileAboutMenuOpen = false;
+  mobileHelpMenuOpen = false;
 
   isLoggedIn = false;
   customerName = '';
+  isLoginPage = false;
 
   private desktopCloseTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -34,41 +40,74 @@ export class HeaderComponent implements OnDestroy {
     this.loadLoginDetails();
   }
 
+    ngOnInit(): void {
+
+    this.checkLoginPage(this.router.url);
+
+    this.router.events.subscribe(event => {
+
+      if (event instanceof NavigationEnd) {
+
+        this.checkLoginPage(event.urlAfterRedirects);
+
+      }
+
+    });
+  }
+
   // Loads the logged-in user details.
-  private loadLoginDetails(): void {
+private loadLoginDetails(): void {
 
-    const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
-    if (!token) {
-      this.isLoggedIn = false;
-      this.customerName = '';
+  if (!token) {
+    this.isLoggedIn = false;
+    this.customerName = '';
+    return;
+  }
+
+  try {
+
+    const tokenParts = token.split('.');
+
+    if (tokenParts.length !== 3) {
+      this.clearLoginState();
       return;
     }
 
+    const payload = JSON.parse(
+      atob(tokenParts[1])
+    );
+
+    // Check token expiry
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      this.clearLoginState();
+      return;
+    }
+
+    this.customerName =
+      payload.name ||
+      payload.unique_name ||
+      payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
+      payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/name'] ||
+      'Customer';
+
     this.isLoggedIn = true;
 
-    try {
-      const tokenParts = token.split('.');
+  } catch (error) {
 
-      if (tokenParts.length !== 3) {
-        this.customerName = 'Customer';
-        return;
-      }
+    console.error('Invalid token:', error);
 
-      const payload = JSON.parse(
-        atob(tokenParts[1])
-      );
+    this.clearLoginState();
+  }
+}
 
-      this.customerName =
-        payload.name ||
-        payload.unique_name ||
-        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
-        payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/name'] ||
-        'Customer';
+  private clearLoginState(): void {
 
-    } catch {
-      this.customerName = 'Customer';
-    }
+    localStorage.removeItem('token');
+
+    this.isLoggedIn = false;
+    this.customerName = '';
   }
 
   // Opens the selected desktop menu.
@@ -124,11 +163,46 @@ export class HeaderComponent implements OnDestroy {
     this.mobilePersonalMenuOpen = false;
   }
 
+  // Toggles the Business submenu on mobile.
+    toggleMobileBusinessMenu(): void {
+    this.mobileBusinessMenuOpen = !this.mobileBusinessMenuOpen;
+
+    this.mobilePersonalMenuOpen = false;
+    this.mobileNriMenuOpen = false;
+  }
+
+  toggleMobileResourcesMenu(): void {
+  this.mobileResourcesMenuOpen = !this.mobileResourcesMenuOpen;
+
+  this.mobileAboutMenuOpen = false;
+  this.mobileHelpMenuOpen = false;
+}
+
+toggleMobileAboutMenu(): void {
+  this.mobileAboutMenuOpen = !this.mobileAboutMenuOpen;
+
+  this.mobileResourcesMenuOpen = false;
+  this.mobileHelpMenuOpen = false;
+}
+
+toggleMobileHelpMenu(): void {
+  this.mobileHelpMenuOpen = !this.mobileHelpMenuOpen;
+
+  this.mobileResourcesMenuOpen = false;
+  this.mobileAboutMenuOpen = false;
+}
+
   // Closes the mobile menu.
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
     this.mobilePersonalMenuOpen = false;
     this.mobileNriMenuOpen = false;
+    this.mobileBusinessMenuOpen = false;
+    this.mobileResourcesMenuOpen = false;
+    this.mobileAboutMenuOpen = false;
+    this.mobileHelpMenuOpen = false;
+
+
 
     this.restoreBodyScroll();
   }
@@ -155,5 +229,13 @@ export class HeaderComponent implements OnDestroy {
 
     goToBusinessPage(): void {
     this.router.navigate(['/business']);
+  }
+
+    private checkLoginPage(url: string): void {
+
+    const currentUrl = url.split('?')[0];
+
+    this.isLoginPage = currentUrl === '/login';
+
   }
 }

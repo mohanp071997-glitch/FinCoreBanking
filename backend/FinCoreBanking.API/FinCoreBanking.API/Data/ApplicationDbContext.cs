@@ -65,6 +65,23 @@ namespace FinCoreBanking.API.Data
         // Stores password reset OTP records.
         public DbSet<PasswordResetOtp> PasswordResetOtps { get; set; }
 
+        // FEATURE: Account Opening OTP DbSet
+        public DbSet<AccountOpeningOtp> AccountOpeningOtps => Set<AccountOpeningOtp>();
+
+        // FEATURE: OTP Rate Limit DbSet
+        public DbSet<AccountOpeningOtpRateLimit> AccountOpeningOtpRateLimits
+            => Set<AccountOpeningOtpRateLimit>();
+
+
+        // FEATURE: Account Opening Draft DbSet
+        public DbSet<AccountOpeningDraft> AccountOpeningDrafts =>
+            Set<AccountOpeningDraft>();
+
+        // FEATURE: Account Opening Application DbSet
+        public DbSet<AccountOpeningApplication> AccountOpeningApplications =>
+            Set<AccountOpeningApplication>();
+
+
         // Configures table relationships and constraints.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -667,6 +684,131 @@ namespace FinCoreBanking.API.Data
                     .WithMany()
                     .HasForeignKey(x => x.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // FEATURE: Account Opening OTP configuration
+            modelBuilder.Entity<AccountOpeningOtp>(entity =>
+            {
+                entity.HasKey(x => x.AccountOpeningOtpId);
+
+                entity.Property(x => x.Email)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                entity.Property(x => x.OtpHash)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                entity.Property(x => x.ExpiresAt)
+                    .IsRequired();
+
+                entity.Property(x => x.IsVerified)
+                    .IsRequired();
+
+                entity.Property(x => x.IsUsed)
+                    .IsRequired();
+
+                entity.Property(x => x.FailedAttempts)
+                    .IsRequired();
+
+                entity.Property(x => x.CreatedAt)
+                    .IsRequired();
+
+                entity.HasIndex(x => new { x.Email, x.CreatedAt });
+
+                // FEATURE: One OTP record per application draft
+                entity.HasIndex(x => x.ApplicationDraftId)
+                    .IsUnique()
+                    .HasFilter("[ApplicationDraftId] IS NOT NULL");
+            });
+
+            // FEATURE: OTP Rate Limit Configuration
+            modelBuilder.Entity<AccountOpeningOtpRateLimit>(entity =>
+            {
+                entity.HasKey(x => x.Email);
+
+                entity.Property(x => x.Email)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                entity.Property(x => x.WindowStartedAt)
+                    .IsRequired();
+
+                entity.Property(x => x.RequestCount)
+                    .IsRequired();
+            });
+
+            // FEATURE: Account Opening Draft Configuration
+            modelBuilder.Entity<AccountOpeningDraft>(entity =>
+            {
+                entity.ToTable("AccountOpeningDrafts");
+
+                entity.HasKey(x => x.ApplicationDraftId);
+
+                entity.Property(x => x.ApplicationDraftId)
+                    .ValueGeneratedNever();
+
+                entity.Property(x => x.Email)
+                    .HasMaxLength(256);
+
+                entity.Property(x => x.DraftData)
+                    .HasColumnType("nvarchar(max)");
+
+                entity.Property(x => x.EmailVerified)
+                    .IsRequired();
+
+                entity.Property(x => x.IsSubmitted)
+                    .IsRequired();
+
+                entity.Property(x => x.CreatedAt)
+                    .HasColumnType("datetime2")
+                    .IsRequired();
+
+                entity.Property(x => x.UpdatedAt)
+                    .HasColumnType("datetime2");
+            });
+
+            // FEATURE: Account Opening Application Configuration
+            modelBuilder.Entity<AccountOpeningApplication>(entity =>
+            {
+                entity.ToTable("AccountOpeningApplications");
+
+                entity.HasKey(x => x.AccountOpeningApplicationId);
+
+                entity.Property(x => x.ApplicationDraftId)
+                    .IsRequired();
+
+                entity.Property(x => x.ApplicationRequestId)
+                    .HasColumnType("char(12)")
+                    .IsRequired();
+
+                entity.HasIndex(x => x.ApplicationRequestId)
+                    .IsUnique();
+
+                entity.Property(x => x.Email)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                entity.Property(x => x.ApplicationData)
+                    .HasColumnType("nvarchar(max)")
+                    .IsRequired();
+
+                entity.Property(x => x.Status)
+                    .HasMaxLength(30)
+                    .IsRequired();
+
+                entity.Property(x => x.SubmittedAt)
+                    .HasColumnType("datetime2")
+                    .IsRequired();
+
+                entity.HasIndex(x => x.ApplicationDraftId)
+                    .IsUnique();
+
+                entity.HasOne<AccountOpeningDraft>()
+                    .WithOne()
+                    .HasForeignKey<AccountOpeningApplication>(
+                        x => x.ApplicationDraftId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

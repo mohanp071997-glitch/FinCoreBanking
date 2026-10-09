@@ -13,6 +13,9 @@ public class EmailService
     private readonly ApplicationDbContext _context;
     private readonly IWebHostEnvironment _environment;
 
+    // FEATURE: SMTP diagnostic logging
+    private readonly ILogger<EmailService> _logger;
+
     public EmailService(IConfiguration configuration, ApplicationDbContext context, IWebHostEnvironment environment)
     {
         _configuration = configuration;
@@ -73,10 +76,22 @@ public class EmailService
             await smtpClient.SendMailAsync(mailMessage);
 
         }
+        //catch (Exception ex)
+        //{
+        //    Debug.WriteLine("EMAIL SENDING FAILED");
+        //    Debug.WriteLine(ex.ToString());
+
+        //    throw;
+        //}
+
         catch (Exception ex)
         {
-            Debug.WriteLine("EMAIL SENDING FAILED");
-            Debug.WriteLine(ex.ToString());
+            // FEATURE: Log SMTP failure without logging credentials or OTP
+            _logger.LogError(
+                ex,
+                "Failed to send account OTP email. SMTP server: {SmtpServer}, Port: {Port}",
+                smtpServer,
+                port);
 
             throw;
         }

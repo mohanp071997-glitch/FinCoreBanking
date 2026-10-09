@@ -49,72 +49,109 @@
 
         <div class="personal-menu-content">
 
-        <!-- Column 1 -->
+
         <div class="personal-menu-column personal-main-column">
 
-            <h3>Accounts</h3>
+          <a
+            href="javascript:void(0)"
+            [class.active]="selectedPersonalOption === 'Accounts'"
+            (click)="selectPersonalOption('Accounts', $event)">
+            Accounts
+          </a>
 
-            <a>Savings Account</a>
-            <a>Deposits</a>
-            <a>Payments</a>
-            <a>Cards</a>
-            <a>Loans</a>
-            <a>Investments</a>
-            <a>Insurance</a>
-            <a>Special Services</a>
+          <a
+            href="javascript:void(0)"
+            [class.active]="selectedPersonalOption === 'Deposits'"
+            (click)="selectPersonalOption('Deposits', $event)">
+            Deposits
+          </a>
 
-            <a class="explore-link">
+          <a>Payments</a>
+          <a>Cards</a>
+          <a>Loans</a>
+          <a>Investments</a>
+          <a>Insurance</a>
+          <a>Special Services</a>
+
+          <a class="explore-link">
             Explore Personal Banking ↗
-            </a>
+          </a>
 
         </div>
 
-        <!-- Column 2 -->
+
+
+      <!-- Right-side content: Deposits -->
+
+      <!-- Deposits content -->
+      <ng-container *ngIf="selectedPersonalOption === 'Deposits'; else accountsContent">
+
         <div class="personal-menu-column">
-
-            <a>Savings Account</a>
-            <a>Salary Account</a>
-            <a>Capital Gains Account Scheme</a>
-
-            <a>
-            Hindu Undivided Family (HUF)<br>
-            Savings Account
-            </a>
-
+          <a>Fixed Deposit</a>
+          <a>Monthly Pay-out Fixed Deposit</a>
+          <a>Recurring Deposit</a>
+          <a>iWish - Goal Based Savings</a>
+          <a class="explore-link">View all deposits →</a>
         </div>
 
-        <!-- Column 3 -->
         <div class="personal-menu-column">
-
-            <a>
-            Banking Solutions<br>
-            for Doctors
-            </a>
-
+          <a>Fixed Deposit Interest Rates</a>
+          <a>Fixed Deposit Calculator</a>
         </div>
 
-        <!-- Promo -->
         <div class="personal-promo-card">
-
-            <h3>
-            Get the best from<br>
-            FinCore Banking
-            </h3>
-
-            <p>
-            Open a Savings Account for
-            seamless payments
-            </p>
-
-            <button type="button">
-            Apply now
-            </button>
-
-            <div class="personal-promo-image">
-            👩‍💼
-            </div>
-
+          <h3>Dream it, achieve it!</h3>
+          <p>FDs offer stable returns for your dreams.</p>
+          <button type="button">Open FD</button>
         </div>
+
+      </ng-container>
+
+<!-- Accounts content -->
+<ng-template #accountsContent>
+
+  <div class="personal-menu-column">
+    <a routerLink="/savings-account" (click)="closeDesktopMenu()">
+      Savings Account
+    </a>
+    <a>Salary Account</a>
+    <a>Capital Gains Account Scheme</a>
+    <a>Hindu Undivided Family (HUF) Savings Account</a>
+  </div>
+
+  <div class="personal-menu-column">
+    <a>Banking Solutions for Doctors</a>
+  </div>
+
+  <div class="personal-promo-card">
+    <h3>Get the best from FinCore Banking</h3>
+    <p>Open a Savings Account for seamless payments.</p>
+    <button type="button">Apply now</button>
+  </div>
+
+</ng-template>
+
+
+      <!-- Default content -->
+      <ng-template #savingsContent>
+        <div class="personal-menu-column">
+          <a>Savings Account</a>
+          <a>Salary Account</a>
+          <a>Capital Gains Account Scheme</a>
+          <a>Hindu Undivided Family (HUF) Savings Account</a>
+        </div>
+
+        <div class="personal-menu-column">
+          <a>Banking Solutions for Doctors</a>
+        </div>
+
+        <div class="personal-promo-card">
+          <h3>Get the best from FinCore Banking</h3>
+          <p>Open a Savings Account for seamless payments.</p>
+          <button type="button">Apply now</button>
+        </div>
+      </ng-template>
+
 
         </div>
 

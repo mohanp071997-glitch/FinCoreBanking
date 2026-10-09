@@ -33,6 +33,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   customerName = '';
   isLoginPage = false;
 
+  // Tracks the selected Personal menu option.
+  selectedPersonalOption = 'Account';
+  
+
   private desktopCloseTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private router: Router) {
@@ -109,11 +113,15 @@ private loadLoginDetails(): void {
     this.isLoggedIn = false;
     this.customerName = '';
   }
-
+  
   // Opens the selected desktop menu.
   openDesktopMenu(menu: 'personal' | 'nri'): void {
     this.cancelDesktopClose();
     this.desktopMenuOpen = menu;
+
+    if (menu === 'personal') {
+      this.selectedPersonalOption = 'Accounts';
+    }
   }
 
   // Cancels the desktop menu close timer.
@@ -237,5 +245,13 @@ toggleMobileHelpMenu(): void {
 
     this.isLoginPage = currentUrl === '/login';
 
+  }
+
+
+
+  // Handles Personal menu option selection.
+  selectPersonalOption(option: string, event: Event): void {
+    event.preventDefault();
+    this.selectedPersonalOption = option;
   }
 }

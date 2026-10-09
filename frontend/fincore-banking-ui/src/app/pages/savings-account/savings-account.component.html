@@ -1,0 +1,411 @@
+
+<div class="savings-page">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-copy">
+
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ng-container *ngFor="let crumb of breadcrumbs; let last = last">
+
+            <a
+            *ngIf="!last && crumb.url; else currentPage"
+            [routerLink]="crumb.url">
+            {{ crumb.label }}
+            </a>
+
+            <ng-template #currentPage>
+            <span [attr.aria-current]="last ? 'page' : null">
+                {{ crumb.label }}
+            </span>
+            </ng-template>
+
+            <span class="breadcrumb-separator" *ngIf="!last">›</span>
+
+        </ng-container>
+        </nav>
+
+
+      <p class="eyebrow">BANK SMARTER WITH FINCORE</p>
+
+      <h1>Savings Account</h1>
+      <h2>Save today for a brighter tomorrow</h2>
+
+      <p class="description">
+        A secure, convenient and rewarding way to manage your money
+        with attractive interest rates and benefits designed around you.
+      </p>
+
+      <div class="actions">
+        <button
+          class="primary"
+          type="button"
+          (click)="openAccount()">
+          Open a Savings Account
+        </button>
+
+        <a class="secondary" href="#benefits">
+          Explore Benefits
+        </a>
+      </div>
+    </div>
+
+    <!-- Hero Illustration -->
+    <div class="hero-art">
+      <div class="hero-circle"></div>
+      <div class="piggy">🐷</div>
+
+      <div class="coin coin1">₹</div>
+      <div class="coin coin2">₹</div>
+
+      <div class="hero-note">
+        Your Savings
+        <br>
+        <span>Our Support</span>
+      </div>
+
+      <div class="hero-tag tag1">
+        <b>%</b>
+        <span>Attractive<br>Interest Rates</span>
+      </div>
+
+      <div class="hero-tag tag2">
+        <b>✓</b>
+        <span>Safe &amp; Secure<br>Banking</span>
+      </div>
+
+      <div class="hero-tag tag3">
+        <b>▣</b>
+        <span>Easy Digital<br>Access</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Strip -->
+  <section class="feature-strip">
+
+    <div class="feature">
+      <b>%</b>
+      <span>Attractive<br>Interest Rates</span>
+    </div>
+
+    <div class="feature">
+      <b>₹</b>
+      <span>Flexible Account<br>Options</span>
+    </div>
+
+    <div class="feature">
+      <b>▤</b>
+      <span>Free Debit Card</span>
+    </div>
+
+    <div class="feature">
+      <b>▯</b>
+      <span>24/7 Digital<br>Banking</span>
+    </div>
+
+    <div class="feature">
+      <b>✓</b>
+      <span>Safe &amp; Secure</span>
+    </div>
+
+    <div class="feature">
+      <b>♧</b>
+      <span>Exclusive Offers</span>
+    </div>
+
+  </section>
+
+  <!-- Interest Calculator -->
+  <section class="calculator-layout" id="calculator">
+
+    <div class="calculator">
+
+      <p class="eyebrow">PLAN YOUR SAVINGS</p>
+
+      <h2>
+        Savings Account Interest
+        <br>
+        Rate Calculator
+      </h2>
+
+      <!-- Amount -->
+      <div class="control-row">
+
+        <label for="amountRange">Amount</label>
+
+        <div class="amount-control">
+
+          <div class="range-wrap">
+
+            <input
+              id="amountRange"
+              type="range"
+              min="10000"
+              max="100000000"
+              step="10000"
+              [value]="amount"
+              (input)="onAmountRange($event)">
+
+            <div class="range-labels">
+              <span>10K</span>
+              <span>2Cr</span>
+              <span>4Cr</span>
+              <span>6Cr</span>
+              <span>8Cr</span>
+              <span>10Cr</span>
+            </div>
+
+          </div>
+
+          <div class="amount-input">
+
+            <input
+              aria-label="Amount in rupees"
+              type="number"
+              min="10000"
+              max="100000000"
+              [value]="amount"
+              (input)="onAmountInput($event)">
+
+            <span>{{ amountInWords }}</span>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Duration -->
+      <div class="control-row duration-row">
+
+        <label>Duration</label>
+
+        <div class="duration-controls">
+
+        <!-- FEATURE: Duration - Year Selection -->
+        <select
+        aria-label="Years"
+        [(ngModel)]="years">
+
+        <option
+            *ngFor="let year of yearOptions"
+            [ngValue]="year">
+            {{ year }} Y
+        </option>
+
+        </select>
+
+          <select
+            aria-label="Months"
+            [value]="months"
+            (change)="onMonthsChange($event)">
+
+            <option
+              *ngFor="let month of monthOptions"
+              [value]="month">
+              {{ month }} M
+            </option>
+
+          </select>
+
+          <select
+            aria-label="Days"
+            [value]="days"
+            (change)="onDaysChange($event)">
+
+            <option
+              *ngFor="let day of dayOptions"
+              [value]="day">
+              {{ day }} D
+            </option>
+
+          </select>
+
+        </div>
+      </div>
+
+      <p class="hint">
+        Illustrative estimate using a {{ interestRate }}% p.a.
+        simple-interest assumption. Actual bank interest may differ.
+      </p>
+
+    </div>
+
+    <!-- Calculator Result / Promo Card -->
+    <aside class="result">
+
+      <div class="result-copy">
+
+        <p class="rate">
+          Interest Rate:
+          <strong>{{ interestRate }}% p.a.</strong>
+        </p>
+
+        <hr>
+
+        <div class="result-line">
+          <span>Total Amount With Interest</span>
+          <strong>{{ formatCurrency(totalAmount) }}</strong>
+        </div>
+
+        <div class="result-line">
+          <span>Total Savings Amount</span>
+          <strong>{{ formatCurrency(amount) }}</strong>
+        </div>
+
+        <div class="result-line">
+          <span>Total Interest</span>
+          <strong>{{ formatCurrency(totalInterest) }}</strong>
+        </div>
+
+
+        <button
+        type="button"
+        class="open-account-button"
+        routerLink="/open-savings-account">
+        Open a Savings Account
+        </button>
+
+
+      </div>
+
+      <!-- Decorative Savings Growth Illustration -->
+      <div class="growth-art" aria-hidden="true">
+        <span class="leaf l1"></span>
+        <span class="leaf l2"></span>
+        <span class="leaf l3"></span>
+        <div class="stem"></div>
+        <div class="jar">₹</div>
+      </div>
+
+    </aside>
+  </section>
+
+  <!-- Benefits and Special Offer -->
+  <section class="bottom-grid" id="benefits">
+
+    <!-- Benefits -->
+    <div class="benefits">
+
+      <p class="eyebrow">MADE FOR YOUR EVERYDAY</p>
+
+      <h2>Key Benefits</h2>
+
+      <div class="benefit-grid">
+
+        <div>
+          <b>%</b>
+          <strong>Competitive<br>Interest Rates</strong>
+          <p>Make savings work for you.</p>
+        </div>
+
+        <div>
+          <b>₹</b>
+          <strong>Flexible Account<br>Options</strong>
+          <p>Options for your needs.</p>
+        </div>
+
+        <div>
+          <b>▤</b>
+          <strong>Debit Card &amp;<br>Digital Banking</strong>
+          <p>Convenient daily access.</p>
+        </div>
+
+        <div>
+          <b>✓</b>
+          <strong>Security for<br>Your Money</strong>
+          <p>Bank with confidence.</p>
+        </div>
+
+        <div>
+          <b>♧</b>
+          <strong>Exclusive Offers<br>&amp; Rewards</strong>
+          <p>Discover offers for you.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Promotional Banner -->
+    <div class="offer">
+
+      <div class="offer-copy">
+
+        <p class="offer-label">SPECIAL OFFER</p>
+
+        <h2>Start Your Savings Journey Today!</h2>
+
+        <p>
+          Open a Savings Account and explore convenient
+          banking benefits.
+        </p>
+
+        <button
+          class="primary"
+          type="button"
+          (click)="openAccount()">
+          Open Now ↗
+        </button>
+
+      </div>
+
+      <div class="gift" aria-hidden="true">
+        <div class="gift-ribbon"></div>
+        <div class="gift-box"></div>
+        <span>₹</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <p class="disclaimer">
+    <strong>Disclaimer:</strong>
+    Interest rate and calculation shown are for UI demonstration only,
+    not an official FinCore Banking rate or offer. Actual rates,
+    calculation method, eligibility and fees must be verified against
+    the bank's official terms.
+  </p>
+
+</div>
+
+<!-- Open Savings Account Modal -->
+<div
+  class="modal-backdrop"
+  *ngIf="showAccountModal"
+  (click)="closeAccountModal()">
+
+  <section
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+    (click)="$event.stopPropagation()">
+
+    <button
+      class="modal-close"
+      type="button"
+      aria-label="Close"
+      (click)="closeAccountModal()">
+      ×
+    </button>
+
+    <span class="modal-logo">F</span>
+
+    <h2 id="modalTitle">Open a Savings Account</h2>
+
+    <p>
+      Your account-opening journey can start here.
+      Connect this demo action to your application flow when ready.
+    </p>
+
+    <button
+      class="primary"
+      type="button"
+      (click)="closeAccountModal()">
+      Got it
+    </button>
+
+  </section>
+</div>

@@ -13,6 +13,7 @@ import { LoanDetailsComponent } from './pages/loan-details/loan-details.componen
 import { AccountsComponent } from './pages/accounts/accounts.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { SavingsAccountComponent } from './pages/savings-account/savings-account.component';
 
 export const routes: Routes = [
 
@@ -114,5 +115,28 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/business/business.component')
       .then(m => m.BusinessComponent)
-  }
+  },
+  {
+    path: 'savings-account',
+    loadComponent: () =>
+      import('./pages/savings-account/savings-account.component')
+        .then(m => m.SavingsAccountComponent),
+        data: {
+                breadcrumb: [
+                  { label: 'Personal', url: '/personal' },
+                  { label: 'Accounts', url: '/personal/accounts' },
+                  { label: 'Savings Account' }
+                ]
+              }
+  },
+  // FEATURE: Savings Account Application Page
+  // Navigates to the new multi-step account opening form.
+
+{
+  path: 'open-savings-account',
+  loadComponent: () =>
+    import('./pages/savings-application/savings-application.component')
+      .then(m => m.SavingsApplicationComponent)
+}
+
 ];

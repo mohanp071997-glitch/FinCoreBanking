@@ -1758,3 +1758,13 @@ app-root {
   font-weight: 600;
 }
 
+/* Active menu item */
+.personal-main-column a.active {
+  color: #0b57d0;
+  font-size: 19px;
+  font-weight: 700;
+  background-color: #eaf2ff;
+  border-left: 4px solid #0b57d0;
+  padding-left: 12px;
+  border-radius: 4px;
+}

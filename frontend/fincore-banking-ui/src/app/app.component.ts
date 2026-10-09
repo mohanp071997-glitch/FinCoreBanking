@@ -49,7 +49,8 @@ export class AppComponent implements OnInit {
       '/',
       '/nri',
       '/business',
-      '/login'
+      '/login',
+      '/savings-account'
     ];
 
     this.showPublicHeader = publicPages.includes(currentUrl);

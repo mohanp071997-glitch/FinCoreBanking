@@ -1,0 +1,872 @@
+
+<div class="application-page">
+  <div class="application-container">
+        <!-- FEATURE: Top Back Navigation -->
+        <div class="top-navigation">
+        <a
+            class="top-back-button"
+            routerLink="/savings-account">
+            <span class="back-arrow">←</span>
+            <span>Back to Savings Account</span>
+        </a>
+
+        <span class="navigation-label">
+            Account Opening
+        </span>
+        </div>
+
+    <!-- FEATURE: Application page heading -->
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">FINCORE BANKING</p>
+        <h1>Open your Savings Account</h1>
+        <p class="subtitle">
+          Complete your details to begin your account opening journey.
+        </p>
+      </div>
+
+      <div class="secure-badge">
+        <span>✓</span>
+        <div>
+          <strong>Secure application</strong>
+          <small>Personal details</small>
+        </div>
+      </div>
+    </header>
+
+    <!-- FEATURE: Professional banking application layout -->
+    <div class="application-layout">
+
+      <!-- FEATURE: Left banking information panel -->
+      <aside class="banking-info-panel">
+
+        <div class="bank-brand">
+          <span class="bank-logo">F</span>
+          <div>
+            <strong>FinCore</strong>
+            <small>BANKING</small>
+          </div>
+        </div>
+
+        <div class="banking-message">
+          <span class="panel-tag">SAVINGS ACCOUNT</span>
+
+          <h2>Your financial future starts here.</h2>
+
+          <p>
+            Open your savings account through a simple,
+            secure and transparent application process.
+          </p>
+
+          <div class="banking-benefits">
+
+            <div class="benefit-item">
+              <span class="benefit-icon">✓</span>
+              <div>
+                <strong>Secure application</strong>
+                <small>Your information is handled carefully.</small>
+              </div>
+            </div>
+
+            <div class="benefit-item">
+              <span class="benefit-icon">↗</span>
+              <div>
+                <strong>Simple process</strong>
+                <small>Complete your details step by step.</small>
+              </div>
+            </div>
+
+            <div class="benefit-item">
+              <span class="benefit-icon">◎</span>
+              <div>
+                <strong>Track your request</strong>
+                <small>
+                  Check your application status after submission.
+                </small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="banking-panel-footer">
+          <span class="security-dot"></span>
+          Application journey
+          <span class="footer-separator">•</span>
+          Step 1 of 4
+        </div>
+
+      </aside>
+
+      <!-- FEATURE: Right-side savings application form -->
+      <section class="application-card">
+
+       
+        <!-- FEATURE: Dynamic Stepper Navigation -->
+        <div class="stepper">
+
+        <div class="step" [class.active]="currentStep === 0">
+            <span class="step-number">1</span>
+            <span>Personal Details</span>
+        </div>
+
+        <div class="step" [class.active]="currentStep === 1">
+            <span class="step-number">2</span>
+            <span>Additional Details</span>
+        </div>
+
+        <div class="step" [class.active]="currentStep === 2">
+            <span class="step-number">3</span>
+            <span>Documents</span>
+        </div>
+
+        <div class="step" [class.active]="currentStep === 3">
+            <span class="step-number">4</span>
+            <span>Review &amp; Submit</span>
+        </div>
+
+        </div>
+
+       
+        <!-- FEATURE: Step 1 - Personal Details -->
+            <form
+            *ngIf="currentStep === 0"
+            [formGroup]="personalForm"
+            (ngSubmit)="continueToNextStep()"
+            novalidate>
+
+          <div class="form-content">
+
+            <p class="eyebrow">STEP 1 OF 4</p>
+
+            <h2>Personal Details</h2>
+
+            <p class="section-description">
+              Enter your details as they appear on your official documents.
+            </p>
+
+            <!-- FEATURE: Full name validation -->
+            <div class="field">
+              <label for="fullName">Full name <b>*</b></label>
+
+              <input
+                id="fullName"
+                type="text"
+                formControlName="fullName"
+                autocomplete="name"
+                placeholder="Enter your full name">
+
+              <small
+                class="error"
+                *ngIf="isInvalid('fullName')">
+                Enter a name containing at least 3 characters.
+              </small>
+            </div>
+
+            <div class="field-row">
+
+              <!-- FEATURE: Date of birth -->
+              <div class="field">
+                <label for="dateOfBirth">
+                  Date of birth <b>*</b>
+                </label>
+
+                <input
+                  id="dateOfBirth"
+                  type="date"
+                  formControlName="dateOfBirth">
+
+                <small
+                  class="error"
+                  *ngIf="isInvalid('dateOfBirth')">
+                  Date of birth is required.
+                </small>
+              </div>
+
+              <!-- FEATURE: Gender selection -->
+              <div class="field">
+                <label for="gender">Gender <b>*</b></label>
+
+                <select
+                  id="gender"
+                  formControlName="gender">
+
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                  <option value="Prefer not to say">
+                    Prefer not to say
+                  </option>
+
+                </select>
+
+                <small
+                  class="error"
+                  *ngIf="isInvalid('gender')">
+                  Please select an option.
+                </small>
+              </div>
+
+            </div>
+
+            <div class="field-row">
+
+              <!-- FEATURE: PAN format validation -->
+              <div class="field">
+                <label for="panNumber">
+                  PAN number <b>*</b>
+                </label>
+
+                <input
+                  id="panNumber"
+                  type="text"
+                  formControlName="panNumber"
+                  maxlength="10"
+                  placeholder="ABCDE1234F"
+                  (input)="onPanInput()">
+
+                <small class="hint">
+                  Enter your 10-character PAN number.
+                </small>
+
+                <small
+                  class="error"
+                  *ngIf="isInvalid('panNumber')">
+                  Enter a valid PAN format.
+                </small>
+              </div>
+
+              <!-- FEATURE: Email validation -->
+              <div class="field">
+                <label for="email">
+                  Email address <b>*</b>
+                </label>
+
+                <input
+                id="email"
+                type="email"
+                formControlName="email"
+                autocomplete="email"
+                placeholder="name@example.com"
+                (input)="onEmailChanged()">
+
+                  
+                <!-- FEATURE: Email OTP Verification UI -->
+                <div class="email-otp-section">
+                <button
+                    type="button"
+                    (click)="sendEmailOtp()"
+                    [disabled]="isOtpSending || emailVerified">
+                    {{ isOtpSending ? 'Sending OTP...' : 'Send OTP' }}
+                </button>
+
+                <p *ngIf="otpSent && !emailVerified">
+                    OTP sent to your email. Please check your inbox.
+                </p>
+
+                <div *ngIf="otpSent && !emailVerified">
+                    <label for="emailOtp">Enter 6-digit OTP</label>
+
+                    <input
+                    id="emailOtp"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="6"
+                    autocomplete="one-time-code"
+                    [ngModel]="otp"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="onOtpChanged($event)"
+                    placeholder="Enter OTP">
+
+                    <button
+                    type="button"
+                    (click)="verifyEmailOtp()"
+                    [disabled]="isOtpVerifying">
+                    {{ isOtpVerifying ? 'Verifying...' : 'Verify OTP' }}
+                    </button>
+                </div>
+
+                <p *ngIf="emailVerified" class="success-message">
+                    Email verified successfully.
+                </p>
+
+                <p *ngIf="otpError" class="error-message">
+                    {{ otpError }}
+                </p>
+
+                <p *ngIf="otpMessage && !emailVerified">
+                    {{ otpMessage }}
+                </p>
+                </div>
+
+                <small
+                  class="error"
+                  *ngIf="isInvalid('email')">
+                  Enter a valid email address.
+                </small>
+              </div>
+
+            </div>
+
+            <!-- FEATURE: Residential address -->
+            <div class="field">
+              <label for="addressLine1">
+                Address line 1 <b>*</b>
+              </label>
+
+              <input
+                id="addressLine1"
+                type="text"
+                formControlName="addressLine1"
+                autocomplete="address-line1"
+                placeholder="House number, street name">
+
+              <small
+                class="error"
+                *ngIf="isInvalid('addressLine1')">
+                Address is required.
+              </small>
+            </div>
+
+            <div class="field">
+              <label for="addressLine2">
+                Address line 2
+                <span class="optional">(Optional)</span>
+              </label>
+
+              <input
+                id="addressLine2"
+                type="text"
+                formControlName="addressLine2"
+                autocomplete="address-line2"
+                placeholder="Area or landmark">
+            </div>
+
+            <div class="field-row">
+
+              <!-- FEATURE: City -->
+              <div class="field">
+                <label for="city">City <b>*</b></label>
+
+                <input
+                  id="city"
+                  type="text"
+                  formControlName="city"
+                  autocomplete="address-level2"
+                  placeholder="Enter city">
+
+                <small
+                  class="error"
+                  *ngIf="isInvalid('city')">
+                  City is required.
+                </small>
+              </div>
+
+              <!-- FEATURE: State dropdown -->
+              <div class="field">
+                <label for="state">State <b>*</b></label>
+
+                <select
+                  id="state"
+                  formControlName="state"
+                  autocomplete="address-level1">
+
+                  <option value="">Select state</option>
+
+                  <option
+                    *ngFor="let state of states"
+                    [value]="state">
+                    {{ state }}
+                  </option>
+
+                </select>
+
+                <small
+                  class="error"
+                  *ngIf="isInvalid('state')">
+                  Please select a state.
+                </small>
+              </div>
+
+            </div>
+
+            <!-- FEATURE: Indian PIN code validation -->
+            <div class="field pin-field">
+              <label for="postalCode">PIN code <b>*</b></label>
+
+              <input
+                id="postalCode"
+                type="text"
+                formControlName="postalCode"
+                inputmode="numeric"
+                maxlength="6"
+                autocomplete="postal-code"
+                placeholder="6-digit PIN code">
+
+              <small
+                class="error"
+                *ngIf="isInvalid('postalCode')">
+                Enter a valid 6-digit PIN code.
+              </small>
+            </div>
+
+            <p class="form-note">
+              <b>*</b> Required fields. Your application will not be
+              submitted to the bank at this stage.
+            </p>
+
+          </div>
+
+          <!-- FEATURE: Form navigation -->
+          <footer class="form-footer">
+
+            <a
+              class="back-link"
+              routerLink="/savings-account">
+              ← Back to Savings Account
+            </a>
+
+            <button
+              class="continue-button"
+              type="submit">
+              Continue <span>→</span>
+            </button>
+
+          </footer>
+
+        </form>
+
+        
+       
+    <!-- FEATURE: Step 2 - Additional Details -->
+        <form
+        *ngIf="currentStep === 1"
+        [formGroup]="additionalForm"
+        (ngSubmit)="continueFromAdditionalDetails()"
+        novalidate>
+
+        <div class="form-content">
+            <p class="eyebrow">STEP 2 OF 4</p>
+            <h2>Additional Details</h2>
+            <p class="section-description">
+            Tell us a little more about your occupation and nominee.
+            </p>
+
+            <h3 class="form-subheading">Employment &amp; Account Details</h3>
+
+            <div class="field-row">
+            <div class="field">
+                <label for="occupation">Occupation <b>*</b></label>
+                <select id="occupation" formControlName="occupation">
+                <option value="">Select occupation</option>
+                <option value="Salaried">Salaried</option>
+                <option value="Self-employed">Self-employed</option>
+                <option value="Business">Business</option>
+                <option value="Student">Student</option>
+                <option value="Retired">Retired</option>
+                <option value="Homemaker">Homemaker</option>
+                <option value="Other">Other</option>
+                </select>
+                <small class="error" *ngIf="isAdditionalInvalid('occupation')">
+                Please select your occupation.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="annualIncome">Annual income <b>*</b></label>
+                <select id="annualIncome" formControlName="annualIncome">
+                <option value="">Select annual income</option>
+                <option value="Below 2.5 lakh">Below ₹2.5 lakh</option>
+                <option value="2.5-5 lakh">₹2.5–5 lakh</option>
+                <option value="5-10 lakh">₹5–10 lakh</option>
+                <option value="10-25 lakh">₹10–25 lakh</option>
+                <option value="Above 25 lakh">Above ₹25 lakh</option>
+                </select>
+                <small class="error" *ngIf="isAdditionalInvalid('annualIncome')">
+                Please select your annual income.
+                </small>
+            </div>
+            </div>
+
+            <div class="field-row">
+            <div class="field">
+                <label for="maritalStatus">Marital status <b>*</b></label>
+                <select id="maritalStatus" formControlName="maritalStatus">
+                <option value="">Select marital status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Other">Other</option>
+                </select>
+                <small class="error" *ngIf="isAdditionalInvalid('maritalStatus')">
+                Please select your marital status.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="accountType">Account type <b>*</b></label>
+                <select id="accountType" formControlName="accountType">
+                <option value="Savings">Savings Account</option>
+                <option value="Salary">Salary Savings Account</option>
+                </select>
+                <small class="error" *ngIf="isAdditionalInvalid('accountType')">
+                Please select an account type.
+                </small>
+            </div>
+            </div>
+
+            <div class="field">
+            <label for="communicationPreference">
+                Preferred communication <b>*</b>
+            </label>
+            <select
+                id="communicationPreference"
+                formControlName="communicationPreference">
+                <option value="Email">Email</option>
+                <option value="Post">Postal mail</option>
+            </select>
+            <small class="error"
+                *ngIf="isAdditionalInvalid('communicationPreference')">
+                Please select a communication preference.
+            </small>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <h3 class="form-subheading">Nominee Details</h3>
+            <p class="section-description">
+            Add the person you wish to nominate for your account.
+            Ensure the details match their official documents.
+            </p>
+
+            <div class="field">
+            <label for="nomineeName">Nominee full name <b>*</b></label>
+            <input
+                id="nomineeName"
+                type="text"
+                formControlName="nomineeName"
+                placeholder="Enter nominee's full name">
+
+            <small class="error" *ngIf="isAdditionalInvalid('nomineeName')">
+                Enter a nominee name containing at least 3 characters.
+            </small>
+            </div>
+
+            <div class="field-row">
+            <div class="field">
+                <label for="nomineeRelationship">Relationship <b>*</b></label>
+                <select
+                id="nomineeRelationship"
+                formControlName="nomineeRelationship">
+                <option value="">Select relationship</option>
+                <option value="Spouse">Spouse</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Sibling">Sibling</option>
+                <option value="Other">Other</option>
+                </select>
+
+                <small class="error"
+                *ngIf="isAdditionalInvalid('nomineeRelationship')">
+                Please select the relationship.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="nomineeDateOfBirth">
+                Nominee date of birth <b>*</b>
+                </label>
+                <input
+                id="nomineeDateOfBirth"
+                type="date"
+                formControlName="nomineeDateOfBirth">
+
+                <small class="error"
+                *ngIf="isAdditionalInvalid('nomineeDateOfBirth')">
+                Nominee date of birth is required.
+                </small>
+            </div>
+            </div>
+
+            <p class="form-note">
+            <b>*</b> Required fields. These details have not yet been submitted
+            to the bank.
+            </p>
+        </div>
+
+        <!-- FEATURE: Step 2 navigation -->
+        <footer class="form-footer">
+            <button
+            class="back-link back-button"
+            type="button"
+            (click)="goToPreviousStep()">
+            ← Back to Personal Details
+            </button>
+
+            <button class="continue-button" type="submit">
+            Continue to Documents <span>→</span>
+            </button>
+        </footer>
+        </form>
+
+        <!-- FEATURE: Step 3 - Document Upload -->
+        <form
+        *ngIf="currentStep === 2"
+        [formGroup]="documentsForm"
+        (ngSubmit)="continueFromDocuments()"
+        novalidate>
+
+        <div class="form-content">
+            <p class="eyebrow">STEP 3 OF 4</p>
+            <h2>Upload Documents</h2>
+            <p class="section-description">
+            Upload the documents required for your account application.
+            PDF, JPG and PNG formats are accepted. Maximum size: 5 MB per file.
+            </p>
+
+            <div class="document-upload-grid">
+
+            <div class="field">
+                <label for="panDocument">PAN Card <b>*</b></label>
+                <input
+                id="panDocument"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                (change)="onDocumentSelected($event, 'panDocument')">
+
+                <small *ngIf="selectedDocuments['panDocument']">
+                Selected: {{ selectedDocuments['panDocument'] }}
+                </small>
+
+                <small class="error"
+                *ngIf="isDocumentInvalid('panDocument')">
+                Please upload your PAN Card.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="identityDocument">Identity Proof <b>*</b></label>
+                <input
+                id="identityDocument"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                (change)="onDocumentSelected($event, 'identityDocument')">
+
+                <small *ngIf="selectedDocuments['identityDocument']">
+                Selected: {{ selectedDocuments['identityDocument'] }}
+                </small>
+
+                <small class="error"
+                *ngIf="isDocumentInvalid('identityDocument')">
+                Please upload your identity proof.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="addressDocument">Address Proof <b>*</b></label>
+                <input
+                id="addressDocument"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                (change)="onDocumentSelected($event, 'addressDocument')">
+
+                <small *ngIf="selectedDocuments['addressDocument']">
+                Selected: {{ selectedDocuments['addressDocument'] }}
+                </small>
+
+                <small class="error"
+                *ngIf="isDocumentInvalid('addressDocument')">
+                Please upload your address proof.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="applicantPhoto">Applicant Photo <b>*</b></label>
+                <input
+                id="applicantPhoto"
+                type="file"
+                accept=".jpg,.jpeg,.png"
+                (change)="onDocumentSelected($event, 'applicantPhoto')">
+
+                <small *ngIf="selectedDocuments['applicantPhoto']">
+                Selected: {{ selectedDocuments['applicantPhoto'] }}
+                </small>
+
+                <small class="error"
+                *ngIf="isDocumentInvalid('applicantPhoto')">
+                Please upload your photo.
+                </small>
+            </div>
+
+            </div>
+
+            <p class="form-note">
+            <b>*</b> All documents are required for this demo form.
+            </p>
+        </div>
+
+        <!-- FEATURE: Step 3 Navigation -->
+        <footer class="form-footer">
+            <button
+            class="back-link back-button"
+            type="button"
+            (click)="goToAdditionalDetails()">
+            ← Back to Additional Details
+            </button>
+
+            <button class="continue-button" type="submit">
+            Continue to Review <span>→</span>
+            </button>
+        </footer>
+        </form>
+
+        <!-- FEATURE: Step 4 - Review Application -->
+        <form *ngIf="currentStep === 3" (ngSubmit)="submitApplication()">
+
+        <div class="form-content">
+            <p class="eyebrow">STEP 4 OF 4</p>
+            <h2>Review Your Application</h2>
+
+            <p class="section-description">
+            Please verify your details before proceeding.
+            </p>
+
+            <!-- FEATURE: Review Personal Details -->
+            <div class="review-section">
+            <div class="review-heading">
+                <h3>Personal Details</h3>
+                <button type="button" (click)="currentStep = 0">Edit</button>
+            </div>
+
+            <div class="review-grid">
+                <div>
+                <label>Full Name</label>
+                <p>{{ personalForm.value.fullName }}</p>
+                </div>
+                <div>
+                <label>Date of Birth</label>
+                <p>{{ personalForm.value.dateOfBirth }}</p>
+                </div>
+                <div>
+                <label>Gender</label>
+                <p>{{ personalForm.value.gender }}</p>
+                </div>
+                <div>
+                <label>PAN Number</label>
+                <p>{{ personalForm.value.panNumber }}</p>
+                </div>
+                <div>
+                <label>Email</label>
+                <p>{{ personalForm.value.email }}</p>
+                </div>
+                <div>
+                <label>City</label>
+                <p>{{ personalForm.value.city }}</p>
+                </div>
+                <div>
+                <label>State</label>
+                <p>{{ personalForm.value.state }}</p>
+                </div>
+                <div>
+                <label>PIN Code</label>
+                <p>{{ personalForm.value.postalCode }}</p>
+                </div>
+            </div>
+            </div>
+
+            <!-- FEATURE: Review Additional Details -->
+            <div class="review-section">
+            <div class="review-heading">
+                <h3>Additional Details &amp; Nominee</h3>
+                <button type="button" (click)="currentStep = 1">Edit</button>
+            </div>
+
+            <div class="review-grid">
+                <div>
+                <label>Occupation</label>
+                <p>{{ additionalForm.value.occupation }}</p>
+                </div>
+                <div>
+                <label>Annual Income</label>
+                <p>{{ additionalForm.value.annualIncome }}</p>
+                </div>
+                <div>
+                <label>Marital Status</label>
+                <p>{{ additionalForm.value.maritalStatus }}</p>
+                </div>
+                <div>
+                <label>Account Type</label>
+                <p>{{ additionalForm.value.accountType }}</p>
+                </div>
+                <div>
+                <label>Nominee Name</label>
+                <p>{{ additionalForm.value.nomineeName }}</p>
+                </div>
+                <div>
+                <label>Nominee Relationship</label>
+                <p>{{ additionalForm.value.nomineeRelationship }}</p>
+                </div>
+                <div>
+                <label>Nominee Date of Birth</label>
+                <p>{{ additionalForm.value.nomineeDateOfBirth }}</p>
+                </div>
+            </div>
+            </div>
+
+            <!-- FEATURE: Review Uploaded Documents -->
+            <div class="review-section">
+            <div class="review-heading">
+                <h3>Uploaded Documents</h3>
+                <button type="button" (click)="goToDocuments()">Edit</button>
+            </div>
+
+            <div class="review-grid">
+                <div>
+                <label>PAN Card</label>
+                <p>{{ selectedDocuments['panDocument'] || 'Not uploaded' }}</p>
+                </div>
+                <div>
+                <label>Identity Proof</label>
+                <p>{{ selectedDocuments['identityDocument'] || 'Not uploaded' }}</p>
+                </div>
+                <div>
+                <label>Address Proof</label>
+                <p>{{ selectedDocuments['addressDocument'] || 'Not uploaded' }}</p>
+                </div>
+                <div>
+                <label>Applicant Photo</label>
+                <p>{{ selectedDocuments['applicantPhoto'] || 'Not uploaded' }}</p>
+                </div>
+            </div>
+            </div>
+
+            <p class="form-note">
+            Please verify that all the information is correct.
+            Your application has not yet been submitted to the bank.
+            </p>
+        </div>
+
+        <!-- FEATURE: Review Navigation -->
+        <footer class="form-footer">
+            <button
+            class="back-link back-button"
+            type="button"
+            (click)="goToDocuments()">
+            ← Back to Documents
+            </button>
+
+            <button class="continue-button" type="submit">
+            Confirm Details <span>→</span>
+            </button>
+        </footer>
+
+        </form>
+
+      </section>
+
+    </div>
+  </div>
+</div>

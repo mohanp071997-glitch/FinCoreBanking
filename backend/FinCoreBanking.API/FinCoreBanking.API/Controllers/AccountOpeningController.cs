@@ -200,13 +200,22 @@ public class AccountOpeningController : ControllerBase
         await _context.SaveChangesAsync();
         await transaction.CommitAsync();
 
-        // FEATURE: Send OTP email
+        // FEATURE: Send Account Opening OTP using Email Template
         try
         {
-            await _emailService.SendOtpEmailAsync(email, otp);
+            await _emailService.SendTemplateEmailAsync(
+                email,
+                "AccountOpeningEmailVerification",
+                new Dictionary<string, string>
+                {
+                    ["{{OTP}}"] = otp,
+                    ["{{ExpiryMinutes}}"] = "5",
+                    ["{{CurrentYear}}"] = DateTime.UtcNow.Year.ToString()
+                });
         }
         catch (Exception)
         {
+            // FEATURE: Invalidate OTP if email delivery fails
             otpRecord.IsUsed = true;
             await _context.SaveChangesAsync();
 

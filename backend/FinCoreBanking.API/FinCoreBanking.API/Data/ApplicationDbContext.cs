@@ -86,6 +86,16 @@ namespace FinCoreBanking.API.Data
             => Set<RequestTrackingOtp>();
 
 
+        // FEATURE: Stores account application review records.
+        public DbSet<ApplicationReview> ApplicationReviews
+            => Set<ApplicationReview>();
+
+        // FEATURE: Stores account application status history.
+        public DbSet<ApplicationStatusHistory> ApplicationStatusHistories
+            => Set<ApplicationStatusHistory>();
+
+
+
         // Configures table relationships and constraints.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -199,15 +209,16 @@ namespace FinCoreBanking.API.Data
                       .HasMaxLength(20)
                       .IsRequired();
 
-                // Configures the relationship between Accounts and Customers.
-                entity.HasOne<Customer>()
-                      .WithOne()
-                      .HasForeignKey<Account>(x => x.CustomerId)
-                      .OnDelete(DeleteBehavior.Restrict);
 
-                // Prevents multiple accounts for the same customer.
-                entity.HasIndex(x => x.CustomerId)
-                      .IsUnique();
+                // FEATURE: One customer can have multiple accounts.
+                entity.HasOne<Customer>()
+                    .WithMany()
+                    .HasForeignKey(x => x.CustomerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // FEATURE: Allow multiple accounts per customer.
+                entity.HasIndex(x => x.CustomerId);
+
             });
 
             // Configures the AccountTypes table.
@@ -866,6 +877,96 @@ namespace FinCoreBanking.API.Data
                 .HasDatabaseName(
                     "IX_RequestTrackingOtps_RequestId_Email_CreatedAt");
             });
+
+
+            // FEATURE: Application Review Configuration
+            modelBuilder.Entity<ApplicationReview>(entity =>
+            {
+                entity.ToTable("ApplicationReviews");
+
+                entity.HasKey(x => x.ApplicationReviewId);
+
+                entity.Property(x => x.ReviewDecision)
+                    .HasMaxLength(30)
+                    .IsRequired();
+
+                entity.Property(x => x.Comments)
+                    .HasMaxLength(1000);
+
+                entity.Property(x => x.CreatedAtUtc)
+                    .HasColumnType("datetime2")
+                    .IsRequired();
+
+                entity.Property(x => x.ReviewedAtUtc)
+                    .HasColumnType("datetime2");
+
+                // FEATURE: Link review to the account opening application.
+                entity.HasOne<AccountOpeningApplication>()
+                    .WithMany()
+                    .HasForeignKey(x => x.AccountOpeningApplicationId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // FEATURE: Link review to the reviewer user.
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(x => x.ReviewerUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // FEATURE: Index application reviews by application.
+                entity.HasIndex(x => x.AccountOpeningApplicationId);
+
+                // FEATURE: Index reviews by reviewer.
+                entity.HasIndex(x => x.ReviewerUserId);
+            });
+
+            // FEATURE: Application Status History Configuration
+            modelBuilder.Entity<ApplicationStatusHistory>(entity =>
+            {
+                entity.ToTable("ApplicationStatusHistory");
+
+                entity.HasKey(x => x.ApplicationStatusHistoryId);
+
+                entity.Property(x => x.PreviousStatus)
+                    .HasMaxLength(30)
+                    .IsRequired();
+
+                entity.Property(x => x.NewStatus)
+                    .HasMaxLength(30)
+                    .IsRequired();
+
+                entity.Property(x => x.Reason)
+                    .HasMaxLength(1000);
+
+                entity.Property(x => x.ChangedAtUtc)
+                    .HasColumnType("datetime2")
+                    .IsRequired();
+
+                // FEATURE: Link history to the account opening application.
+                entity.HasOne<AccountOpeningApplication>()
+                    .WithMany()
+                    .HasForeignKey(x => x.AccountOpeningApplicationId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // FEATURE: Link history to the user who changed the status.
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(x => x.ChangedByUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // FEATURE: Index status history by application.
+                entity.HasIndex(x => x.AccountOpeningApplicationId);
+
+                // FEATURE: Index history by the user who changed the status.
+                entity.HasIndex(x => x.ChangedByUserId);
+
+                // FEATURE: Support chronological application history queries.
+                entity.HasIndex(x => new
+                {
+                    x.AccountOpeningApplicationId,
+                    x.ChangedAtUtc
+                });
+            });
+
         }
     }
 }

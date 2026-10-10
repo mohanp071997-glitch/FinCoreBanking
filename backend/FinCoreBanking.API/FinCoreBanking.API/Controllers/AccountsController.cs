@@ -37,25 +37,17 @@ namespace FinCoreBanking.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAccount(CreateAccountRequest request)
         {
-            // Checks whether the customer exists.
+            // FEATURE: Validate that the customer exists and is active.
             var customer = await _context.Customers
-                .FirstOrDefaultAsync(x => x.CustomerId == request.CustomerId && x.IsActive);
+                .FirstOrDefaultAsync(x =>
+                    x.CustomerId == request.CustomerId && x.IsActive);
 
             if (customer == null)
             {
                 return BadRequest("Active customer not found.");
             }
 
-            // Checks whether the customer already has an account.
-            var existingAccount = await _context.Accounts
-                .FirstOrDefaultAsync(x => x.CustomerId == request.CustomerId);
-
-            if (existingAccount != null)
-            {
-                return BadRequest("Account already exists for this customer.");
-            }
-
-            // Checks whether the account type exists.
+            // FEATURE: Validate that the account type exists and is active.
             var accountType = await _context.AccountTypes
                 .FirstOrDefaultAsync(x =>
                     x.AccountTypeId == request.AccountTypeId && x.IsActive);
@@ -65,22 +57,22 @@ namespace FinCoreBanking.API.Controllers
                 return BadRequest("Active account type not found.");
             }
 
-            // Checks whether the account number already exists.
+            // FEATURE: Prevent duplicate account numbers.
             var existingAccountNumber = await _context.Accounts
-                .FirstOrDefaultAsync(x => x.AccountNumber == request.AccountNumber);
+                .AnyAsync(x => x.AccountNumber == request.AccountNumber);
 
-            if (existingAccountNumber != null)
+            if (existingAccountNumber)
             {
                 return BadRequest("Account number already exists.");
             }
 
-            // Validates the opening balance.
+            // FEATURE: Validate the opening balance.
             if (request.OpeningBalance < 0)
             {
                 return BadRequest("Opening balance cannot be negative.");
             }
 
-            // Creates a new account.
+            // FEATURE: Create an additional account for the customer.
             var account = new Account
             {
                 CustomerId = request.CustomerId,
@@ -93,15 +85,14 @@ namespace FinCoreBanking.API.Controllers
                 CreatedDate = DateTime.UtcNow
             };
 
-            // Adds the account to the database.
+            // FEATURE: Save the new account.
             _context.Accounts.Add(account);
-
-            // Saves the account.
             await _context.SaveChangesAsync();
 
             // Returns the created account.
             return Ok(account);
         }
+
 
         // Gets the active accounts for the logged-in customer.
         [HttpGet("current")]

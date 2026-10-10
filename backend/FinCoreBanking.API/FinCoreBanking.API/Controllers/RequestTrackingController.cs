@@ -1,11 +1,12 @@
 ﻿
-using System.Security.Cryptography;
-using System.Text;
 using FinCoreBanking.API.Data;
 using FinCoreBanking.API.Models;
 using FinCoreBanking.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace FinCoreBanking.API.Controllers;
 
@@ -100,10 +101,19 @@ public class RequestTrackingController : ControllerBase
         _context.RequestTrackingOtps.Add(otpRecord);
         await _context.SaveChangesAsync();
 
+        
         try
         {
-            // FEATURE: Send OTP using existing EmailService
-            await _emailService.SendOtpEmailAsync(email, otp);
+            // FEATURE: Send Track Application OTP using Email Template
+            await _emailService.SendTemplateEmailAsync(
+                email,
+                "TrackApplicationEmailVerification",
+                new Dictionary<string, string>
+                {
+                    ["{{OTP}}"] = otp,
+                    ["{{ExpiryMinutes}}"] = "5",
+                    ["{{CurrentYear}}"] = DateTime.UtcNow.Year.ToString()
+                });
         }
         catch (Exception ex)
         {
@@ -119,6 +129,7 @@ public class RequestTrackingController : ControllerBase
                 message = "Unable to send OTP. Please try again later."
             });
         }
+
 
         // FEATURE: Mask email address in API response
         var atIndex = email.IndexOf('@');

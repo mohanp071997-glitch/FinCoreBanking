@@ -108,7 +108,7 @@ namespace FinCoreBanking.API.Controllers
                 return Unauthorized("Invalid email or password.");
             }
 
-            
+
             // Verifies the entered password.
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
@@ -122,22 +122,22 @@ namespace FinCoreBanking.API.Controllers
                 });
             }
 
-            // Gets the role assigned to the user.
-            var role = await _context.UserRoles
-                .Where(x => x.UserId == user.UserId)
-                .Join(
-                    _context.Roles,
-                    userRole => userRole.RoleId,
-                    role => role.RoleId,
-                    (userRole, role) => role.RoleName
-                )
-                .FirstOrDefaultAsync();
 
-            // Returns an error when the role is not configured.
-            if (role == null)
+            // FEATURE: Retrieve all roles assigned to the user.
+            var roles = await (
+                from userRole in _context.UserRoles
+                join roleData in _context.Roles
+                    on userRole.RoleId equals roleData.RoleId
+                where userRole.UserId == user.UserId
+                select roleData.RoleName
+            ).Distinct().ToListAsync();
+
+            // FEATURE: Validate that at least one role is configured.
+            if (roles.Count == 0)
             {
                 return BadRequest("User role is not configured.");
             }
+
 
             // Checks whether two-factor authentication is enabled.
             if (user.IsTwoFactorEnabled)
@@ -199,7 +199,7 @@ namespace FinCoreBanking.API.Controllers
             await _context.SaveChangesAsync();
 
             // Generates the JWT token.
-            var token = GenerateJwtToken(user, role);
+            var token = GenerateJwtToken(user, roles);
 
             // Sends a successful login email when login alerts are enabled.
             await SendLoginEmailAsync(user);
@@ -211,7 +211,7 @@ namespace FinCoreBanking.API.Controllers
                 userId = user.UserId,
                 userName = user.UserName,
                 email = user.Email,
-                role = role,
+                roles = roles,
                 lastLoginDate = user.LastLoginDate,
                 token = token
             });
@@ -740,19 +740,17 @@ namespace FinCoreBanking.API.Controllers
                 });
             }
 
-            // Gets the role assigned to the user.
-            var role = await _context.UserRoles
-                .Where(x => x.UserId == user.UserId)
-                .Join(
-                    _context.Roles,
-                    userRole => userRole.RoleId,
-                    role => role.RoleId,
-                    (userRole, role) => role.RoleName
-                )
-                .FirstOrDefaultAsync();
+            // FEATURE: Retrieve all roles assigned to the user after OTP verification.
+            var roles = await (
+                from userRole in _context.UserRoles
+                join roleData in _context.Roles
+                    on userRole.RoleId equals roleData.RoleId
+                where userRole.UserId == user.UserId
+                select roleData.RoleName
+            ).Distinct().ToListAsync();
 
-            // Returns an error if the role is not configured.
-            if (role == null)
+            // FEATURE: Validate that at least one role is configured.
+            if (roles.Count == 0)
             {
                 return BadRequest("User role is not configured.");
             }
@@ -772,7 +770,7 @@ namespace FinCoreBanking.API.Controllers
             await SendLoginEmailAsync(user);
 
             // Generates the JWT token after successful OTP verification.
-            var token = GenerateJwtToken(user, role);
+            var token = GenerateJwtToken(user, roles);
 
             // Returns the authentication response.
             return Ok(new
@@ -780,14 +778,14 @@ namespace FinCoreBanking.API.Controllers
                 userId = user.UserId,
                 userName = user.UserName,
                 email = user.Email,
-                role = role,
+                roles = roles,
                 lastLoginDate = user.LastLoginDate,
                 token = token
             });
         }
 
-        // Generates a JWT token for the authenticated user.
-        private string GenerateJwtToken(User user, string? role)
+        // FEATURE: Generate a JWT token containing all assigned roles.
+        private string GenerateJwtToken(User user, List<string> roles)
         {
             var jwtKey = _configuration["JwtSettings:Key"];
             var jwtIssuer = _configuration["JwtSettings:Issuer"];
@@ -797,9 +795,13 @@ namespace FinCoreBanking.API.Controllers
     {
         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
         new Claim(ClaimTypes.Name, user.UserName),
-        new Claim(ClaimTypes.Email, user.Email),
-        new Claim(ClaimTypes.Role, role ?? string.Empty)
+        new Claim(ClaimTypes.Email, user.Email)
     };
+
+            // FEATURE: Add every assigned role as a separate role claim.
+            claims.AddRange(
+                roles.Select(role => new Claim(ClaimTypes.Role, role))
+            );
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(jwtKey!)
@@ -823,6 +825,7 @@ namespace FinCoreBanking.API.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
         // Creates a login notification for the user.
         private async Task CreateLoginNotificationAsync(int userId)
@@ -1118,17 +1121,23 @@ namespace FinCoreBanking.API.Controllers
             // Saves OTP and login changes.
             await _context.SaveChangesAsync();
 
-            // Gets the user's role.
-            var role = await (
+            // FEATURE: Retrieve all roles assigned to the user after mobile OTP verification.
+            var roles = await (
                 from userRole in _context.UserRoles
                 join roleData in _context.Roles
                     on userRole.RoleId equals roleData.RoleId
                 where userRole.UserId == user.UserId
                 select roleData.RoleName
-            ).FirstOrDefaultAsync();
+            ).Distinct().ToListAsync();
 
-            // Generates the JWT token.
-            var token = GenerateJwtToken(user, role);
+            // FEATURE: Validate that at least one role is configured.
+            if (roles.Count == 0)
+            {
+                return BadRequest("User role is not configured.");
+            }
+
+            // FEATURE: Generate the JWT token with all assigned roles.
+            var token = GenerateJwtToken(user, roles);
 
             // Returns the same login information required by Angular.
             return Ok(new
@@ -1138,7 +1147,7 @@ namespace FinCoreBanking.API.Controllers
                 userName = user.UserName,
                 email = user.Email,
                 lastLoginDate = user.LastLoginDate,
-                role = role,
+                roles = roles,
                 requiresTwoFactor = false
             });
 

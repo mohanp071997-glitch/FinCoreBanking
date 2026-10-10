@@ -107,29 +107,32 @@
 
       </ng-container>
 
-<!-- Accounts content -->
-<ng-template #accountsContent>
+    <!-- Accounts content -->
+    <ng-template #accountsContent>
 
-  <div class="personal-menu-column">
-    <a routerLink="/savings-account" (click)="closeDesktopMenu()">
-      Savings Account
-    </a>
-    <a>Salary Account</a>
-    <a>Capital Gains Account Scheme</a>
-    <a>Hindu Undivided Family (HUF) Savings Account</a>
-  </div>
+      <div class="personal-menu-column">
+        <a routerLink="/savings-account" (click)="closeDesktopMenu()">
+          Savings Account
+        </a>
+        <a>Salary Account</a>
+        <a routerLink="/track-request" class="track-request-link">
+          <span>Track Request</span>
+        </a>
+        <a>Capital Gains Account Scheme</a>
+        <a>Hindu Undivided Family (HUF) Savings Account</a>
+      </div>
 
-  <div class="personal-menu-column">
-    <a>Banking Solutions for Doctors</a>
-  </div>
+      <div class="personal-menu-column">
+        <a>Banking Solutions for Doctors</a>
+      </div>
 
-  <div class="personal-promo-card">
-    <h3>Get the best from FinCore Banking</h3>
-    <p>Open a Savings Account for seamless payments.</p>
-    <button type="button">Apply now</button>
-  </div>
+      <div class="personal-promo-card">
+        <h3>Get the best from FinCore Banking</h3>
+        <p>Open a Savings Account for seamless payments.</p>
+        <button type="button">Apply now</button>
+      </div>
 
-</ng-template>
+    </ng-template>
 
 
       <!-- Default content -->

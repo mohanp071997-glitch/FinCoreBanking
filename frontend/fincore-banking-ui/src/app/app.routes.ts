@@ -14,6 +14,7 @@ import { AccountsComponent } from './pages/accounts/accounts.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { SavingsAccountComponent } from './pages/savings-account/savings-account.component';
+import { TrackRequestComponent } from './pages/track-request/track-request.component';
 
 export const routes: Routes = [
 
@@ -137,6 +138,10 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/savings-application/savings-application.component')
       .then(m => m.SavingsApplicationComponent)
+},
+{
+  path: 'track-request',
+  component: TrackRequestComponent
 }
 
 ];

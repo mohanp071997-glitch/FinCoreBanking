@@ -860,3 +860,670 @@
 }
 
 
+/* FEATURE: Success popup overlay */
+.success-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  background: rgba(14, 31, 59, 0.48);
+  backdrop-filter: blur(5px);
+}
+
+/* FEATURE: Success popup card */
+.success-modal {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 30px 36px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #12336d;
+  background: #ffffff;
+  border: 1px solid #d7e8ff;
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0, 35, 90, 0.2);
+  animation: successPopupIn 0.25s ease-out;
+}
+
+@keyframes successPopupIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* FEATURE: Close popup */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  color: #61738d;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* FEATURE: Green success icon */
+.success-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #20b875;
+  color: white;
+  font-size: 45px;
+  font-weight: 700;
+  box-shadow: 0 7px 20px rgba(32, 184, 117, 0.2);
+}
+
+.success-modal h2 {
+  margin: 0 0 16px;
+  color: #102f68;
+  font-size: clamp(21px, 3vw, 28px);
+  line-height: 1.35;
+}
+
+.success-thanks {
+  margin: 0 0 7px;
+  color: #45638f;
+  font-size: 16px;
+}
+
+.success-description {
+  margin: 0;
+  color: #45638f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* FEATURE: Request ID panel */
+.request-id-panel {
+  position: relative;
+  margin: 23px 0 18px;
+  padding: 16px 48px;
+  border-radius: 12px;
+  background: #fff8e9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.request-id-panel span {
+  color: #a96600;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.request-id-panel strong {
+  color: #12336d;
+  font-size: clamp(22px, 4vw, 30px);
+  overflow-wrap: anywhere;
+  letter-spacing: 1px;
+}
+
+.copy-request-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0860d2;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.copy-request-btn:hover {
+  background: #eaf3ff;
+}
+
+.success-email-message {
+  margin: 16px 0;
+  color: #45638f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* FEATURE: Application status */
+.success-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0 22px;
+  font-size: 13px;
+}
+
+.success-status span {
+  color: #526b91;
+}
+
+.success-status strong {
+  padding: 7px 12px;
+  border-radius: 20px;
+  color: #936000;
+  background: #fff3d6;
+}
+
+/* FEATURE: Popup action buttons */
+.success-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.success-actions button {
+  flex: 1;
+  min-height: 48px;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.success-primary-btn {
+  color: #ffffff;
+  background: #0860d2;
+  border: 1px solid #0860d2;
+}
+
+.success-primary-btn:hover {
+  background: #064eae;
+}
+
+.success-secondary-btn {
+  color: #0860d2;
+  background: #ffffff;
+  border: 1px solid #0860d2;
+}
+
+.success-secondary-btn:hover {
+  background: #f1f7ff;
+}
+
+@media (max-width: 480px) {
+  .success-modal {
+    padding: 28px 18px 22px;
+  }
+
+  .success-actions {
+    flex-direction: column;
+  }
+
+  .success-modal h2 {
+    font-size: 21px;
+  }
+}
+
+/* FEATURE: Email OTP button */
+.email-otp-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.send-otp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #1559d6;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2874e8, #174fb9);
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgb(21 89 214 / 16%);
+  transition: 0.2s ease;
+}
+
+.send-otp-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #1d62d0, #123f9c);
+}
+
+.send-otp-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.email-verified-badge {
+  padding: 7px 11px;
+  border-radius: 20px;
+  background: #e9f9f0;
+  color: #168653;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.email-success-message,
+.otp-inline-error {
+  flex-basis: 100%;
+  margin: 3px 0 0;
+  font-size: 11px;
+}
+
+.email-success-message {
+  color: #168653;
+}
+
+.otp-inline-error {
+  color: #dc2626;
+}
+
+.otp-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgb(255 255 255 / 45%);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: otpSpin 0.7s linear infinite;
+}
+
+@keyframes otpSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* FEATURE: OTP modal overlay */
+.otp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 20px;
+  background: rgb(12 29 56 / 60%);
+  backdrop-filter: blur(5px);
+  animation: otpFadeIn 0.2s ease-out;
+}
+
+.otp-modal {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 32px;
+  border: 1px solid #e0e9f7;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgb(0 25 65 / 22%);
+  animation: otpModalIn 0.25s ease-out;
+}
+
+.otp-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  background: #f1f5fb;
+  color: #526783;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.otp-modal-icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  border-radius: 16px;
+  background: #eaf2ff;
+  color: #1559d6;
+  font-size: 28px;
+}
+
+.otp-modal-eyebrow {
+  display: block;
+  color: #2464ce;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-align: center;
+}
+
+.otp-modal h2 {
+  margin: 10px 0;
+  color: #142f58;
+  font-size: 25px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.otp-modal-description {
+  margin: 0 0 18px;
+  color: #718099;
+  font-size: 12px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.otp-email-chip {
+  overflow-wrap: anywhere;
+  margin-bottom: 22px;
+  padding: 12px;
+  border: 1px solid #dce8fa;
+  border-radius: 9px;
+  background: #f0f6ff;
+  color: #284b7d;
+  font-size: 12px;
+  text-align: center;
+}
+
+.otp-modal label {
+  display: block;
+  margin-bottom: 9px;
+  color: #263b5a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.otp-modal-input {
+  display: block;
+  width: 100%;
+  height: 54px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1px solid #cbdaf0;
+  border-radius: 10px;
+  outline: none;
+  background: #fbfcff;
+  color: #16365f;
+  font-family: inherit;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: 9px;
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.otp-modal-input:focus {
+  border-color: #3679ed;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgb(54 121 237 / 12%);
+}
+
+.otp-modal-error,
+.otp-modal-message {
+  margin: 9px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.otp-modal-error {
+  color: #dc2626;
+}
+
+.otp-modal-message {
+  color: #526b91;
+}
+
+/* FEATURE: Resend countdown */
+.otp-resend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+  color: #657895;
+  font-size: 11px;
+}
+
+.otp-resend-row strong {
+  color: #174fb9;
+  font-variant-numeric: tabular-nums;
+}
+
+.resend-otp-button {
+  padding: 5px 0;
+  border: none;
+  background: transparent;
+  color: #1559d6;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.resend-otp-button:disabled {
+  color: #a6afbd;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* FEATURE: Verify and cancel buttons */
+.verify-otp-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 47px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #2874e8, #174fb9);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.verify-otp-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d62d0, #123f9c);
+}
+
+.verify-otp-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cancel-otp-button {
+  display: block;
+  width: 100%;
+  min-height: 43px;
+  margin-top: 10px;
+  border: 1px solid #cbdaf0;
+  border-radius: 9px;
+  background: #fff;
+  color: #28456d;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancel-otp-button:hover:not(:disabled) {
+  background: #f5f8fc;
+}
+
+.otp-security-note {
+  margin: 20px 0 0;
+  color: #8491a5;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* FEATURE: Toast notification */
+.otp-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 11000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(390px, calc(100vw - 32px));
+  padding: 15px 16px;
+  border: 1px solid #cdebd9;
+  border-radius: 12px;
+  background: #fff;
+  color: #24415f;
+  box-shadow: 0 12px 35px rgb(16 42 78 / 16%);
+  font-size: 12px;
+  animation: otpFadeIn 0.2s ease-out;
+}
+
+.otp-toast-success {
+  border-left: 4px solid #16a05d;
+}
+
+.otp-toast-error {
+  border-color: #f3caca;
+  border-left: 4px solid #dc2626;
+}
+
+.toast-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 27px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #e8f8ef;
+  color: #168653;
+  font-weight: 800;
+}
+
+.otp-toast-error .toast-icon {
+  background: #fef0f0;
+  color: #dc2626;
+}
+
+.otp-toast > span:nth-child(2) {
+  flex: 1;
+  line-height: 1.6;
+}
+
+.otp-toast button {
+  border: none;
+  background: transparent;
+  color: #8290a5;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+@keyframes otpFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes otpModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .otp-modal {
+    padding: 27px 20px;
+  }
+
+  .otp-modal h2 {
+    font-size: 22px;
+  }
+
+  .otp-toast {
+    top: 12px;
+    right: 16px;
+  }
+}
+
+
+/* FEATURE: Global toast above success popup */
+.global-toast {
+  position: fixed !important;
+  top: 24px !important;
+  right: 24px !important;
+  z-index: 99999 !important;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: min(380px, calc(100vw - 32px));
+  box-sizing: border-box;
+  padding: 16px;
+
+  background: #fff;
+  color: #24415f;
+  border: 1px solid #bce8ce;
+  border-left: 4px solid #16a05d;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgb(16 42 78 / 22%);
+  font-size: 13px;
+}
+
+.global-toast-error {
+  border-color: #f3caca;
+  border-left-color: #dc2626;
+}
+
+.global-toast-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e8f8ef;
+  color: #168653;
+  font-weight: 800;
+}
+
+.global-toast-text {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.global-toast button {
+  border: none;
+  background: transparent;
+  color: #8290a5;
+  font-size: 20px;
+  cursor: pointer;
+}

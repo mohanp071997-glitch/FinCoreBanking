@@ -34,18 +34,40 @@ export class AccountOpeningService {
     );
   }
 
-  // FEATURE: Submit application
+
+  // FEATURE: Submit application with actual documents
   submitApplication(payload: {
     applicationDraftId: string;
     personalDetails: Record<string, unknown>;
     additionalDetails: Record<string, unknown>;
-    documents: Record<string, string | undefined>;
+    panDocument: File;
+    identityDocument: File;
+    addressDocument: File;
+    applicantPhoto: File;
   }): Observable<SubmitApplicationResponse> {
+    const formData = new FormData();
+
+    formData.append('ApplicationDraftId', payload.applicationDraftId);
+    formData.append(
+      'PersonalDetails',
+      JSON.stringify(payload.personalDetails)
+    );
+    formData.append(
+      'AdditionalDetails',
+      JSON.stringify(payload.additionalDetails)
+    );
+
+    formData.append('PanDocument', payload.panDocument);
+    formData.append('IdentityDocument', payload.identityDocument);
+    formData.append('AddressDocument', payload.addressDocument);
+    formData.append('ApplicantPhoto', payload.applicantPhoto);
+
     return this.http.post<SubmitApplicationResponse>(
       `${this.apiUrl}/submit`,
-      payload
+      formData
     );
   }
+
 
     sendOtp(payload: {
     email: string;

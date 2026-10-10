@@ -252,52 +252,142 @@
                 (input)="onEmailChanged()">
 
                   
-                <!-- FEATURE: Email OTP Verification UI -->
+                
+                <!-- FEATURE: Professional Email OTP Button -->
                 <div class="email-otp-section">
-                <button
+                  <button
                     type="button"
+                    class="send-otp-button"
                     (click)="sendEmailOtp()"
-                    [disabled]="isOtpSending || emailVerified">
-                    {{ isOtpSending ? 'Sending OTP...' : 'Send OTP' }}
-                </button>
+                    [disabled]="isOtpSending || emailVerified || resendSeconds > 0">
 
-                <p *ngIf="otpSent && !emailVerified">
-                    OTP sent to your email. Please check your inbox.
-                </p>
+                    <span *ngIf="!isOtpSending">✉</span>
+                    <span *ngIf="isOtpSending" class="otp-spinner"></span>
 
-                <div *ngIf="otpSent && !emailVerified">
+                    {{
+                      isOtpSending
+                        ? 'Sending OTP...'
+                        : otpSent
+                          ? resendSeconds > 0
+                            ? 'OTP Sent'
+                            : 'Resend OTP'
+                          : 'Send OTP'
+                    }}
+                  </button>
+
+                  <span *ngIf="emailVerified" class="email-verified-badge">
+                    ✓ Email Verified
+                  </span>
+
+                  <p *ngIf="emailVerified" class="email-success-message">
+                    Email verified successfully.
+                  </p>
+
+                  <p *ngIf="otpError && !showOtpModal" class="otp-inline-error">
+                    {{ otpError }}
+                  </p>
+                </div>
+
+                <!-- FEATURE: Email OTP Verification Popup -->
+                <div
+                  class="otp-modal-overlay"
+                  *ngIf="showOtpModal"
+                  (click)="closeOtpModal()">
+
+                  <section
+                    class="otp-modal"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="otpModalTitle"
+                    (click)="$event.stopPropagation()">
+
+                    <button
+                      type="button"
+                      class="otp-modal-close"
+                      aria-label="Close popup"
+                      (click)="closeOtpModal()">
+                      &times;
+                    </button>
+
+                    <div class="otp-modal-icon">✉</div>
+
+                    <span class="otp-modal-eyebrow">EMAIL VERIFICATION</span>
+
+                    <h2 id="otpModalTitle">Verify Your Email</h2>
+
+                    <p class="otp-modal-description">
+                      Enter the 6-digit verification code sent to your email address.
+                    </p>
+
+                    <div class="otp-email-chip">
+                      {{ personalForm.controls.email.value }}
+                    </div>
+
                     <label for="emailOtp">Enter 6-digit OTP</label>
 
                     <input
-                    id="emailOtp"
-                    type="text"
-                    inputmode="numeric"
-                    maxlength="6"
-                    autocomplete="one-time-code"
-                    [ngModel]="otp"
-                    [ngModelOptions]="{ standalone: true }"
-                    (ngModelChange)="onOtpChanged($event)"
-                    placeholder="Enter OTP">
+                      id="emailOtp"
+                      class="otp-modal-input"
+                      type="text"
+                      inputmode="numeric"
+                      maxlength="6"
+                      autocomplete="one-time-code"
+                      [ngModel]="otp"
+                      [ngModelOptions]="{ standalone: true }"
+                      (ngModelChange)="onOtpChanged($event)"
+                      (keydown.enter)="$event.preventDefault(); verifyEmailOtp()"
+                      placeholder="000000" />
+
+                    <p class="otp-modal-error" *ngIf="otpError">
+                      {{ otpError }}
+                    </p>
+
+                    <p class="otp-modal-message" *ngIf="otpMessage && !otpError">
+                      {{ otpMessage }}
+                    </p>
+
+                    <!-- FEATURE: Resend OTP countdown -->
+                    <div class="otp-resend-row">
+                      <span *ngIf="resendSeconds > 0">
+                        Resend code in
+                        <strong>{{ formatResendTime() }}</strong>
+                      </span>
+
+                      <span *ngIf="resendSeconds === 0">
+                        Didn't receive the code?
+                      </span>
+
+                      <button
+                        type="button"
+                        class="resend-otp-button"
+                        [disabled]="resendSeconds > 0 || isOtpSending || isOtpVerifying"
+                        (click)="resendEmailOtp()">
+                        Resend Code
+                      </button>
+                    </div>
 
                     <button
-                    type="button"
-                    (click)="verifyEmailOtp()"
-                    [disabled]="isOtpVerifying">
-                    {{ isOtpVerifying ? 'Verifying...' : 'Verify OTP' }}
+                      type="button"
+                      class="verify-otp-button"
+                      (click)="verifyEmailOtp()"
+                      [disabled]="isOtpVerifying || otp.length !== 6">
+
+                      {{ isOtpVerifying ? 'Verifying...' : 'Verify OTP' }}
+                      <span *ngIf="!isOtpVerifying">→</span>
                     </button>
-                </div>
 
-                <p *ngIf="emailVerified" class="success-message">
-                    Email verified successfully.
-                </p>
+                    <button
+                      type="button"
+                      class="cancel-otp-button"
+                      (click)="closeOtpModal()"
+                      [disabled]="isOtpVerifying">
+                      Cancel
+                    </button>
 
-                <p *ngIf="otpError" class="error-message">
-                    {{ otpError }}
-                </p>
-
-                <p *ngIf="otpMessage && !emailVerified">
-                    {{ otpMessage }}
-                </p>
+                    <p class="otp-security-note">
+                      🔒 Your verification code is private. Do not share it.
+                    </p>
+                  </section>
                 </div>
 
                 <small
@@ -870,3 +960,110 @@
     </div>
   </div>
 </div>
+
+
+<!-- FEATURE: Application Submitted Success Popup -->
+<div
+  class="success-modal-overlay"
+  *ngIf="showSuccessPopup"
+  (click)="closeSuccessPopup()">
+
+  <section
+    class="success-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="successTitle"
+    (click)="$event.stopPropagation()">
+
+    <button
+      type="button"
+      class="modal-close"
+      aria-label="Close"
+      (click)="closeSuccessPopup()">
+      &times;
+    </button>
+
+    <div class="success-check">✓</div>
+
+    <h2 id="successTitle">
+      Your Savings Account<br>
+      Application Has Been Submitted!
+    </h2>
+
+    <p class="success-thanks">
+      Thank you for choosing FinCore.
+    </p>
+
+    <p class="success-description">
+      Your application is under review and will be processed shortly.
+    </p>
+
+    <div class="request-id-panel">
+      <span>Request ID</span>
+
+      <strong>{{ applicationRequestId }}</strong>
+
+      <button
+        type="button"
+        class="copy-request-btn"
+        (click)="copyRequestId()"
+        aria-label="Copy Request ID">
+        ▢
+      </button>
+    </div>
+
+    <p class="success-email-message">
+      You will receive an update on your registered email
+      once the account is approved.
+    </p>
+
+    <div class="success-status">
+      <span>Application Status</span>
+      <strong>Pending Approval</strong>
+    </div>
+
+    <div class="success-actions">
+      <button
+        type="button"
+        class="success-primary-btn"
+        (click)="goToMyRequests()">
+        Go to My Requests →
+      </button>
+
+      <button
+        type="button"
+        class="success-secondary-btn"
+        (click)="goToHome()">
+        Back to Home
+      </button>
+    </div>
+
+  </section>
+</div>
+
+
+<!-- FEATURE: Global Toast Notification -->
+<div
+  *ngIf="toastMessage"
+  class="global-toast"
+  [class.global-toast-success]="toastType === 'success'"
+  [class.global-toast-error]="toastType === 'error'"
+  role="status"
+  aria-live="polite">
+
+  <span class="global-toast-icon">
+    {{ toastType === 'success' ? '✓' : '!' }}
+  </span>
+
+  <span class="global-toast-text">
+    {{ toastMessage }}
+  </span>
+
+  <button
+    type="button"
+    aria-label="Close notification"
+    (click)="clearToast()">
+    &times;
+  </button>
+</div>
+

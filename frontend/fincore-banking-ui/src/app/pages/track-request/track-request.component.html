@@ -1,0 +1,373 @@
+
+<div class="tracking-page">
+
+
+    <!-- FEATURE: Back button and dynamic breadcrumb -->
+    <div class="tracking-navigation">
+
+    <button
+        type="button"
+        class="back-button"
+        (click)="goBack()"
+        aria-label="Go back">
+        <span class="back-arrow">←</span>
+        <span>Back</span>
+    </button>
+
+    </div>
+
+
+  <!-- FEATURE: Page heading -->
+  <header class="tracking-header">
+    <div>
+      <span class="page-eyebrow">FINCORE SELF SERVICE</span>
+      <h1>Track Your <span>Request</span></h1>
+      <p>
+        Stay informed about your banking requests.
+        Enter your details to get the latest status.
+      </p>
+    </div>
+  </header>
+
+  <!-- FEATURE: Main banking layout -->
+  <div class="tracking-layout">
+
+    <!-- LEFT: Request form -->
+    <div class="tracking-form-column">
+
+      <section class="tracking-card">
+
+        <div class="form-card-header">
+          <div class="step-heading">
+            <span class="step-number">1</span>
+            <div>
+              <h2>Enter Request Details</h2>
+              <p>Provide your Request ID and registered email address.</p>
+            </div>
+          </div>
+
+          <div class="secure-label">
+            <span>♙</span>
+            Secure &amp; Encrypted
+          </div>
+        </div>
+
+        <!-- FEATURE: Request identification -->
+        <form [formGroup]="trackingForm" (ngSubmit)="sendOtp()">
+
+          <div class="form-field">
+            <label for="requestId">Request ID</label>
+
+            <div class="input-wrapper">
+              <span class="input-icon" aria-hidden="true">▤</span>
+              <input
+                id="requestId"
+                type="text"
+                formControlName="requestId"
+                maxlength="12"
+                inputmode="numeric"
+                autocomplete="off"
+                placeholder="Enter your 12-digit Request ID"
+              />
+            </div>
+
+            <small class="field-error"
+              *ngIf="trackingForm.controls.requestId.touched &&
+                     trackingForm.controls.requestId.invalid">
+              Enter a valid 12-digit Request ID.
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="email">Registered Email Address</label>
+
+            <div class="input-wrapper">
+              <span class="input-icon" aria-hidden="true">✉</span>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                autocomplete="email"
+                placeholder="Enter your registered email address"
+              />
+            </div>
+
+            <small class="field-error"
+              *ngIf="trackingForm.controls.email.touched &&
+                     trackingForm.controls.email.invalid">
+              Enter a valid email address.
+            </small>
+          </div>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="isLoading">
+            <span>
+              {{ isLoading ? 'Please wait...' : 'Send OTP to Email' }}
+            </span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+
+          <p class="form-security-note">
+            <span>🔒</span>
+            Your information is protected by secure verification.
+          </p>
+        </form>
+      </section>
+
+      <!-- FEATURE: OTP verification -->
+      <section class="tracking-card otp-card" *ngIf="otpSent">
+
+        <div class="step-heading">
+          <span class="step-number">2</span>
+          <div>
+            <h2>Verify Your Email</h2>
+            <p>Enter the six-digit code sent to your registered email.</p>
+          </div>
+        </div>
+
+        <div class="email-notice">
+          <span class="email-icon">✉</span>
+          <p>OTP sent to <strong>{{ maskedEmail }}</strong></p>
+        </div>
+
+        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+          <div class="form-field">
+            <label for="otp">6-digit OTP</label>
+
+            <div class="input-wrapper">
+              <span class="input-icon" aria-hidden="true">▦</span>
+              <input
+                id="otp"
+                type="text"
+                formControlName="otp"
+                maxlength="6"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                placeholder="Enter your OTP"
+              />
+            </div>
+
+            <small class="field-error"
+              *ngIf="otpForm.controls.otp.touched &&
+                     otpForm.controls.otp.invalid">
+              Enter a valid 6-digit OTP.
+            </small>
+          </div>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="isLoading">
+            <span>
+              {{ isLoading ? 'Verifying...' : 'Verify OTP' }}
+            </span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+        </form>
+      </section>
+
+    </div>
+
+    <!-- RIGHT: Banking promotional section -->
+    <div class="tracking-promo-column">
+
+      <section class="tracking-promo">
+
+        <div class="promo-copy">
+          <span class="promo-badge">FINCORE BANKING</span>
+
+          <h2>
+            Your Banking Journey,<br />
+            Made <span>Simple.</span>
+          </h2>
+
+          <div class="promo-underline"></div>
+
+          <p>
+            Track all your banking requests in one place
+            with secure verification and timely updates.
+          </p>
+        </div>
+
+        <!-- FEATURE: CSS banking illustration -->
+        <div class="banking-illustration" aria-hidden="true">
+
+          <div class="illustration-orbit orbit-one"></div>
+          <div class="illustration-orbit orbit-two"></div>
+
+          <div class="phone-device">
+            <div class="phone-speaker"></div>
+
+            <div class="phone-screen">
+              <div class="phone-check">✓</div>
+              <strong>Application<br />Status</strong>
+
+              <div class="skeleton-line wide"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+
+              <div class="phone-status">
+                <span class="mini-status-icon">✓</span>
+                <span>Submitted</span>
+              </div>
+
+              <div class="phone-status muted">
+                <span class="mini-status-icon">◷</span>
+                <span>Under Review</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="security-shield">
+            <span>✓</span>
+            <small>SECURE</small>
+          </div>
+
+          <div class="floating-status">
+            <div><span class="status-dot submitted"></span> Submitted</div>
+            <div><span class="status-dot review"></span> Under Review</div>
+            <div><span class="status-dot pending"></span> Approval Pending</div>
+          </div>
+
+          <div class="illustration-platform"></div>
+        </div>
+
+      </section>
+
+      <!-- FEATURE: Banking benefits -->
+      <div class="benefits-grid">
+
+        <article class="benefit-card">
+          <div class="benefit-icon shield-icon">✓</div>
+          <h3>Secure Verification</h3>
+          <p>Your registered email helps protect your information.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon chart-icon">▥</div>
+          <h3>Status Updates</h3>
+          <p>Know where your request stands at every step.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon mail-icon">✉</div>
+          <h3>Email Notifications</h3>
+          <p>Get updates on your request status.</p>
+        </article>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FEATURE: API response messages -->
+  <div class="message error-message" *ngIf="errorMessage">
+    <span>!</span>
+    {{ errorMessage }}
+  </div>
+
+  <div class="message success-message" *ngIf="successMessage">
+    <span>✓</span>
+    {{ successMessage }}
+  </div>
+
+  <!-- FEATURE: Display request details after OTP verification -->
+  <section
+    class="tracking-card result-card"
+    *ngIf="otpVerified && requestDetails as request">
+
+    <div class="result-heading">
+      <div>
+        <span class="result-label">REQUEST DETAILS</span>
+        <h2>Your Request Status</h2>
+      </div>
+      <span class="status-badge">{{ request.status }}</span>
+    </div>
+
+    <div class="details-grid">
+      <div class="detail-item">
+        <span>Request ID</span>
+        <strong>{{ request.requestId }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Request Type</span>
+        <strong>{{ request.requestType }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Submitted On</span>
+        <strong>
+          {{ request.submittedAt | date:'dd MMM yyyy, hh:mm a' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Last Updated</span>
+        <strong>
+          {{ request.lastUpdatedAt | date:'dd MMM yyyy, hh:mm a' }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="status-information">
+      <strong>What happens next?</strong>
+      <p>
+        {{ request.message ||
+           'Please check this page again for the latest request status.' }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="secondary-button"
+      (click)="resetTracking()">
+      Track Another Request
+    </button>
+  </section>
+
+  <!-- FEATURE: Customer support section -->
+  <section class="support-panel">
+    <div class="support-intro">
+      <div class="support-icon">♧</div>
+      <div>
+        <h3>Need Help?</h3>
+        <p>
+          For queries related to your application,
+          please contact our support team.
+        </p>
+      </div>
+    </div>
+
+    <div class="support-contact">
+      <div class="support-icon">☎</div>
+      <div>
+        <h3>1800 123 4567</h3>
+        <p>Mon – Sat, 9 AM – 6 PM</p>
+      </div>
+    </div>
+
+    <div class="support-contact">
+      <div class="support-icon">▤</div>
+      <div>
+        <h3>Customer Support</h3>
+        <p>We're here to help with your queries.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: Security reassurance -->
+  <footer class="security-footer">
+    <span>🔒</span>
+    <p>
+      <strong>Your privacy matters.</strong>
+      Request details are displayed only after successful verification.
+    </p>
+  </footer>
+
+</div>
+
+
+

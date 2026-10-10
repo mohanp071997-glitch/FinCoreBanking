@@ -1205,3 +1205,82 @@
   font-size: 32px;
   margin-bottom: 12px;
 }
+
+/* FEATURE: Tracking toast */
+.tracking-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 48px);
+  padding: 15px 18px;
+  border: 1px solid #cdebd9;
+  border-left: 4px solid #16a05d;
+  border-radius: 10px;
+  background: #fff;
+  color: #243b59;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 12%);
+}
+
+.tracking-toast-error {
+  border-color: #f3caca;
+  border-left-color: #dc2626;
+}
+
+.tracking-toast-success {
+  border-left-color: #16a05d;
+}
+
+.tracking-toast button {
+  margin-left: 8px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* FEATURE: Remove unused step space after OTP verification */
+.tracking-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.tracking-main {
+  min-width: 0;
+  align-self: start;
+}
+
+.tracking-card {
+  height: auto;
+  min-height: 0;
+  margin-bottom: 24px;
+}
+
+/* FEATURE: Show request status in full width after verification */
+.tracking-card.result-card {
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+/* FEATURE: Hide previous step containers when status is displayed */
+.tracking-main:has(.result-card) {
+  display: contents;
+}
+
+@media (max-width: 900px) {
+  .tracking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-main:has(.result-card) {
+    display: block;
+  }
+}

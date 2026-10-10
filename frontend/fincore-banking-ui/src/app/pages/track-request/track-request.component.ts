@@ -90,6 +90,13 @@ export class TrackRequestComponent implements OnInit, OnDestroy {
 
   requestDetails: TrackRequestDetails | null = null;
 
+  // FEATURE: Toast notification state
+  toastMessage = '';
+  toastType: 'success' | 'error' = 'success';
+
+  private toastTimer?: ReturnType<typeof setTimeout>;
+
+
   // FEATURE: Initialize dynamic breadcrumb
   ngOnInit(): void {
     this.updateBreadcrumbs();
@@ -106,6 +113,10 @@ export class TrackRequestComponent implements OnInit, OnDestroy {
   // FEATURE: Release router subscription
   ngOnDestroy(): void {
     this.routerSubscription?.unsubscribe();
+
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer);
+    }
   }
 
   // FEATURE: Build breadcrumb from current route
@@ -211,19 +222,23 @@ export class TrackRequestComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({
-        next: response => {
-          this.otpSent = true;
-          this.maskedEmail = response.maskedEmail ?? email;
+          next: response => {
+            this.otpSent = true;
+            this.maskedEmail = response.maskedEmail ?? email;
 
-          this.successMessage =
-            response.message ||
-            'OTP sent to your registered email.';
-        },
+            this.errorMessage = '';
+            this.successMessage =
+              response.message ||
+              'OTP sent to your registered email.';
+          },
 
         error: error => {
           this.errorMessage =
             error?.error?.message ??
             'Unable to send OTP. Please check your details and try again.';
+
+              // FEATURE: Show error toast when OTP sending fails
+          this.showToast(this.errorMessage, 'error');
         }
       });
   }
@@ -257,12 +272,16 @@ export class TrackRequestComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: response => {
-          this.requestDetails = response;
-          this.otpVerified = true;
+            this.requestDetails = response;
+            this.otpVerified = true;
 
-          this.successMessage =
-            'Request details retrieved successfully.';
-        },
+            this.successMessage =
+              'Request details retrieved successfully.';
+             setTimeout(() => {
+              this.successMessage = '';
+              this.errorMessage = '';
+            }, 3000);
+          },
 
         error: error => {
           this.errorMessage =
@@ -286,6 +305,21 @@ export class TrackRequestComponent implements OnInit, OnDestroy {
     this.maskedEmail = '';
 
     this.requestDetails = null;
+  }
+
+  // FEATURE: Display toast
+  showToast(message: string, type: 'success' | 'error'): void {
+    this.toastMessage = message;
+    this.toastType = type;
+
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer);
+    }
+
+    this.toastTimer = setTimeout(() => {
+      this.toastMessage = '';
+      this.toastTimer = undefined;
+    }, 3500);
   }
 
 }

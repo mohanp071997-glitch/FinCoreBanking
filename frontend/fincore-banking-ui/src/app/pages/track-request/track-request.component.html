@@ -29,13 +29,16 @@
     </div>
   </header>
 
-  <!-- FEATURE: Main banking layout -->
-  <div class="tracking-layout">
+
+  <!-- FEATURE: Hide previous layout after OTP verification -->
+  <div class="tracking-layout" *ngIf="!otpVerified">
 
     <!-- LEFT: Request form -->
     <div class="tracking-form-column">
 
-      <section class="tracking-card">
+      <section
+        class="tracking-card"
+        *ngIf="!otpSent && !otpVerified">
 
         <div class="form-card-header">
           <div class="step-heading">
@@ -116,8 +119,11 @@
         </form>
       </section>
 
-      <!-- FEATURE: OTP verification -->
-      <section class="tracking-card otp-card" *ngIf="otpSent">
+    
+      <!-- FEATURE: Show OTP verification as the next step -->
+      <section
+        class="tracking-card otp-card"
+        *ngIf="otpSent && !otpVerified">
 
         <div class="step-heading">
           <span class="step-number">2</span>
@@ -368,6 +374,23 @@
   </footer>
 
 </div>
+
+  <!-- FEATURE: Error and success toast -->
+  <div
+    *ngIf="toastMessage"
+    class="tracking-toast"
+    [class.tracking-toast-error]="toastType === 'error'"
+    [class.tracking-toast-success]="toastType === 'success'"
+    role="status"
+    aria-live="polite">
+
+    <span>{{ toastType === 'success' ? '✓' : '!' }}</span>
+    <span>{{ toastMessage }}</span>
+
+    <button type="button" (click)="toastMessage = ''">
+      &times;
+    </button>
+  </div>
 
 
 

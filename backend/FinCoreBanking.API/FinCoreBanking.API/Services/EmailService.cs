@@ -16,11 +16,12 @@ public class EmailService
     // FEATURE: SMTP diagnostic logging
     private readonly ILogger<EmailService> _logger;
 
-    public EmailService(IConfiguration configuration, ApplicationDbContext context, IWebHostEnvironment environment)
+    public EmailService(IConfiguration configuration, ApplicationDbContext context, IWebHostEnvironment environment, ILogger<EmailService> logger)
     {
         _configuration = configuration;
         _context = context;
         _environment = environment;
+        _logger = logger;
     }
 
     // Sends the OTP to the registered email address.

@@ -81,6 +81,10 @@ namespace FinCoreBanking.API.Data
         public DbSet<AccountOpeningApplication> AccountOpeningApplications =>
             Set<AccountOpeningApplication>();
 
+        // FEATURE: Request tracking OTP
+        public DbSet<RequestTrackingOtp> RequestTrackingOtps
+            => Set<RequestTrackingOtp>();
+
 
         // Configures table relationships and constraints.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -809,6 +813,58 @@ namespace FinCoreBanking.API.Data
                     .HasForeignKey<AccountOpeningApplication>(
                         x => x.ApplicationDraftId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // FEATURE: Request Tracking OTP configuration
+            modelBuilder.Entity<RequestTrackingOtp>(entity =>
+            {
+                entity.ToTable("RequestTrackingOtps");
+
+                entity.HasKey(x => x.RequestTrackingOtpId);
+
+                entity.Property(x => x.RequestId)
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .IsRequired();
+
+                entity.Property(x => x.Email)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                entity.Property(x => x.OtpHash)
+                    .HasMaxLength(64)
+                    .IsUnicode(false)
+                    .IsRequired();
+
+                entity.Property(x => x.ExpiresAt)
+                    .HasColumnType("datetime2")
+                    .IsRequired();
+
+                entity.Property(x => x.FailedAttempts)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+
+                entity.Property(x => x.IsUsed)
+                    .HasDefaultValue(false)
+                    .IsRequired();
+
+                entity.Property(x => x.CreatedAt)
+                    .HasColumnType("datetime2")
+                    .HasDefaultValueSql("SYSUTCDATETIME()")
+                    .IsRequired();
+
+                entity.Property(x => x.VerifiedAt)
+                    .HasColumnType("datetime2");
+
+                // FEATURE: Index for request and email lookup
+                entity.HasIndex(x => new
+                {
+                    x.RequestId,
+                    x.Email,
+                    x.CreatedAt
+                })
+                .HasDatabaseName(
+                    "IX_RequestTrackingOtps_RequestId_Email_CreatedAt");
             });
         }
     }

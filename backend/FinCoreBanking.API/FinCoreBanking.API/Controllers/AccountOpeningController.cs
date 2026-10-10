@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace FinCoreBanking.API.Controllers;
 
@@ -17,13 +18,16 @@ public class AccountOpeningController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly EmailService _emailService;
+    private readonly IWebHostEnvironment _environment;
 
     public AccountOpeningController(
         ApplicationDbContext context,
-        EmailService emailService)
+        EmailService emailService,
+        IWebHostEnvironment environment)
     {
         _context = context;
         _emailService = emailService;
+        _environment = environment;
     }
 
     // FEATURE: Create and save Account Opening Draft
@@ -365,6 +369,289 @@ public class AccountOpeningController : ControllerBase
             emailVerified = true,
             applicationDraftId = request.ApplicationDraftId
         });
+    }
+
+    // FEATURE: Submit Savings Account Application
+    [HttpPost("submit")]
+    [Consumes("multipart/form-data")]
+    [RequestSizeLimit(22 * 1024 * 1024)]
+    public async Task<IActionResult> SubmitApplication(
+        [FromForm] SubmitAccountOpeningRequest request)
+    {
+        // FEATURE: Validate application draft ID
+        if (request.ApplicationDraftId == Guid.Empty)
+        {
+            return BadRequest(new
+            {
+                message = "Valid application draft ID is required."
+            });
+        }
+
+        // FEATURE: Validate application details
+        if (string.IsNullOrWhiteSpace(request.PersonalDetails) ||
+            string.IsNullOrWhiteSpace(request.AdditionalDetails))
+        {
+            return BadRequest(new
+            {
+                message = "Personal details and additional details are required."
+            });
+        }
+
+        JsonElement personalDetails;
+        JsonElement additionalDetails;
+
+        try
+        {
+            personalDetails = JsonSerializer.Deserialize<JsonElement>(
+                request.PersonalDetails);
+
+            additionalDetails = JsonSerializer.Deserialize<JsonElement>(
+                request.AdditionalDetails);
+
+            if (personalDetails.ValueKind != JsonValueKind.Object ||
+                additionalDetails.ValueKind != JsonValueKind.Object)
+            {
+                return BadRequest(new
+                {
+                    message = "Application details must be valid JSON objects."
+                });
+            }
+        }
+        catch (JsonException)
+        {
+            return BadRequest(new
+            {
+                message = "Application details contain invalid JSON."
+            });
+        }
+
+        // FEATURE: Find application draft
+        var draft = await _context.AccountOpeningDrafts
+            .FirstOrDefaultAsync(x =>
+                x.ApplicationDraftId == request.ApplicationDraftId);
+
+        if (draft == null)
+        {
+            return NotFound(new
+            {
+                message = "Application draft not found."
+            });
+        }
+
+        // FEATURE: Verify email OTP status
+        if (!draft.EmailVerified ||
+            string.IsNullOrWhiteSpace(draft.Email))
+        {
+            return BadRequest(new
+            {
+                message = "Please verify your email before submitting."
+            });
+        }
+
+        // FEATURE: Prevent duplicate application submission
+        if (draft.IsSubmitted)
+        {
+            return BadRequest(new
+            {
+                message = "This application has already been submitted."
+            });
+        }
+
+        // FEATURE: Validate required documents
+        var files = new Dictionary<string, IFormFile>
+        {
+            ["PanDocument"] = request.PanDocument,
+            ["IdentityDocument"] = request.IdentityDocument,
+            ["AddressDocument"] = request.AddressDocument,
+            ["ApplicantPhoto"] = request.ApplicantPhoto
+        };
+
+        foreach (var item in files)
+        {
+            var file = item.Value;
+
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new
+                {
+                    message = $"{item.Key} is required."
+                });
+            }
+
+            if (file.Length > 5 * 1024 * 1024)
+            {
+                return BadRequest(new
+                {
+                    message = $"{item.Key} must not exceed 5 MB."
+                });
+            }
+
+            var extension = Path.GetExtension(file.FileName)
+                .ToLowerInvariant();
+
+            var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg", ".png" };
+
+            if (!allowedExtensions.Contains(extension))
+            {
+                return BadRequest(new
+                {
+                    message = $"{item.Key} must be a PDF, JPG or PNG file."
+                });
+            }
+
+            // FEATURE: Photo must be an image
+            if (item.Key == "ApplicantPhoto" &&
+                extension == ".pdf")
+            {
+                return BadRequest(new
+                {
+                    message = "Applicant photo must be a JPG or PNG image."
+                });
+            }
+        }
+
+        // FEATURE: Prepare private upload directory
+        var uploadDirectory = Path.Combine(
+            _environment.ContentRootPath,
+            "PrivateUploads",
+            $"{request.ApplicationDraftId:N}_{Guid.NewGuid():N}");
+
+        var uploadDirectoryCreated = false;
+
+        try
+        {
+            Directory.CreateDirectory(uploadDirectory);
+            uploadDirectoryCreated = true;
+
+            // FEATURE: Save actual documents using generated filenames
+            var savedFiles = new Dictionary<string, object>();
+
+            foreach (var item in files)
+            {
+                var file = item.Value;
+                var extension = Path.GetExtension(file.FileName)
+                    .ToLowerInvariant();
+
+                var storedFileName = $"{Guid.NewGuid():N}{extension}";
+                var filePath = Path.Combine(
+                    uploadDirectory,
+                    storedFileName);
+
+                await using (var stream = new FileStream(
+                    filePath,
+                    FileMode.CreateNew,
+                    FileAccess.Write,
+                    FileShare.None))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Do not store the user's original filename as a server path.
+                savedFiles[item.Key] = new
+                {
+                    fileName = storedFileName,
+                    originalFileName = Path.GetFileName(file.FileName),
+                    contentType = file.ContentType,
+                    size = file.Length
+                };
+            }
+
+            // FEATURE: Build application JSON for database storage
+            var applicationData = JsonSerializer.Serialize(new
+            {
+                PersonalDetails = personalDetails,
+                AdditionalDetails = additionalDetails,
+                Documents = savedFiles
+            });
+
+            // FEATURE: Generate a unique 12-digit request ID
+            string applicationRequestId;
+
+            do
+            {
+                applicationRequestId = RandomNumberGenerator
+                    .GetInt32(0, 1_000_000_000)
+                    .ToString("D12");
+            }
+            while (await _context.AccountOpeningApplications.AnyAsync(
+                x => x.ApplicationRequestId == applicationRequestId));
+
+            // FEATURE: Save application and update draft transactionally
+            await using var transaction =
+                await _context.Database.BeginTransactionAsync();
+
+            // Recheck the draft inside the transaction
+            var currentDraft = await _context.AccountOpeningDrafts
+                .FirstOrDefaultAsync(x =>
+                    x.ApplicationDraftId == request.ApplicationDraftId);
+
+            if (currentDraft == null ||
+                !currentDraft.EmailVerified ||
+                string.IsNullOrWhiteSpace(currentDraft.Email) ||
+                currentDraft.IsSubmitted)
+            {
+                await transaction.RollbackAsync();
+
+                return BadRequest(new
+                {
+                    message = "The application draft is no longer eligible for submission."
+                });
+            }
+
+            var application = new AccountOpeningApplication
+            {
+                ApplicationDraftId = currentDraft.ApplicationDraftId,
+                ApplicationRequestId = applicationRequestId,
+                Email = currentDraft.Email,
+                ApplicationData = applicationData,
+                Status = "Pending Approval",
+                SubmittedAt = DateTime.UtcNow
+            };
+
+            _context.AccountOpeningApplications.Add(application);
+
+            currentDraft.IsSubmitted = true;
+            currentDraft.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            // FEATURE: Return successful submission response
+            return Ok(new
+            {
+                message = "Application submitted successfully.",
+                applicationRequestId = application.ApplicationRequestId,
+                status = application.Status
+            });
+        }
+        catch (DbUpdateException)
+        {
+            // FEATURE: Clean up files if database save fails
+            if (uploadDirectoryCreated &&
+                Directory.Exists(uploadDirectory))
+            {
+                Directory.Delete(uploadDirectory, recursive: true);
+            }
+
+            return Conflict(new
+            {
+                message = "The application could not be saved. Please retry."
+            });
+        }
+        catch (Exception)
+        {
+            // FEATURE: Clean up files after an unexpected failure
+            if (uploadDirectoryCreated &&
+                Directory.Exists(uploadDirectory))
+            {
+                Directory.Delete(uploadDirectory, recursive: true);
+            }
+
+            return StatusCode(500, new
+            {
+                message = "Unable to submit the application. Please try again."
+            });
+        }
     }
 
     // FEATURE: Hash OTP

@@ -102,11 +102,67 @@
 
       <div class="topbar-actions">
         <div class="popover-anchor">
-          <button class="icon-button notification-button"
-            (click)="showNotifications = !showNotifications">
-            ♧
-            <span class="notification-badge">{{ notificationCount }}</span>
+        <!-- FEATURE: Application notification bell -->
+        <div class="popover-anchor notification-anchor">
+          <button
+            type="button"
+            class="icon-button notification-button"
+            aria-label="Application notifications"
+            [attr.aria-expanded]="showNotifications"
+            (click)="toggleNotifications()">
+
+            <svg
+              class="bell-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true">
+              <path
+                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+              </path>
+              <path d="M10 21h4"></path>
+            </svg>
+
+            <span
+              class="notification-badge"
+              *ngIf="notificationCount > 0">
+              {{ notificationCount > 99 ? '99+' : notificationCount }}
+            </span>
           </button>
+
+          <!-- FEATURE: Dynamic notification dropdown -->
+          <div
+            class="small-popover notification-popover"
+            *ngIf="showNotifications">
+
+            <div class="notification-heading">
+              <strong>Notifications</strong>
+              <button
+                type="button"
+                *ngIf="notificationCount > 0"
+                (click)="clearNotificationCount()">
+                Clear count
+              </button>
+            </div>
+
+            <div *ngIf="notifications.length === 0" class="notification-empty">
+              No new application notifications.
+            </div>
+
+            <button
+              type="button"
+              class="notification-item"
+              *ngFor="let item of notifications"
+              (click)="openNotification(item)">
+
+              <span class="notification-item-icon">📄</span>
+
+              <span class="notification-item-content">
+                <strong>New account application</strong>
+                <small>{{ item.applicationRequestId }}</small>
+                <small>{{ item.email }}</small>
+              </span>
+            </button>
+          </div>
+        </div>
 
           <div class="small-popover notification-popover"
             *ngIf="showNotifications">
@@ -119,19 +175,32 @@
         <div class="topbar-divider"></div>
 
         <div class="popover-anchor">
-          <button class="profile-button"
-            (click)="showProfileMenu = !showProfileMenu">
-            <span class="avatar">RJ</span>
+          <!-- FEATURE: Reviewer profile dropdown -->
+          <button
+            type="button"
+            class="profile-button"
+            (click)="showProfileMenu = !showProfileMenu"
+            [attr.aria-expanded]="showProfileMenu"
+            aria-label="Open profile menu">
+
+            <span class="avatar">{{ reviewerInitials }}</span>
+
             <span class="profile-copy">
               <strong>{{ reviewerName }}</strong>
               <small>{{ reviewerRole }}</small>
             </span>
-            <span class="chevron">⌄</span>
+
+            <span
+              class="profile-chevron"
+              [class.rotated]="showProfileMenu"
+              aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="m7 10 5 5 5-5"></path>
+              </svg>
+            </span>
           </button>
 
           <div class="small-popover profile-popover" *ngIf="showProfileMenu">
-            <strong>{{ reviewerName }}</strong>
-            <p>Account Operations</p>
             <button
               (click)="showToast('Profile settings can be connected to your profile route.', 'info'); showProfileMenu = false">
               Profile settings
@@ -500,6 +569,49 @@
       </select>
     </label>
 
+  
+    <!-- FEATURE: Reviewer verification checklist -->
+    <div class="verification-checklist">
+      <h3>Verification Checklist</h3>
+
+      <label class="verification-item">
+        <input
+          type="checkbox"
+          [(ngModel)]="personalDetailsVerified"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <span>Personal Details Verified</span>
+      </label>
+
+      <label class="verification-item">
+        <input
+          type="checkbox"
+          [(ngModel)]="identityDocumentVerified"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <span>Identity Document Verified</span>
+      </label>
+
+      <label class="verification-item">
+        <input
+          type="checkbox"
+          [(ngModel)]="addressDocumentVerified"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <span>Address Document Verified</span>
+      </label>
+
+      <label class="verification-item">
+        <input
+          type="checkbox"
+          [(ngModel)]="applicantPhotoVerified"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <span>Applicant Photo Verified</span>
+      </label>
+    </div>
+
+
     <label class="modal-field">
       <span>Comments / rejection reason</span>
       <textarea [(ngModel)]="reviewComments"
@@ -507,15 +619,27 @@
         placeholder="Add review notes or rejection reason..."></textarea>
     </label>
 
-    <p class="demo-warning">
-      Demo mode: this action updates the browser UI only.
-      Connect your review API before using real applications.
-    </p>
-
     <footer class="modal-actions">
-      <button class="reset-button" (click)="closeReview()">Cancel</button>
-      <button class="search-button" (click)="submitReview()">
-        {{ reviewDecision === 'Verified' ? 'Confirm Verification' : 'Confirm Rejection' }}
+      <button
+        type="button"
+        class="reset-button"
+        [disabled]="isSubmittingReview"
+        (click)="closeReview()">
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="search-button"
+        [disabled]="isSubmittingReview || isLoadingDetails"
+        (click)="submitReview()">
+        {{
+          isSubmittingReview
+            ? 'Submitting...'
+            : reviewDecision === 'Verified'
+              ? 'Confirm Verification'
+              : 'Confirm Rejection'
+        }}
       </button>
     </footer>
   </section>

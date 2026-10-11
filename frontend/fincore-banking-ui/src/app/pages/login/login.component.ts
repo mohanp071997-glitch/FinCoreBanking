@@ -79,6 +79,10 @@ export class LoginComponent {
             response
           );
 
+          // FEATURE: Inspect login API response
+          console.log('Login response:', JSON.stringify(response, null, 2));
+          console.log('Response role:', response.roles);
+
           // Navigates to the OTP verification page.
           this.router.navigate(['/verify-otp']);
 
@@ -99,7 +103,7 @@ export class LoginComponent {
             userName: response.userName,
             email: response.email,
             lastLoginDate: response.lastLoginDate,
-            role: response.role
+            roles: response.roles
           })
         );
 
@@ -108,8 +112,8 @@ export class LoginComponent {
           response
         );
 
-        // Navigates to the dashboard.
-        this.router.navigate(['/dashboard']);
+        // FEATURE: Navigate according to the authenticated user's role
+        this.redirectByRole(response.roles);
       },
 
       error: (error) => {
@@ -172,21 +176,26 @@ export class LoginComponent {
         // Stores the JWT token.
         localStorage.setItem('token', response.token);
 
-        // Stores the logged-in user details.
-        localStorage.setItem('authUser', JSON.stringify({
+       
+      // FEATURE: Store the logged-in user details
+      localStorage.setItem(
+        'authUser',
+        JSON.stringify({
           userId: response.userId,
           userName: response.userName,
           email: response.email,
           lastLoginDate: response.lastLoginDate,
-          role: response.role
-        }));
+          roles: [response.role]
+        })
+      );
 
-        // Clears mobile OTP data.
-        this.mobileOtp = '';
-        this.showMobileOtp = false;
+      // FEATURE: Clear mobile OTP data
+      this.mobileOtp = '';
+      this.showMobileOtp = false;
 
-        // Navigates to the dashboard.
-        this.router.navigate(['/dashboard']);
+      // FEATURE: Redirect based on the mobile login role
+      this.redirectByRole(response.role);
+
       },
 
       error: (error) => {
@@ -195,6 +204,41 @@ export class LoginComponent {
           'Invalid or expired OTP.';
       }
     });
+  }
+
+
+
+  // FEATURE: Redirect user based on assigned roles
+  private redirectByRole(
+    roles: string[] | string | null | undefined
+  ): void {
+    const userRoles = Array.isArray(roles)
+      ? roles.map(role => role.trim().toLowerCase())
+      : typeof roles === 'string'
+        ? [roles.trim().toLowerCase()]
+        : [];
+
+    if (userRoles.length === 0) {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+      console.error('No roles found in login response.');
+      return;
+    }
+
+    // FEATURE: Prioritize Reviewer dashboard
+    if (userRoles.includes('reviewer')) {
+      this.router.navigate(['/reviewer/dashboard']);
+    } else if (userRoles.includes('approver')) {
+      this.router.navigate(['/approver-dashboard']);
+    } else if (userRoles.includes('admin')) {
+      this.router.navigate(['/admin-dashboard']);
+    } else if (userRoles.includes('customer')) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+      console.error('Unknown user roles:', userRoles);
+    }
   }
 
   // Navigates to the forgot password page.

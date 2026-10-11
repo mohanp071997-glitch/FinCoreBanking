@@ -2,7 +2,7 @@ export interface AuthResponse {
   userId: number;
   userName: string;
   email: string;
-  role: string;
+  roles: string[];
   token: string;
   lastLoginDate?: string;
 

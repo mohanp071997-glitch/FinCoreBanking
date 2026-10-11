@@ -59,56 +59,74 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Loads the logged-in user details.
-private loadLoginDetails(): void {
+  
+  // FEATURE: Load and validate the logged-in user session
+  private loadLoginDetails(): void {
+    const token = localStorage.getItem('token');
+    const authUser = localStorage.getItem('authUser');
 
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    this.isLoggedIn = false;
-    this.customerName = '';
-    return;
-  }
-
-  try {
-
-    const tokenParts = token.split('.');
-
-    if (tokenParts.length !== 3) {
+    // FEATURE: No saved session
+    if (!token || !authUser) {
       this.clearLoginState();
       return;
     }
 
-    const payload = JSON.parse(
-      atob(tokenParts[1])
-    );
+    try {
+      const tokenParts = token.split('.');
 
-    // Check token expiry
-    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      if (tokenParts.length !== 3) {
+        this.clearLoginState();
+        return;
+      }
+
+      // FEATURE: Decode URL-safe Base64 JWT payload
+      const base64Payload = tokenParts[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+      const paddedPayload = base64Payload.padEnd(
+        Math.ceil(base64Payload.length / 4) * 4,
+        '='
+      );
+
+      const payload = JSON.parse(atob(paddedPayload));
+
+      // FEATURE: Validate token expiry
+      if (
+        typeof payload.exp !== 'number' ||
+        payload.exp * 1000 <= Date.now()
+      ) {
+        this.clearLoginState();
+        return;
+      }
+
+      // FEATURE: Read the saved user information
+      const user = JSON.parse(authUser);
+
+      this.customerName =
+        user.userName ||
+        user.name ||
+        payload.name ||
+        payload.unique_name ||
+        payload[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
+        ] ||
+        payload[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/name'
+        ] ||
+        'Customer';
+
+      this.isLoggedIn = true;
+    } catch (error) {
+      console.error('Invalid login session:', error);
       this.clearLoginState();
-      return;
     }
-
-    this.customerName =
-      payload.name ||
-      payload.unique_name ||
-      payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
-      payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/name'] ||
-      'Customer';
-
-    this.isLoggedIn = true;
-
-  } catch (error) {
-
-    console.error('Invalid token:', error);
-
-    this.clearLoginState();
   }
-}
 
+  // FEATURE: Clear invalid or expired authentication session
   private clearLoginState(): void {
-
     localStorage.removeItem('token');
+    localStorage.removeItem('authUser');
 
     this.isLoggedIn = false;
     this.customerName = '';
@@ -239,12 +257,21 @@ toggleMobileHelpMenu(): void {
     this.router.navigate(['/business']);
   }
 
-    private checkLoginPage(url: string): void {
 
-    const currentUrl = url.split('?')[0];
+  // FEATURE: Check login page and refresh header session
+  private checkLoginPage(url: string): void {
+    const currentUrl = url.split('?')[0].split('#')[0];
 
-    this.isLoginPage = currentUrl === '/login';
+    // FEATURE: Hide profile on login page
+    if (currentUrl === '/login') {
+      this.isLoginPage = true;
+      this.isLoggedIn = false;
+      this.customerName = '';
+      return;
+    }
 
+    this.isLoginPage = false;
+    this.loadLoginDetails();
   }
 
 

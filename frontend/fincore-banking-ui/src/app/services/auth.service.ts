@@ -176,4 +176,68 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('authUser');
   }
+
+
+  // FEATURE: Validate whether the user has a valid JWT session
+    isLoggedIn(): boolean {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        return false;
+      }
+
+      try {
+        const parts = token.split('.');
+
+        if (parts.length !== 3) {
+          this.logout();
+          return false;
+        }
+
+        const payload = parts[1]
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+
+        const decodedPayload = atob(
+          payload.padEnd(Math.ceil(payload.length / 4) * 4, '=')
+        );
+
+        const claims = JSON.parse(decodedPayload);
+
+        // FEATURE: Reject tokens without a valid expiry
+        if (
+          typeof claims.exp !== 'number' ||
+          claims.exp * 1000 <= Date.now()
+        ) {
+          this.logout();
+          return false;
+        }
+
+        return true;
+      } catch {
+        this.logout();
+        return false;
+      }
+    }
+
+    
+  // FEATURE: Get the saved logged-in user
+  getCurrentUser(): any | null {
+    const authUser = localStorage.getItem('authUser');
+
+    if (!authUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(authUser);
+    } catch {
+      // FEATURE: Remove invalid saved user data
+      localStorage.removeItem('authUser');
+      return null;
+    }
+  }
+
+
+
 }

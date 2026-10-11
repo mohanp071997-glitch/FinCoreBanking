@@ -1,9 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { finalize, interval, Subscription } from 'rxjs';
+import { ApplicationDetails, PendingApplication, ReviewerService, SubmitReviewRequest, SubmitReviewResponse } from '../../../services/reviewer.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../../services/auth.service';
 
-// FEATURE: Application status and review models.
+
+// FEATURE: Application status and sorting models.
 type ApplicationStatus = 'Pending Review' | 'Verified' | 'Rejected';
+
 type SortField =
   | 'requestId'
   | 'customerName'
@@ -12,6 +18,7 @@ type SortField =
   | 'documentsVerified'
   | 'status';
 
+// FEATURE: Dashboard application model.
 interface ReviewApplication {
   id: number;
   requestId: string;
@@ -28,6 +35,7 @@ interface ReviewApplication {
   comments?: string;
 }
 
+// FEATURE: Review activity model.
 interface ReviewActivity {
   title: string;
   requestId: string;
@@ -43,12 +51,18 @@ interface ReviewActivity {
   templateUrl: './reviewer-dashboard.component.html',
   styleUrl: './reviewer-dashboard.component.css'
 })
-export class ReviewerDashboardComponent {
+export class ReviewerDashboardComponent implements OnInit {
+
+  constructor(
+    private readonly reviewerService: ReviewerService,private readonly authService: AuthService
+  ) {}
 
   // FEATURE: Dashboard header and reviewer profile.
   today = new Date();
-  reviewerName = 'Rajesh Kumar';
+  // FEATURE: Dynamic reviewer profile
+  reviewerName = '';
   reviewerRole = 'Application Reviewer';
+  reviewerInitials = 'AR';
 
   // FEATURE: Sidebar navigation.
   activeMenu = 'Dashboard';
@@ -58,7 +72,12 @@ export class ReviewerDashboardComponent {
   globalSearch = '';
   showNotifications = false;
   showProfileMenu = false;
-  notificationCount = 3;
+  notificationCount = 0;
+
+  // FEATURE: API loading and error state.
+  isLoading = false;
+  isSubmittingReview = false;
+  apiError = '';
 
   // FEATURE: Application filters.
   activeTab = 'All Applications';
@@ -68,7 +87,7 @@ export class ReviewerDashboardComponent {
 
   // FEATURE: Pagination.
   currentPage = 1;
-  pageSize = 8;
+  pageSize = 5;
 
   // FEATURE: Sorting.
   sortField: SortField = 'applicationDate';
@@ -77,8 +96,19 @@ export class ReviewerDashboardComponent {
   // FEATURE: Review dialog state.
   showReviewModal = false;
   selectedApplication: ReviewApplication | null = null;
+  selectedApplicationDetails: ApplicationDetails | null = null;
+
   reviewDecision: 'Verified' | 'Rejected' = 'Verified';
   reviewComments = '';
+
+  // FEATURE: Verification checklist.
+  personalDetailsVerified = false;
+  identityDocumentVerified = false;
+  addressDocumentVerified = false;
+  applicantPhotoVerified = false;
+
+  // FEATURE: Detail loading state.
+  isLoadingDetails = false;
 
   // FEATURE: Toast messages.
   toastMessage = '';
@@ -87,178 +117,83 @@ export class ReviewerDashboardComponent {
   // FEATURE: Selected application IDs.
   selectedIds: number[] = [];
 
-  /*
-   * FEATURE: Sample application data.
-   * Replace this array with your .NET API response
-   * when you connect the real backend.
-   */
-  applications: ReviewApplication[] = [
-    {
-      id: 7,
-      requestId: '000649526323',
-      customerName: 'Teju',
-      email: 'mohanpalaniappanpm1997@gmail.com',
-      mobile: '9876543210',
-      accountType: 'Savings Account',
-      applicationDate: '10 Oct 2026',
-      applicationTime: '05:51 PM',
-      sortDate: '2026-10-10T17:51:40',
-      documentsVerified: 4,
-      totalDocuments: 4,
-      status: 'Pending Review'
-    },
-    {
-      id: 8,
-      requestId: '000649526322',
-      customerName: 'Arun Kumar',
-      email: 'arun.kumar@example.com',
-      mobile: '9876543211',
-      accountType: 'Current Account',
-      applicationDate: '10 Oct 2026',
-      applicationTime: '04:30 PM',
-      sortDate: '2026-10-10T16:30:00',
-      documentsVerified: 3,
-      totalDocuments: 4,
-      status: 'Pending Review'
-    },
-    {
-      id: 9,
-      requestId: '000649526321',
-      customerName: 'Priya Sharma',
-      email: 'priya@example.com',
-      mobile: '9876543212',
-      accountType: 'Savings Account',
-      applicationDate: '09 Oct 2026',
-      applicationTime: '03:20 PM',
-      sortDate: '2026-10-09T15:20:00',
-      documentsVerified: 4,
-      totalDocuments: 4,
-      status: 'Pending Review'
-    },
-    {
-      id: 10,
-      requestId: '000649526320',
-      customerName: 'Suresh R',
-      email: 'suresh@example.com',
-      mobile: '9876543213',
-      accountType: 'Current Account',
-      applicationDate: '09 Oct 2026',
-      applicationTime: '11:15 AM',
-      sortDate: '2026-10-09T11:15:00',
-      documentsVerified: 2,
-      totalDocuments: 4,
-      status: 'Pending Review'
-    },
-    {
-      id: 11,
-      requestId: '000649526319',
-      customerName: 'Anitha V',
-      email: 'anitha@example.com',
-      mobile: '9876543214',
-      accountType: 'Savings Account',
-      applicationDate: '09 Oct 2026',
-      applicationTime: '10:45 AM',
-      sortDate: '2026-10-09T10:45:00',
-      documentsVerified: 4,
-      totalDocuments: 4,
-      status: 'Verified'
-    },
-    {
-      id: 12,
-      requestId: '000649526318',
-      customerName: 'Vikram S',
-      email: 'vikram@example.com',
-      mobile: '9876543215',
-      accountType: 'NRI Account',
-      applicationDate: '08 Oct 2026',
-      applicationTime: '02:10 PM',
-      sortDate: '2026-10-08T14:10:00',
-      documentsVerified: 4,
-      totalDocuments: 4,
-      status: 'Pending Review'
-    },
-    {
-      id: 13,
-      requestId: '000649526317',
-      customerName: 'Divya M',
-      email: 'divya@example.com',
-      mobile: '9876543216',
-      accountType: 'Savings Account',
-      applicationDate: '08 Oct 2026',
-      applicationTime: '01:00 PM',
-      sortDate: '2026-10-08T13:00:00',
-      documentsVerified: 3,
-      totalDocuments: 4,
-      status: 'Rejected'
-    },
-    {
-      id: 14,
-      requestId: '000649526316',
-      customerName: 'Karthik P',
-      email: 'karthik@example.com',
-      mobile: '9876543217',
-      accountType: 'Current Account',
-      applicationDate: '07 Oct 2026',
-      applicationTime: '12:10 PM',
-      sortDate: '2026-10-07T12:10:00',
-      documentsVerified: 4,
-      totalDocuments: 4,
-      status: 'Pending Review'
-    },
-    {
-      id: 15,
-      requestId: '000649526315',
-      customerName: 'Meena R',
-      email: 'meena@example.com',
-      mobile: '9876543218',
-      accountType: 'Savings Account',
-      applicationDate: '07 Oct 2026',
-      applicationTime: '10:30 AM',
-      sortDate: '2026-10-07T10:30:00',
-      documentsVerified: 4,
-      totalDocuments: 4,
-      status: 'Pending Review'
-    },
-    {
-      id: 16,
-      requestId: '000649526314',
-      customerName: 'Ramesh K',
-      email: 'ramesh@example.com',
-      mobile: '9876543219',
-      accountType: 'NRI Account',
-      applicationDate: '06 Oct 2026',
-      applicationTime: '09:45 AM',
-      sortDate: '2026-10-06T09:45:00',
-      documentsVerified: 4,
-      totalDocuments: 4,
-      status: 'Verified'
-    }
-  ];
+  // FEATURE: Applications loaded from the backend API.
+  applications: ReviewApplication[] = [];
 
-  // FEATURE: Recent review activity sample data.
-  activities: ReviewActivity[] = [
-    {
-      title: 'Application verified',
-      requestId: '000649526319',
-      customerName: 'Anitha V',
-      timeAgo: '20 minutes ago',
-      type: 'verified'
-    },
-    {
-      title: 'Application rejected',
-      requestId: '000649526317',
-      customerName: 'Divya M',
-      timeAgo: '45 minutes ago',
-      type: 'rejected'
-    },
-    {
-      title: 'Application verified',
-      requestId: '000649526314',
-      customerName: 'Ramesh K',
-      timeAgo: '1 hour ago',
-      type: 'verified'
-    }
-  ];
+  
+  // Actual activity history API is not currently provided.
+  activities: ReviewActivity[] = [];
+
+  // FEATURE: Application notification state
+  notifications: PendingApplication[] = [];
+  private notificationSubscription?: Subscription;
+  private knownApplicationIds = new Set<number>();
+  private notificationBaselineLoaded = false;
+  private notificationSeenIds = new Set<number>();
+
+  // FEATURE: Load pending applications when the page opens.
+  ngOnInit(): void {
+    this.loadReviewerProfile();
+    this.loadApplications();
+    this.startNotificationPolling();
+  }
+
+  // FEATURE: Load applications from the .NET API.
+  loadApplications(): void {
+    this.isLoading = true;
+    this.apiError = '';
+
+    this.reviewerService.getPendingApplications()
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (response: PendingApplication[]) => {
+          this.applications = response.map(item => {
+            const submittedDate = new Date(item.submittedAt);
+            const dateIsValid =
+              !Number.isNaN(submittedDate.getTime());
+
+            return {
+              id: item.accountOpeningApplicationId,
+              requestId: item.applicationRequestId,
+              customerName: item.email,
+              email: item.email,
+              mobile: '',
+              accountType: 'Account Application',
+              applicationDate: dateIsValid
+                ? submittedDate.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                  })
+                : '',
+              applicationTime: dateIsValid
+                ? submittedDate.toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })
+                : '',
+              sortDate: dateIsValid
+                ? submittedDate.toISOString()
+                : '',
+              documentsVerified: 0,
+              totalDocuments: 4,
+              status: 'Pending Review' as ApplicationStatus
+            };
+          });
+
+          this.currentPage = 1;
+          this.selectedIds = [];
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Failed to load applications:', error);
+
+          this.apiError =
+            'Unable to load applications. Please try again.';
+
+          this.showToast(this.apiError, 'info');
+        }
+      });
+  }
 
   // FEATURE: Application count statistics.
   get totalCount(): number {
@@ -340,15 +275,24 @@ export class ReviewerDashboardComponent {
 
         if (this.selectedDateRange === 'Today') {
           matchesDate =
+            app.sortDate !== '' &&
             applicationDate.toDateString() === now.toDateString();
         } else if (this.selectedDateRange === 'Last 7 Days') {
           const cutoff = new Date(now);
           cutoff.setDate(now.getDate() - 7);
-          matchesDate = applicationDate >= cutoff && applicationDate <= now;
+
+          matchesDate =
+            app.sortDate !== '' &&
+            applicationDate >= cutoff &&
+            applicationDate <= now;
         } else if (this.selectedDateRange === 'Last 30 Days') {
           const cutoff = new Date(now);
           cutoff.setDate(now.getDate() - 30);
-          matchesDate = applicationDate >= cutoff && applicationDate <= now;
+
+          matchesDate =
+            app.sortDate !== '' &&
+            applicationDate >= cutoff &&
+            applicationDate <= now;
         }
 
         return (
@@ -432,10 +376,6 @@ export class ReviewerDashboardComponent {
 
     switch (menu) {
       case 'Dashboard':
-        this.activeTab = 'All Applications';
-        this.selectedStatus = 'All Status';
-        break;
-
       case 'Account Applications':
         this.activeTab = 'All Applications';
         this.selectedStatus = 'All Status';
@@ -541,48 +481,136 @@ export class ReviewerDashboardComponent {
     return this.selectedIds.includes(id);
   }
 
-  // FEATURE: Open application review dialog.
+  // FEATURE: Open review dialog and load real application details.
   openReview(app: ReviewApplication): void {
     this.selectedApplication = app;
+    this.selectedApplicationDetails = null;
     this.reviewDecision = 'Verified';
     this.reviewComments = '';
+
+    this.personalDetailsVerified = false;
+    this.identityDocumentVerified = false;
+    this.addressDocumentVerified = false;
+    this.applicantPhotoVerified = false;
+
     this.showReviewModal = true;
+    this.isLoadingDetails = true;
+
+    this.reviewerService.getApplicationDetails(app.id)
+      .pipe(finalize(() => this.isLoadingDetails = false))
+      .subscribe({
+        next: (response: ApplicationDetails) => {
+          this.selectedApplicationDetails = response;
+
+          // FEATURE: Extract available applicant details defensively.
+          const data = response.applicationData as any;
+          const personal = data?.PersonalDetails
+            ?? data?.personalDetails
+            ?? data?.personal
+            ?? {};
+
+          const additional = data?.AdditionalDetails
+            ?? data?.additionalDetails
+            ?? {};
+
+          const fullName =
+            personal?.FullName ??
+            personal?.fullName ??
+            personal?.CustomerName ??
+            personal?.customerName;
+
+          const mobile =
+            personal?.Mobile ??
+            personal?.mobile ??
+            personal?.PhoneNumber ??
+            personal?.phoneNumber;
+
+          const accountType =
+            additional?.AccountType ??
+            additional?.accountType ??
+            data?.AccountType ??
+            data?.accountType;
+
+          if (fullName) {
+            app.customerName = String(fullName);
+          }
+
+          if (mobile) {
+            app.mobile = String(mobile);
+          }
+
+          if (accountType) {
+            app.accountType = String(accountType);
+          }
+
+          app.email = response.email || app.email;
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Failed to load application details:', error);
+
+          this.showToast(
+            'Unable to load application details. Please try again.',
+            'info'
+          );
+        }
+      });
   }
 
+  // FEATURE: Close review dialog.
   closeReview(): void {
-    this.showReviewModal = false;
-    this.selectedApplication = null;
-    this.reviewComments = '';
-  }
-
-  // FEATURE: Verify/reject an application in demo UI.
-  submitReview(): void {
-    if (!this.selectedApplication) {
+    if (this.isSubmittingReview) {
       return;
     }
 
+    this.showReviewModal = false;
+    this.selectedApplication = null;
+    this.selectedApplicationDetails = null;
+    this.reviewComments = '';
+
+    this.personalDetailsVerified = false;
+    this.identityDocumentVerified = false;
+    this.addressDocumentVerified = false;
+    this.applicantPhotoVerified = false;
+  }
+
+  // FEATURE: Submit actual reviewer decision to the backend.
+  submitReview(): void {
     const app = this.selectedApplication;
+
+    if (!app) {
+      return;
+    }
+
+    if (this.isSubmittingReview) {
+      return;
+    }
 
     if (app.status !== 'Pending Review') {
       this.showToast(
         'This application has already been reviewed.',
         'info'
       );
-      this.closeReview();
       return;
     }
 
+    // FEATURE: All checklist items are required for verification.
     if (
       this.reviewDecision === 'Verified' &&
-      app.documentsVerified !== app.totalDocuments
+      !(
+        this.personalDetailsVerified &&
+        this.identityDocumentVerified &&
+        this.addressDocumentVerified &&
+        this.applicantPhotoVerified
+      )
     ) {
       this.showToast(
-        'Verify all required documents before approving this review.',
+        'Verify all four checklist items before confirming verification.',
         'info'
       );
       return;
     }
 
+    // FEATURE: Rejection reason is mandatory.
     if (
       this.reviewDecision === 'Rejected' &&
       !this.reviewComments.trim()
@@ -594,33 +622,82 @@ export class ReviewerDashboardComponent {
       return;
     }
 
-    app.status = this.reviewDecision;
-    app.comments = this.reviewComments.trim();
+    // FEATURE: Prepare request matching the .NET API DTO.
+    const request: SubmitReviewRequest = {
+      reviewDecision: this.reviewDecision,
+      personalDetailsVerified: this.personalDetailsVerified,
+      identityDocumentVerified: this.identityDocumentVerified,
+      addressDocumentVerified: this.addressDocumentVerified,
+      applicantPhotoVerified: this.applicantPhotoVerified,
+      comments: this.reviewComments.trim()
+    };
 
-    this.activities.unshift({
-      title:
-        this.reviewDecision === 'Verified'
-          ? 'Application verified'
-          : 'Application rejected',
-      requestId: app.requestId,
-      customerName: app.customerName,
-      timeAgo: 'Just now',
-      type:
-        this.reviewDecision === 'Verified'
-          ? 'verified'
-          : 'rejected'
-    });
+    this.isSubmittingReview = true;
 
-    this.notificationCount = Math.max(0, this.notificationCount - 1);
+    this.reviewerService.submitReview(app.id, request)
+      .pipe(finalize(() => this.isSubmittingReview = false))
+      .subscribe({
+        next: (response: SubmitReviewResponse) => {
+          // FEATURE: Update UI after successful API response
+          app.comments = this.reviewComments.trim();
 
-    this.showToast(
-      this.reviewDecision === 'Verified'
-        ? `Application ${app.requestId} verified in demo mode.`
-        : `Application ${app.requestId} rejected in demo mode.`,
-      'success'
-    );
+          app.status =
+            this.reviewDecision === 'Verified'
+              ? 'Verified'
+              : 'Rejected';
 
-    this.closeReview();
+          if (this.reviewDecision === 'Verified') {
+            app.documentsVerified = app.totalDocuments;
+          }
+
+          // FEATURE: Add recent activity
+          this.activities.unshift({
+            title:
+              this.reviewDecision === 'Verified'
+                ? 'Application verified'
+                : 'Application rejected',
+            requestId: app.requestId,
+            customerName: app.customerName,
+            timeAgo: 'Just now',
+            type:
+              this.reviewDecision === 'Verified'
+                ? 'verified'
+                : 'rejected'
+          });
+
+          // FEATURE: Show API response
+          this.showToast(
+            response.message ||
+              `Application ${app.requestId} review saved successfully.`,
+            'success'
+          );
+
+          // FEATURE: Close modal after successful submission
+          this.showReviewModal = false;
+          this.selectedApplication = null;
+          this.selectedApplicationDetails = null;
+          this.reviewComments = '';
+
+          this.personalDetailsVerified = false;
+          this.identityDocumentVerified = false;
+          this.addressDocumentVerified = false;
+          this.applicantPhotoVerified = false;
+
+          // FEATURE: Refresh pending applications
+          this.loadApplications();
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Failed to submit review:', error);
+
+          const message =
+            error.error?.message ||
+            (error.status === 409
+              ? 'This application has already been reviewed.'
+              : 'Unable to submit review. Please try again.');
+
+          this.showToast(message, 'info');
+        }
+      });
   }
 
   // FEATURE: Export filtered applications as CSV.
@@ -674,7 +751,10 @@ export class ReviewerDashboardComponent {
 
     URL.revokeObjectURL(url);
 
-    this.showToast('CSV export generated successfully.', 'success');
+    this.showToast(
+      'CSV export generated successfully.',
+      'success'
+    );
   }
 
   // FEATURE: Display UI feedback.
@@ -685,5 +765,118 @@ export class ReviewerDashboardComponent {
     this.toastMessage = message;
     this.toastType = type;
   }
+
+
+  // FEATURE: Load logged-in user profile
+  private loadReviewerProfile(): void {
+    const user = this.authService.getCurrentUser();
+
+    this.reviewerName =
+      user?.userName ||
+      user?.name ||
+      'Application Reviewer';
+
+    const roles: string[] = Array.isArray(user?.roles)
+      ? user.roles
+      : user?.role
+        ? [user.role]
+        : [];
+
+    this.reviewerRole = roles.some(
+      role => role.toLowerCase() === 'reviewer'
+    )
+      ? 'Application Reviewer'
+      : 'User';
+
+    this.reviewerInitials = this.reviewerName
+      .split(' ')
+      .filter(Boolean)
+      .map((part: string) => part.charAt(0).toUpperCase())
+      .slice(0, 2)
+      .join('');
+  }
+
+  // FEATURE: Start automatic application notification polling
+private startNotificationPolling(): void {
+  this.checkForNewApplications();
+
+  this.notificationSubscription = interval(15000).subscribe(() => {
+    this.checkForNewApplications();
+  });
 }
 
+// FEATURE: Detect newly submitted pending applications
+private checkForNewApplications(): void {
+  this.reviewerService.getPendingApplications().subscribe({
+    next: (applications: PendingApplication[]) => {
+      const currentIds = new Set(
+        applications.map(app => app.accountOpeningApplicationId)
+      );
+
+      // FEATURE: First response establishes the baseline
+      if (!this.notificationBaselineLoaded) {
+        this.knownApplicationIds = currentIds;
+        this.notificationBaselineLoaded = true;
+        return;
+      }
+
+      // FEATURE: Add notifications only for newly detected IDs
+      const newApplications = applications.filter(app =>
+        !this.knownApplicationIds.has(app.accountOpeningApplicationId)
+      );
+
+      if (newApplications.length > 0) {
+        for (const app of newApplications) {
+          if (!this.notificationSeenIds.has(app.accountOpeningApplicationId)) {
+            this.notifications.unshift(app);
+            this.notificationSeenIds.add(app.accountOpeningApplicationId);
+          }
+        }
+
+        this.notificationCount = this.notifications.length;
+      }
+
+      this.knownApplicationIds = currentIds;
+    },
+    error: error => {
+      console.error('Failed to check application notifications:', error);
+    }
+  });
+}
+
+  // FEATURE: Toggle notification dropdown
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  // FEATURE: Clear visible notification count
+  clearNotificationCount(): void {
+    this.notifications = [];
+    this.notificationCount = 0;
+  }
+
+  // FEATURE: Open the selected application from a notification
+  openNotification(item: PendingApplication): void {
+    const application = this.applications.find(
+      app => app.id === item.accountOpeningApplicationId
+    );
+
+    this.showNotifications = false;
+
+    if (application) {
+      this.openReview(application);
+    } else {
+      this.loadApplications();
+      this.showToast(
+        `Application ${item.applicationRequestId} selected. Refresh the application list to review it.`,
+        'info'
+      );
+    }
+  }
+
+  // FEATURE: Clean up notification polling
+  ngOnDestroy(): void {
+    this.notificationSubscription?.unsubscribe();
+  }
+
+}

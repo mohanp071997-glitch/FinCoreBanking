@@ -146,6 +146,7 @@ export const routes: Routes = [
 // FEATURE: Reviewer dashboard route.
 {
   path: 'reviewer/dashboard',
+  canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/reviewer/reviewer-dashboard/reviewer-dashboard.component')
       .then(m => m.ReviewerDashboardComponent)

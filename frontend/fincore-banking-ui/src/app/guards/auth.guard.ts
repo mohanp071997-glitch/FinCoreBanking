@@ -1,17 +1,28 @@
-// Protects routes that require authentication.
-import { CanActivateFn } from '@angular/router';
+// FEATURE: Protect routes that require authentication
+
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  CanActivateFn,
+  Router
+} from '@angular/router';
 
-export const authGuard: CanActivateFn = () => {
+import { AuthService } from '../services/auth.service';
 
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  const token = localStorage.getItem('token');
-
-  if (token) {
+  // FEATURE: Allow navigation only with a valid, unexpired token
+  if (authService.isLoggedIn()) {
     return true;
   }
 
-  return router.createUrlTree(['/login']);
+  // FEATURE: Clear invalid session and redirect to login
+  authService.logout();
+
+  return router.createUrlTree(['/login'], {
+    queryParams: {
+      returnUrl: state.url
+    }
+  });
 };

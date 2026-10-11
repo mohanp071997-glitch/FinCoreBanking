@@ -57,7 +57,7 @@ export class VerifyOtpComponent {
           userName: response.userName,
           email: response.email,
           lastLoginDate: response.lastLoginDate,
-          role: response.role
+          roles: response.roles
         }));
 
         // Removes temporary two-factor data.

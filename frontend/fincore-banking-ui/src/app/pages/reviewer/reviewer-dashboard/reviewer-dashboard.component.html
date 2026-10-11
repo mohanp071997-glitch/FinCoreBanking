@@ -1,0 +1,528 @@
+<div class="dashboard-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 48 48">
+          <path d="M5 17 24 6l19 11H5Z M9 20h30 M12 20v17 M20 20v17 M28 20v17 M36 20v17 M7 39h34 M4 43h40" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <strong>FinCoreBanking</strong>
+        <span>Secure Banking. Brighter Tomorrow.</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item"
+        [class.active]="activeMenu === 'Dashboard'"
+        (click)="setMenu('Dashboard')">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </button>
+
+      <div class="nav-heading">ACCOUNT APPLICATIONS</div>
+
+      <button class="nav-item"
+        [class.active]="activeMenu === 'Account Applications'"
+        (click)="applicationsMenuExpanded = !applicationsMenuExpanded; setMenu('Account Applications')">
+        <span class="nav-icon">▤</span>
+        <span>Account Applications</span>
+        <span class="chevron">{{ applicationsMenuExpanded ? '⌄' : '›' }}</span>
+      </button>
+
+      <div class="subnav" *ngIf="applicationsMenuExpanded">
+        <button class="subnav-item"
+          [class.selected]="activeTab === 'Pending Review'"
+          (click)="setMenu('Pending Review')">
+          <span class="status-dot pending">◷</span>
+          Pending Review <b>{{ pendingCount }}</b>
+        </button>
+
+        <button class="subnav-item"
+          [class.selected]="activeTab === 'Verified'"
+          (click)="setMenu('Verified Applications')">
+          <span class="status-dot verified">✓</span>
+          Verified Applications <b>{{ verifiedCount }}</b>
+        </button>
+
+        <button class="subnav-item"
+          [class.selected]="activeTab === 'Rejected'"
+          (click)="setMenu('Rejected Applications')">
+          <span class="status-dot rejected">×</span>
+          Rejected Applications <b>{{ rejectedCount }}</b>
+        </button>
+      </div>
+
+      <div class="nav-heading">REPORTS &amp; ANALYTICS</div>
+
+      <button class="nav-item"
+        [class.active]="activeMenu === 'Reports & Analytics'"
+        (click)="setMenu('Reports & Analytics')">
+        <span class="nav-icon">▥</span>
+        <span>Reports &amp; Analytics</span>
+      </button>
+
+      <div class="nav-heading">SYSTEM</div>
+
+      <button class="nav-item"
+        [class.active]="activeMenu === 'Audit Trail'"
+        (click)="setMenu('Audit Trail')">
+        <span class="nav-icon">◷</span>
+        <span>Audit Trail</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="trust-badge">
+        <span>✓</span>
+        <div>
+          <strong>Secure Banking</strong>
+          <small>Protected review workspace</small>
+        </div>
+      </div>
+      <p>Trusted Banking<br>for a Better Tomorrow</p>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <label class="global-search">
+        <span class="search-icon">⌕</span>
+        <input
+          [(ngModel)]="globalSearch"
+          (ngModelChange)="onFilterChange()"
+          placeholder="Search by Request ID, Customer Name, Email or Mobile..."
+          aria-label="Global application search">
+        <button *ngIf="globalSearch"
+          class="clear-search"
+          (click)="globalSearch = ''; onFilterChange()">
+          ×
+        </button>
+      </label>
+
+      <div class="topbar-actions">
+        <div class="popover-anchor">
+          <button class="icon-button notification-button"
+            (click)="showNotifications = !showNotifications">
+            ♧
+            <span class="notification-badge">{{ notificationCount }}</span>
+          </button>
+
+          <div class="small-popover notification-popover"
+            *ngIf="showNotifications">
+            <strong>Notifications</strong>
+            <p>3 applications are waiting for document verification.</p>
+            <p>Review queue updated recently.</p>
+          </div>
+        </div>
+
+        <div class="topbar-divider"></div>
+
+        <div class="popover-anchor">
+          <button class="profile-button"
+            (click)="showProfileMenu = !showProfileMenu">
+            <span class="avatar">RJ</span>
+            <span class="profile-copy">
+              <strong>{{ reviewerName }}</strong>
+              <small>{{ reviewerRole }}</small>
+            </span>
+            <span class="chevron">⌄</span>
+          </button>
+
+          <div class="small-popover profile-popover" *ngIf="showProfileMenu">
+            <strong>{{ reviewerName }}</strong>
+            <p>Account Operations</p>
+            <button
+              (click)="showToast('Profile settings can be connected to your profile route.', 'info'); showProfileMenu = false">
+              Profile settings
+            </button>
+            <button
+              (click)="showToast('Connect this action to your authentication logout method.', 'info'); showProfileMenu = false">
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <section class="welcome-row">
+        <div>
+          <div class="eyebrow">REVIEW WORKSPACE</div>
+          <h1>Good Morning, {{ reviewerName.split(' ')[0] }}!</h1>
+          <p>Here's your account application review summary.</p>
+        </div>
+
+        <div class="date-card">
+          <span class="date-icon">▦</span>
+          <div>
+            <strong>{{ today | date:'EEEE, dd MMM yyyy' }}</strong>
+            <small>{{ today | date:'hh:mm a' }} IST</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics-grid">
+        <button class="metric-card metric-blue"
+          (click)="setTab('Pending Review')">
+          <span class="metric-icon">▤</span>
+          <span class="metric-copy">
+            <small>Pending Review</small>
+            <strong>{{ pendingCount }}</strong>
+            <em>Awaiting your review</em>
+          </span>
+          <span class="metric-arrow">›</span>
+        </button>
+
+        <button class="metric-card metric-green"
+          (click)="setTab('Verified')">
+          <span class="metric-icon">✓</span>
+          <span class="metric-copy">
+            <small>Verified Today</small>
+            <strong>{{ verifiedCount }}</strong>
+            <em>+2 from yesterday</em>
+          </span>
+          <span class="metric-arrow">›</span>
+        </button>
+
+        <button class="metric-card metric-red"
+          (click)="setTab('Rejected')">
+          <span class="metric-icon">×</span>
+          <span class="metric-copy">
+            <small>Rejected Today</small>
+            <strong>{{ rejectedCount }}</strong>
+            <em>Requires re-submission</em>
+          </span>
+          <span class="metric-arrow">›</span>
+        </button>
+
+        <button class="metric-card metric-purple"
+          (click)="showToast('Average review time is a demo KPI.', 'info')">
+          <span class="metric-icon">◷</span>
+          <span class="metric-copy">
+            <small>Avg. Review Time</small>
+            <strong>18 mins</strong>
+            <em>Target: &lt; 30 mins</em>
+          </span>
+          <span class="metric-arrow">›</span>
+        </button>
+      </section>
+
+      <section class="dashboard-columns">
+        <section class="applications-panel">
+          <div class="panel-tabs-row">
+            <div class="tabs">
+              <button
+                [class.active]="activeTab === 'All Applications'"
+                (click)="setTab('All Applications')">
+                All Applications ({{ totalCount }})
+              </button>
+
+              <button
+                [class.active]="activeTab === 'Pending Review'"
+                (click)="setTab('Pending Review')">
+                Pending Review ({{ pendingCount }})
+              </button>
+
+              <button
+                [class.active]="activeTab === 'Verified'"
+                (click)="setTab('Verified')">
+                Verified ({{ verifiedCount }})
+              </button>
+
+              <button
+                [class.active]="activeTab === 'Rejected'"
+                (click)="setTab('Rejected')">
+                Rejected ({{ rejectedCount }})
+              </button>
+            </div>
+
+            <button class="export-button" (click)="exportApplications()">
+              <span>⇩</span> Export
+            </button>
+          </div>
+
+          <div class="filter-grid">
+            <label class="filter-field">
+              <span>Account Type</span>
+              <select [(ngModel)]="selectedAccountType"
+                (ngModelChange)="onFilterChange()">
+                <option>All Types</option>
+                <option>Savings Account</option>
+                <option>Current Account</option>
+                <option>NRI Account</option>
+              </select>
+            </label>
+
+            <label class="filter-field">
+              <span>Application Date</span>
+              <select [(ngModel)]="selectedDateRange"
+                (ngModelChange)="onFilterChange()">
+                <option>Last 30 Days</option>
+                <option>Last 7 Days</option>
+                <option>Today</option>
+                <option>All Time</option>
+              </select>
+            </label>
+
+            <label class="filter-field">
+              <span>Status</span>
+              <select [(ngModel)]="selectedStatus"
+                (ngModelChange)="onFilterChange()">
+                <option>All Status</option>
+                <option>Pending Review</option>
+                <option>Verified</option>
+                <option>Rejected</option>
+              </select>
+            </label>
+
+            <div class="filter-actions">
+              <button class="reset-button" (click)="resetFilters()">Reset</button>
+              <button class="search-button" (click)="onFilterChange()">
+                <span>⌕</span> Search
+              </button>
+            </div>
+          </div>
+
+          <div class="table-scroll">
+            <table class="application-table">
+              <thead>
+                <tr>
+                  <th class="check-cell">
+                    <input type="checkbox"
+                      [checked]="allVisibleSelected"
+                      (change)="toggleVisible($any($event.target).checked)">
+                  </th>
+                  <th><button class="sort-button" (click)="toggleSort('requestId')">Request ID ↕</button></th>
+                  <th><button class="sort-button" (click)="toggleSort('customerName')">Customer Name ↕</button></th>
+                  <th><button class="sort-button" (click)="toggleSort('accountType')">Account Type ↕</button></th>
+                  <th><button class="sort-button" (click)="toggleSort('applicationDate')">Application Date ↕</button></th>
+                  <th><button class="sort-button" (click)="toggleSort('documentsVerified')">Documents ↕</button></th>
+                  <th><button class="sort-button" (click)="toggleSort('status')">Status ↕</button></th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let app of pagedApplications">
+                  <td class="check-cell">
+                    <input type="checkbox"
+                      [checked]="isSelected(app.id)"
+                      (change)="toggleOne(app.id, $any($event.target).checked)">
+                  </td>
+
+                  <td class="request-id">{{ app.requestId }}</td>
+
+                  <td>
+                    <strong class="customer-name">{{ app.customerName }}</strong>
+                    <small class="customer-email">{{ app.email }}</small>
+                  </td>
+
+                  <td>{{ app.accountType }}</td>
+
+                  <td>
+                    <span>{{ app.applicationDate }}</span>
+                    <small class="muted-line">{{ app.applicationTime }}</small>
+                  </td>
+
+                  <td>
+                    <span class="document-count"
+                      [class.incomplete]="app.documentsVerified < app.totalDocuments">
+                      <span class="document-indicator">
+                        {{ app.documentsVerified === app.totalDocuments ? '✓' : '!' }}
+                      </span>
+                      {{ app.documentsVerified }}/{{ app.totalDocuments }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="status-pill"
+                      [ngClass]="{
+                        'status-pending': app.status === 'Pending Review',
+                        'status-verified': app.status === 'Verified',
+                        'status-rejected': app.status === 'Rejected'
+                      }">
+                      {{ app.status }}
+                    </span>
+                  </td>
+
+                  <td class="action-cell">
+                    <button class="review-button" (click)="openReview(app)">Review</button>
+                    <button class="more-button" (click)="openReview(app)">⋮</button>
+                  </td>
+                </tr>
+
+                <tr *ngIf="pagedApplications.length === 0">
+                  <td colspan="8" class="empty-state">
+                    <strong>No applications found</strong>
+                    <small>Try changing your search or filters.</small>
+                    <button (click)="resetFilters()">Clear filters</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <footer class="table-footer">
+            <span>
+              Showing {{ pageStart }} to {{ pageEnd }}
+              of {{ filteredApplications.length }} applications
+            </span>
+
+            <div class="pagination">
+              <label>Rows per page
+                <select [ngModel]="pageSize"
+                  (ngModelChange)="changePageSize($event)">
+                  <option [ngValue]="5">5</option>
+                  <option [ngValue]="8">8</option>
+                  <option [ngValue]="10">10</option>
+                </select>
+              </label>
+
+              <button (click)="changePage(currentPage - 1)"
+                [disabled]="currentPage === 1">‹</button>
+
+              <button *ngFor="let page of [].constructor(totalPages); let i = index"
+                [class.current]="currentPage === i + 1"
+                (click)="changePage(i + 1)">
+                {{ i + 1 }}
+              </button>
+
+              <button (click)="changePage(currentPage + 1)"
+                [disabled]="currentPage === totalPages">›</button>
+            </div>
+          </footer>
+        </section>
+
+        <aside class="right-panels">
+          <section class="side-panel activity-panel">
+            <div class="side-panel-heading">
+              <h2>Review Activity</h2>
+              <button (click)="showToast('Showing latest activity.', 'info')">View All</button>
+            </div>
+
+            <div class="activity-list">
+              <div class="activity-item" *ngFor="let item of activities">
+                <span class="activity-mark"
+                  [class.activity-rejected]="item.type === 'rejected'">
+                  {{ item.type === 'verified' ? '✓' : '×' }}
+                </span>
+
+                <div>
+                  <strong>{{ item.title }}</strong>
+                  <span>{{ item.requestId }} - {{ item.customerName }}</span>
+                  <small>{{ item.timeAgo }}</small>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="side-panel document-panel">
+            <h2>Document Verification Summary</h2>
+
+            <div class="document-summary-row">
+              <div class="donut" [style.--progress]="documentPercentage + '%'">
+                <span>{{ documentPercentage }}%</span>
+              </div>
+
+              <div>
+                <strong>Documents Verified</strong>
+                <small>{{ verifiedDocumentCount }} of {{ totalDocumentCount }} documents</small>
+              </div>
+            </div>
+
+            <div class="document-legend">
+              <div><i class="legend-blue"></i><span>Identity Proof</span><b>58/60</b></div>
+              <div><i class="legend-green"></i><span>Address Proof</span><b>56/60</b></div>
+              <div><i class="legend-orange"></i><span>PAN Card</span><b>52/60</b></div>
+              <div><i class="legend-purple"></i><span>Additional Documents</span><b>47/60</b></div>
+            </div>
+          </section>
+
+          <section class="side-panel quick-panel">
+            <h2>Quick Actions</h2>
+            <button (click)="showToast('Connect Document Checklist route.', 'info')">▤ Document Checklist</button>
+            <button (click)="showToast('Connect Rejection Reason Templates route.', 'info')">▧ Rejection Reason Templates</button>
+            <button (click)="showToast('Connect Review Guidelines route.', 'info')">ⓘ Review Guidelines</button>
+            <button (click)="showToast('Connect user manual download URL.', 'info')">⇩ Download User Manual</button>
+          </section>
+        </aside>
+      </section>
+
+      <footer class="page-footer">
+        <span>© {{ today | date:'yyyy' }} FinCoreBanking. All rights reserved.</span>
+        <span>Secure Banking • Brighter Tomorrow</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<!-- FEATURE: Review application dialog -->
+<div class="modal-backdrop"
+  *ngIf="showReviewModal && selectedApplication"
+  (click)="closeReview()">
+
+  <section class="review-modal"
+    role="dialog"
+    aria-modal="true"
+    (click)="$event.stopPropagation()">
+
+    <header class="modal-header">
+      <div>
+        <span class="eyebrow">APPLICATION REVIEW</span>
+        <h2>Review Application</h2>
+      </div>
+      <button class="modal-close" (click)="closeReview()">×</button>
+    </header>
+
+    <div class="modal-customer">
+      <span class="avatar modal-avatar">
+        {{ selectedApplication.customerName.charAt(0) }}
+      </span>
+      <div>
+        <strong>{{ selectedApplication.customerName }}</strong>
+        <small>{{ selectedApplication.email }}</small>
+      </div>
+    </div>
+
+    <div class="modal-details">
+      <div><small>Request ID</small><strong>{{ selectedApplication.requestId }}</strong></div>
+      <div><small>Account Type</small><strong>{{ selectedApplication.accountType }}</strong></div>
+      <div><small>Mobile</small><strong>{{ selectedApplication.mobile }}</strong></div>
+      <div><small>Documents verified</small><strong>{{ selectedApplication.documentsVerified }}/{{ selectedApplication.totalDocuments }}</strong></div>
+    </div>
+
+    <label class="modal-field">
+      <span>Decision</span>
+      <select [(ngModel)]="reviewDecision">
+        <option value="Verified">Verify application</option>
+        <option value="Rejected">Reject application</option>
+      </select>
+    </label>
+
+    <label class="modal-field">
+      <span>Comments / rejection reason</span>
+      <textarea [(ngModel)]="reviewComments"
+        rows="3"
+        placeholder="Add review notes or rejection reason..."></textarea>
+    </label>
+
+    <p class="demo-warning">
+      Demo mode: this action updates the browser UI only.
+      Connect your review API before using real applications.
+    </p>
+
+    <footer class="modal-actions">
+      <button class="reset-button" (click)="closeReview()">Cancel</button>
+      <button class="search-button" (click)="submitReview()">
+        {{ reviewDecision === 'Verified' ? 'Confirm Verification' : 'Confirm Rejection' }}
+      </button>
+    </footer>
+  </section>
+</div>
+
+<div class="toast-message" *ngIf="toastMessage" role="status">
+  <span>{{ toastType === 'success' ? '✓' : 'i' }}</span>
+  {{ toastMessage }}
+  <button (click)="toastMessage = ''">×</button>
+</div>

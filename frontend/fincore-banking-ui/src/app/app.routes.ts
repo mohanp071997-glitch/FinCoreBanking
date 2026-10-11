@@ -142,6 +142,13 @@ export const routes: Routes = [
 {
   path: 'track-request',
   component: TrackRequestComponent
+},
+// FEATURE: Reviewer dashboard route.
+{
+  path: 'reviewer/dashboard',
+  loadComponent: () =>
+    import('./pages/reviewer/reviewer-dashboard/reviewer-dashboard.component')
+      .then(m => m.ReviewerDashboardComponent)
 }
 
 ];

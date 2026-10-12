@@ -1,8 +1,10 @@
 ﻿
 using FinCoreBanking.API.Data;
+using FinCoreBanking.API.Hubs;
 using FinCoreBanking.API.Models;
 using FinCoreBanking.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
@@ -19,15 +21,18 @@ public class AccountOpeningController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly EmailService _emailService;
     private readonly IWebHostEnvironment _environment;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
     public AccountOpeningController(
         ApplicationDbContext context,
         EmailService emailService,
-        IWebHostEnvironment environment)
+        IWebHostEnvironment environment,
+        IHubContext<NotificationHub> hubContext)
     {
         _context = context;
         _emailService = emailService;
         _environment = environment;
+        _hubContext = hubContext;
     }
 
     // FEATURE: Create and save Account Opening Draft
@@ -199,6 +204,8 @@ public class AccountOpeningController : ControllerBase
 
         await _context.SaveChangesAsync();
         await transaction.CommitAsync();
+
+
 
         // FEATURE: Send Account Opening OTP using Email Template
         try
@@ -624,6 +631,56 @@ public class AccountOpeningController : ControllerBase
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
+
+            // Find all active Reviewer users.
+            var reviewerIds = await (
+                from userRole in _context.UserRoles
+                join role in _context.Roles
+                    on userRole.RoleId equals role.RoleId
+                join user in _context.Users
+                    on userRole.UserId equals user.UserId
+                where role.RoleName == "Reviewer"
+                      && role.IsActive
+                      && user.IsActive
+                select user.UserId
+            )
+            .Distinct()
+            .ToListAsync();
+
+            // Create a persistent notification for each Reviewer.
+            var notifications = reviewerIds.Select(reviewerId =>
+                new Notification
+                {
+                    UserId = reviewerId,
+                    Title = "New Account Application",
+                    Message = $"Application {application.ApplicationRequestId} is waiting for review.",
+                    NotificationType = "AccountOpening",
+                    IsRead = false,
+                    CreatedDate = DateTime.UtcNow
+                }
+            ).ToList();
+
+            if (notifications.Count > 0)
+            {
+                _context.Notifications.AddRange(notifications);
+                await _context.SaveChangesAsync();
+
+                // Send a real-time event to connected Reviewers.
+                await _hubContext.Clients.Group("reviewers")
+                    .SendAsync("NewApplication", new
+                    {
+                        message = "A new account application has been submitted.",
+                        applicationRequestId = application.ApplicationRequestId
+                    });
+            }
+
+            // Notify connected reviewers after successful submission
+            await _hubContext.Clients
+                .Group("reviewers")
+                .SendAsync("NewApplication", new
+                {
+                    message = "A new account application has been submitted."
+                });
 
             // FEATURE: Return successful submission response
             return Ok(new

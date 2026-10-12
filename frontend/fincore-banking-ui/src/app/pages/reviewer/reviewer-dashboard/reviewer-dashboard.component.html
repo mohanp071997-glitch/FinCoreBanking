@@ -129,47 +129,84 @@
           </button>
 
           <!-- FEATURE: Dynamic notification dropdown -->
-          <div
-            class="small-popover notification-popover"
-            *ngIf="showNotifications">
 
-            <div class="notification-heading">
-              <strong>Notifications</strong>
-              <button
-                type="button"
-                *ngIf="notificationCount > 0"
-                (click)="clearNotificationCount()">
-                Clear count
+          <div class="notification-popover" *ngIf="showNotifications">
+
+            <!-- Header -->
+            <div class="notification-header">
+              <div class="notification-title">
+                <h3>Notifications</h3>
+                <span class="unread-count" *ngIf="notificationCount > 0">
+                  {{ notificationCount }}
+                </span>
+              </div>
+
+              <div class="notification-header-actions">
+                <button
+                  type="button"
+                  class="mark-all-read"
+                  *ngIf="notificationCount > 0"
+                  (click)="markAllNotificationsAsRead()">
+                  ✓ Mark all as read
+                </button>
+
+                <button
+                  type="button"
+                  class="notification-close"
+                  aria-label="Close notifications"
+                  (click)="showNotifications = false">
+                  &times;
+                </button>
+              </div>
+            </div>
+
+            <!-- Notification content -->
+            <div class="notification-list" *ngIf="notifications.length > 0">
+              <div class="notification-item" *ngFor="let item of notifications">
+
+                <div class="notification-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 2h9l5 5v15H6z"></path>
+                    <path d="M15 2v5h5"></path>
+                    <path d="M9 11h8M9 14h8M9 17h6"></path>
+                  </svg>
+                </div>
+
+                <div class="notification-content">
+                  <div class="notification-item-header">
+                    <strong>{{ item.title }}</strong>
+                    <span class="unread-dot" *ngIf="!item.isRead"></span>
+                  </div>
+
+                  <p>{{ item.message }}</p>
+
+                  <div class="notification-meta">
+                    <span>Account Opening</span>
+                    <span>•</span>
+                    <span>{{ item.createdDate | date:'dd MMM yyyy, hh:mm a' }}</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Empty state -->
+            <div class="notification-empty" *ngIf="notifications.length === 0">
+              <strong>You're all caught up!</strong>
+              <p>No new notifications.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="notification-footer">
+              <button type="button" (click)="showNotifications = false">
+                View all notifications <span>›</span>
               </button>
             </div>
 
-            <div *ngIf="notifications.length === 0" class="notification-empty">
-              No new application notifications.
-            </div>
-
-            <button
-              type="button"
-              class="notification-item"
-              *ngFor="let item of notifications"
-              (click)="openNotification(item)">
-
-              <span class="notification-item-icon">📄</span>
-
-              <span class="notification-item-content">
-                <strong>New account application</strong>
-                <small>{{ item.applicationRequestId }}</small>
-                <small>{{ item.email }}</small>
-              </span>
-            </button>
           </div>
+
+
         </div>
-
-          <div class="small-popover notification-popover"
-            *ngIf="showNotifications">
-            <strong>Notifications</strong>
-            <p>3 applications are waiting for document verification.</p>
-            <p>Review queue updated recently.</p>
-          </div>
         </div>
 
         <div class="topbar-divider"></div>

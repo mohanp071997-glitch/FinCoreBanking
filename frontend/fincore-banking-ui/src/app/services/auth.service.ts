@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { environment } from '../../environments/environment.development';
@@ -13,6 +13,13 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/Auth`;
 
   constructor(private http: HttpClient) {}
+
+    private loginStateSubject = new BehaviorSubject<boolean>(
+    this.isLoggedIn()
+  );
+
+  loginState$ = this.loginStateSubject.asObservable();
+
 
   // Logs in the user.
   login(request: LoginRequest): Observable<AuthResponse> {
@@ -173,14 +180,20 @@ export class AuthService {
 
   // Logs out the current user.
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('authUser');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('authUser');
+
+    this.loginStateSubject.next(false);
+  }
+
+    notifyLoginSuccess(): void {
+    this.loginStateSubject.next(this.isLoggedIn());
   }
 
 
   // FEATURE: Validate whether the user has a valid JWT session
     isLoggedIn(): boolean {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
 
       if (!token) {
         return false;
@@ -223,7 +236,7 @@ export class AuthService {
     
   // FEATURE: Get the saved logged-in user
   getCurrentUser(): any | null {
-    const authUser = localStorage.getItem('authUser');
+    const authUser = sessionStorage.getItem('authUser');
 
     if (!authUser) {
       return null;
@@ -233,11 +246,20 @@ export class AuthService {
       return JSON.parse(authUser);
     } catch {
       // FEATURE: Remove invalid saved user data
-      localStorage.removeItem('authUser');
+      sessionStorage.removeItem('authUser');
       return null;
     }
   }
 
+  // Saves the authenticated user's session.
+  saveLoginSession(response: AuthResponse): void {
+    sessionStorage.setItem('token', response.token);
+
+    sessionStorage.setItem(
+      'authUser',
+      JSON.stringify(response.userName)
+    );
+  }
 
 
 }

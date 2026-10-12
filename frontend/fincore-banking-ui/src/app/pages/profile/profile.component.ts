@@ -67,9 +67,9 @@ export class ProfileComponent implements OnInit {
 
   // Loads the last successful login time.
   loadLastLogin(): void {
-    const authUser = localStorage.getItem('authUser');
+    const authUser = sessionStorage.getItem('authUser');
 
-    console.log('authUser from localStorage:', authUser);
+    console.log('authUser from sessionStorage:', authUser);
 
     if (authUser) {
       const user = JSON.parse(authUser);

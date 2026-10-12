@@ -7,7 +7,7 @@ import { catchError, throwError } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const router = inject(Router);
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
 
   // Adds the JWT token to the request.
   if (token) {
@@ -24,8 +24,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error) => {
 
       if (error.status === 401) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('authUser');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('authUser');
 
         router.navigate(['/login']);
       }

@@ -5,6 +5,7 @@ import { finalize, interval, Subscription } from 'rxjs';
 import { ApplicationDetails, PendingApplication, ReviewerService, SubmitReviewRequest, SubmitReviewResponse } from '../../../services/reviewer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../services/auth.service';
+import { AppNotification, NotificationService } from '../../../services/notification.service';
 
 
 // FEATURE: Application status and sorting models.
@@ -54,7 +55,8 @@ interface ReviewActivity {
 export class ReviewerDashboardComponent implements OnInit {
 
   constructor(
-    private readonly reviewerService: ReviewerService,private readonly authService: AuthService
+    private readonly reviewerService: ReviewerService,private readonly authService: AuthService,
+    private readonly notificationService: NotificationService
   ) {}
 
   // FEATURE: Dashboard header and reviewer profile.
@@ -124,18 +126,40 @@ export class ReviewerDashboardComponent implements OnInit {
   // Actual activity history API is not currently provided.
   activities: ReviewActivity[] = [];
 
+
   // FEATURE: Application notification state
-  notifications: PendingApplication[] = [];
+  notifications: AppNotification[] = [];
   private notificationSubscription?: Subscription;
-  private knownApplicationIds = new Set<number>();
-  private notificationBaselineLoaded = false;
-  private notificationSeenIds = new Set<number>();
 
   // FEATURE: Load pending applications when the page opens.
   ngOnInit(): void {
     this.loadReviewerProfile();
     this.loadApplications();
-    this.startNotificationPolling();
+    this.loadNotificationCount();
+    this.loadNotifications();
+    this.startSignalRNotifications();
+  }
+
+    private loadNotificationCount(): void {
+    this.notificationService.getUnreadCount().subscribe({
+      next: response => {
+        this.notificationCount = response.unreadCount;
+      },
+      error: error => {
+        console.error('Failed to load unread count:', error);
+      }
+    });
+  }
+
+    private loadNotifications(): void {
+    this.notificationService.getNotifications().subscribe({
+      next: response => {
+        this.notifications = response as any;
+      },
+      error: error => {
+        console.error('Failed to load notifications:', error);
+      }
+    });
   }
 
   // FEATURE: Load applications from the .NET API.
@@ -796,57 +820,14 @@ export class ReviewerDashboardComponent implements OnInit {
       .join('');
   }
 
-  // FEATURE: Start automatic application notification polling
-private startNotificationPolling(): void {
-  this.checkForNewApplications();
-
-  this.notificationSubscription = interval(15000).subscribe(() => {
-    this.checkForNewApplications();
-  });
-}
-
-// FEATURE: Detect newly submitted pending applications
-private checkForNewApplications(): void {
-  this.reviewerService.getPendingApplications().subscribe({
-    next: (applications: PendingApplication[]) => {
-      const currentIds = new Set(
-        applications.map(app => app.accountOpeningApplicationId)
-      );
-
-      // FEATURE: First response establishes the baseline
-      if (!this.notificationBaselineLoaded) {
-        this.knownApplicationIds = currentIds;
-        this.notificationBaselineLoaded = true;
-        return;
-      }
-
-      // FEATURE: Add notifications only for newly detected IDs
-      const newApplications = applications.filter(app =>
-        !this.knownApplicationIds.has(app.accountOpeningApplicationId)
-      );
-
-      if (newApplications.length > 0) {
-        for (const app of newApplications) {
-          if (!this.notificationSeenIds.has(app.accountOpeningApplicationId)) {
-            this.notifications.unshift(app);
-            this.notificationSeenIds.add(app.accountOpeningApplicationId);
-          }
-        }
-
-        this.notificationCount = this.notifications.length;
-      }
-
-      this.knownApplicationIds = currentIds;
-    },
-    error: error => {
-      console.error('Failed to check application notifications:', error);
-    }
-  });
-}
 
   // FEATURE: Toggle notification dropdown
   toggleNotifications(): void {
     this.showNotifications = !this.showNotifications;
+
+    if (this.showNotifications) {
+      this.loadNotifications();
+    }
   }
 
   // FEATURE: Clear visible notification count
@@ -877,6 +858,78 @@ private checkForNewApplications(): void {
   // FEATURE: Clean up notification polling
   ngOnDestroy(): void {
     this.notificationSubscription?.unsubscribe();
+    void this.notificationService.stopConnection();
   }
+
+    private startSignalRNotifications(): void {
+    this.notificationSubscription =
+      this.notificationService.newApplication$.subscribe({
+        next: notification => {
+          this.showToast(notification.message, 'info');
+
+          // Refresh only when a new application event arrives.
+          this.loadApplications();
+
+          // Refresh notification count from the existing API.
+          this.notificationService.getUnreadCount().subscribe({
+            next: response => {
+              this.notificationCount = response.unreadCount;
+            },
+            error: error => {
+              console.error(
+                'Failed to refresh notification count:',
+                error
+              );
+            }
+          });
+        }
+      });
+
+    this.notificationService.startConnection().catch(error => {
+      console.error('SignalR connection failed:', error);
+    });
+  }
+
+markNotificationAsRead(item: AppNotification): void {
+  this.notificationService
+    .markAsRead(item.notificationId)
+    .subscribe({
+      next: () => {
+        this.notifications = this.notifications.filter(
+          notification =>
+            notification.notificationId !== item.notificationId
+        );
+
+        this.notificationCount = Math.max(
+          0,
+          this.notificationCount - 1
+        );
+      },
+      error: error => {
+        console.error(
+          'Failed to mark notification as read:',
+          error
+        );
+      }
+    });
+}
+
+markAllNotificationsAsRead(): void {
+  this.notificationService.markAllAsRead().subscribe({
+    next: () => {
+      this.notifications = [];
+      this.notificationCount = 0;
+    },
+    error: error => {
+      console.error(
+        'Failed to mark all notifications as read:',
+        error
+      );
+    }
+  });
+}
+
+
+
 
 }

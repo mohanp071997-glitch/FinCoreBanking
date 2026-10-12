@@ -53,7 +53,7 @@ export class SettingsComponent implements OnInit {
     this.loadNotificationSettings();
 
     const userPreferences =
-      localStorage.getItem('userPreferences');
+      sessionStorage.getItem('userPreferences');
 
     if (userPreferences) {
       const preferences =
@@ -76,7 +76,7 @@ export class SettingsComponent implements OnInit {
 
 //   // Loads the saved notification settings.
 //   const notificationSettings =
-//     localStorage.getItem('notificationSettings');
+//     sessionStorage.getItem('notificationSettings');
 
 //   if (notificationSettings) {
 //     const settings = JSON.parse(notificationSettings);
@@ -93,7 +93,7 @@ export class SettingsComponent implements OnInit {
 
 //   // Loads the saved user preferences.
 //   const userPreferences =
-//     localStorage.getItem('userPreferences');
+//     sessionStorage.getItem('userPreferences');
 
 //   if (userPreferences) {
 //     const preferences = JSON.parse(userPreferences);
@@ -132,7 +132,7 @@ export class SettingsComponent implements OnInit {
           next: () => {
 
             // Stores only UI preferences locally.
-            localStorage.setItem(
+            sessionStorage.setItem(
               'userPreferences',
               JSON.stringify({
                 language: this.language,

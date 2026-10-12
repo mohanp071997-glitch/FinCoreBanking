@@ -63,13 +63,13 @@ export class LoginComponent {
         if (response.requiresTwoFactor) {
 
           // Stores the user ID for OTP verification.
-          localStorage.setItem(
+          sessionStorage.setItem(
             'twoFactorUserId',
             response.userId.toString()
           );
 
           // Stores the email for the OTP screen.
-          localStorage.setItem(
+          sessionStorage.setItem(
             'twoFactorEmail',
             response.email
           );
@@ -90,13 +90,13 @@ export class LoginComponent {
         }
 
         // Stores the JWT token for normal login.
-        localStorage.setItem(
+        sessionStorage.setItem(
           'token',
           response.token
         );
 
         // Stores the logged-in user details.
-        localStorage.setItem(
+        sessionStorage.setItem(
           'authUser',
           JSON.stringify({
             userId: response.userId,
@@ -111,6 +111,8 @@ export class LoginComponent {
           'Login successful:',
           response
         );
+
+        this.authService.notifyLoginSuccess();
 
         // FEATURE: Navigate according to the authenticated user's role
         this.redirectByRole(response.roles);
@@ -174,11 +176,11 @@ export class LoginComponent {
       next: (response) => {
 
         // Stores the JWT token.
-        localStorage.setItem('token', response.token);
+        sessionStorage.setItem('token', response.token);
 
        
       // FEATURE: Store the logged-in user details
-      localStorage.setItem(
+      sessionStorage.setItem(
         'authUser',
         JSON.stringify({
           userId: response.userId,
@@ -188,6 +190,9 @@ export class LoginComponent {
           roles: [response.role]
         })
       );
+
+      // Notify HeaderComponent about successful login.
+      this.authService.notifyLoginSuccess();
 
       // FEATURE: Clear mobile OTP data
       this.mobileOtp = '';

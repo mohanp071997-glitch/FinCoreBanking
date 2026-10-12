@@ -22,10 +22,10 @@ export class VerifyOtpComponent {
 
   ngOnInit(): void {
     // Gets the temporary user ID.
-    const userId = localStorage.getItem('twoFactorUserId');
+    const userId = sessionStorage.getItem('twoFactorUserId');
 
     // Gets the registered email address.
-    const email = localStorage.getItem('twoFactorEmail');
+    const email = sessionStorage.getItem('twoFactorEmail');
 
     if (!userId || !email) {
       this.router.navigate(['/login']);
@@ -49,10 +49,10 @@ export class VerifyOtpComponent {
       next: (response) => {
 
         // Stores the JWT token after successful OTP verification.
-        localStorage.setItem('token', response.token);
+        sessionStorage.setItem('token', response.token);
 
         // Stores the logged-in user details.
-        localStorage.setItem('authUser', JSON.stringify({
+        sessionStorage.setItem('authUser', JSON.stringify({
           userId: response.userId,
           userName: response.userName,
           email: response.email,
@@ -61,8 +61,8 @@ export class VerifyOtpComponent {
         }));
 
         // Removes temporary two-factor data.
-        localStorage.removeItem('twoFactorUserId');
-        localStorage.removeItem('twoFactorEmail');
+        sessionStorage.removeItem('twoFactorUserId');
+        sessionStorage.removeItem('twoFactorEmail');
 
         // Navigates to the dashboard.
         this.router.navigate(['/dashboard']);

@@ -40,8 +40,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private desktopCloseTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private router: Router) {
-    // Loads login information when the header starts.
-    this.loadLoginDetails();
   }
 
     ngOnInit(): void {
@@ -62,8 +60,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
   // FEATURE: Load and validate the logged-in user session
   private loadLoginDetails(): void {
-    const token = localStorage.getItem('token');
-    const authUser = localStorage.getItem('authUser');
+    const token = sessionStorage.getItem('token');
+    const authUser = sessionStorage.getItem('authUser');
 
     // FEATURE: No saved session
     if (!token || !authUser) {
@@ -125,8 +123,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // FEATURE: Clear invalid or expired authentication session
   private clearLoginState(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('authUser');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('authUser');
 
     this.isLoggedIn = false;
     this.customerName = '';
@@ -259,10 +257,10 @@ toggleMobileHelpMenu(): void {
 
 
   // FEATURE: Check login page and refresh header session
+
   private checkLoginPage(url: string): void {
     const currentUrl = url.split('?')[0].split('#')[0];
 
-    // FEATURE: Hide profile on login page
     if (currentUrl === '/login') {
       this.isLoginPage = true;
       this.isLoggedIn = false;
@@ -273,6 +271,7 @@ toggleMobileHelpMenu(): void {
     this.isLoginPage = false;
     this.loadLoginDetails();
   }
+
 
 
 

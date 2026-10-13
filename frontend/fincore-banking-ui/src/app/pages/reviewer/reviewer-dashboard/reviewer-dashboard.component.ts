@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { finalize, interval, Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { ApplicationDetails, PendingApplication, ReviewerService, SubmitReviewRequest, SubmitReviewResponse } from '../../../services/reviewer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../services/auth.service';
 import { AppNotification, NotificationService } from '../../../services/notification.service';
+import { ReviewDashboardStatistics } from '../../../interfaces/ReviewDashboardStatistics.interface';
 
 
 // FEATURE: Application status and sorting models.
@@ -131,6 +132,17 @@ export class ReviewerDashboardComponent implements OnInit {
   notifications: AppNotification[] = [];
   private notificationSubscription?: Subscription;
 
+  
+  averageReviewTimeMinutes: number | null = null;
+
+    dashboardStatistics: ReviewDashboardStatistics = {
+    pendingCount: 0,
+    verifiedTodayCount: 0,
+    rejectedTodayCount: 0,
+    averageReviewTimeMinutes: null
+  };
+
+
   // FEATURE: Load pending applications when the page opens.
   ngOnInit(): void {
     this.loadReviewerProfile();
@@ -138,6 +150,7 @@ export class ReviewerDashboardComponent implements OnInit {
     this.loadNotificationCount();
     this.loadNotifications();
     this.startSignalRNotifications();
+    this.loadDashboardStatistics();
   }
 
     private loadNotificationCount(): void {
@@ -520,6 +533,21 @@ export class ReviewerDashboardComponent implements OnInit {
     this.showReviewModal = true;
     this.isLoadingDetails = true;
 
+    
+    this.reviewerService.startReview(app.id).subscribe({
+      next: (response) => {
+        console.log('Review started:', response.reviewStartedAtUtc);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Failed to start review:', error);
+        this.showToast(
+          'Unable to record review start time.',
+          'info'
+        );
+      }
+    });
+
+
     this.reviewerService.getApplicationDetails(app.id)
       .pipe(finalize(() => this.isLoadingDetails = false))
       .subscribe({
@@ -554,6 +582,8 @@ export class ReviewerDashboardComponent implements OnInit {
             additional?.accountType ??
             data?.AccountType ??
             data?.accountType;
+
+            
 
           if (fullName) {
             app.customerName = String(fullName);
@@ -709,6 +739,7 @@ export class ReviewerDashboardComponent implements OnInit {
 
           // FEATURE: Refresh pending applications
           this.loadApplications();
+          this.loadDashboardStatistics();
         },
         error: (error: HttpErrorResponse) => {
           console.error('Failed to submit review:', error);
@@ -929,6 +960,35 @@ markAllNotificationsAsRead(): void {
   });
 }
 
+
+  getAverageReviewTime(durations: number[]): number | null {
+    if (durations.length === 0) {
+      return null;
+    }
+
+    const totalMinutes = durations.reduce(
+      (total, minutes) => total + minutes,
+      0
+    );
+
+    return Math.round(totalMinutes / durations.length);
+  }
+
+    
+  loadDashboardStatistics(): void {
+    this.reviewerService.getDashboardStatistics().subscribe({
+      next: (response) => {
+        this.dashboardStatistics = response;
+
+        // Update values displayed by the existing cards.
+        this.averageReviewTimeMinutes =
+          response.averageReviewTimeMinutes;
+      },
+      error: (error) => {
+        console.error('Failed to load dashboard statistics:', error);
+      }
+    });
+  }
 
 
 

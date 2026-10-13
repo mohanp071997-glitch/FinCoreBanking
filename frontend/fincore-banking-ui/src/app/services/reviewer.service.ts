@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { ReviewDashboardStatistics } from '../interfaces/ReviewDashboardStatistics.interface';
 
 // FEATURE: Pending application response
 export interface PendingApplication {
@@ -74,4 +75,19 @@ export class ReviewerService {
       request
     );
   }
+
+    getDashboardStatistics(): Observable<ReviewDashboardStatistics> {
+    return this.http.get<ReviewDashboardStatistics>(
+      `${this.apiUrl}/statistics`
+    );
+  }
+
+  
+  startReview(id: number): Observable<{ message: string; reviewStartedAtUtc: string }> {
+    return this.http.post<{ message: string; reviewStartedAtUtc: string }>(
+      `${this.apiUrl}/${id}/start`,
+      {}
+    );
+  }
+
 }

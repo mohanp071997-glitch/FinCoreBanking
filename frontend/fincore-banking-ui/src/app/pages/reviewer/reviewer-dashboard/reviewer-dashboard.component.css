@@ -524,99 +524,203 @@ button:disabled {
 }
 
 /* FEATURE: Summary metric cards */
+
+
+/* Premium summary metric cards */
+
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 18px;
+  margin-bottom: 26px;
 }
 
 .metric-card {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   min-width: 0;
-  min-height: 140px;
-  padding: 20px;
-  border: 1px solid #d9e6f5;
-  border-radius: 16px;
-  background: linear-gradient(145deg, #ffffff, #f9fbff);
-  box-shadow: 0 8px 22px rgba(41, 78, 121, 0.05);
+  min-height: 148px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid #dce7f5;
+  border-radius: 18px;
+  color: #17365d;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow:
+    0 4px 10px rgba(25, 61, 105, 0.025),
+    0 12px 28px rgba(25, 61, 105, 0.045);
   text-align: left;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.metric-card::after {
+  position: absolute;
+  right: -28px;
+  bottom: -48px;
+  width: 125px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--metric-glow, rgba(43, 120, 230, 0.06));
+  content: "";
+  pointer-events: none;
 }
 
 .metric-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 28px rgba(41, 78, 121, 0.1);
+  border-color: var(--metric-border, #b9d6fb);
+  box-shadow: 0 14px 30px rgba(25, 61, 105, 0.09);
+}
+
+.metric-card:focus-visible {
+  outline: 3px solid rgba(37, 112, 225, 0.3);
+  outline-offset: 3px;
 }
 
 .metric-icon {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
-  flex: 0 0 62px;
-  width: 62px;
-  height: 62px;
-  border-radius: 13px;
-  font-size: 31px;
-  font-weight: 500;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid transparent;
+  border-radius: 17px;
+}
+
+.metric-icon svg {
+  display: block;
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.metric-blue {
+  --metric-glow: rgba(47, 119, 237, 0.09);
+  --metric-border: #b9d6fb;
 }
 
 .metric-blue .metric-icon {
-  color: #2373e5;
-  background: #e5efff;
+  color: #1769df;
+  background: #e8f1ff;
+  border-color: #d8e7ff;
+}
+
+.metric-green {
+  --metric-glow: rgba(13, 166, 116, 0.09);
+  --metric-border: #b8ead7;
 }
 
 .metric-green .metric-icon {
-  color: #0a9d71;
-  background: #ddf7ec;
+  color: #07966b;
+  background: #e0f8ee;
+  border-color: #c9f0e0;
+}
+
+.metric-red {
+  --metric-glow: rgba(232, 61, 82, 0.08);
+  --metric-border: #f4cbd2;
 }
 
 .metric-red .metric-icon {
-  color: #e8374e;
-  background: #ffe8eb;
+  color: #e43b51;
+  background: #ffebee;
+  border-color: #ffdade;
+}
+
+.metric-purple {
+  --metric-glow: rgba(128, 82, 247, 0.09);
+  --metric-border: #d8ccff;
 }
 
 .metric-purple .metric-icon {
-  color: #8152f7;
-  background: #f0eaff;
+  color: #8052ef;
+  background: #f1ebff;
+  border-color: #e5dcff;
 }
 
 .metric-copy {
+  position: relative;
+  z-index: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-width: 0;
-  gap: 6px;
+  gap: 8px;
 }
 
 .metric-copy small {
-  color: #718aa7;
-  font-size: 11px;
-  font-weight: 700;
+  color: #637d9c;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
 }
 
 .metric-copy strong {
-  color: #18395f;
-  font-size: clamp(24px, 2vw, 33px);
-  line-height: 1.1;
+  color: #12345a;
+  font-size: clamp(27px, 2vw, 35px);
+  font-weight: 800;
+  line-height: 1.05;
   letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
 }
 
 .metric-copy em {
-  color: #8a9db5;
-  font-size: 10px;
+  color: #8195ad;
+  font-size: 11px;
   font-style: normal;
-  white-space: normal;
+  line-height: 1.5;
 }
 
 .metric-green .metric-copy em {
-  color: #0a9d71;
+  color: #078b65;
 }
 
-.metric-arrow {
-  margin-left: auto;
-  color: #92aac7;
-  font-size: 26px;
+/* Responsive card layout */
+
+@media (max-width: 1200px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .metric-card {
+    min-height: 118px;
+    padding: 18px;
+    gap: 14px;
+  }
+
+  .metric-icon {
+    flex-basis: 54px;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+  }
+
+  .metric-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .metric-copy strong {
+    font-size: 27px;
+  }
 }
 
 /* FEATURE: Application table and right information panels */
@@ -1484,22 +1588,6 @@ button:disabled {
     gap: 13px;
   }
 
-  .metrics-grid {
-    gap: 12px;
-  }
-
-  .metric-card {
-    gap: 10px;
-    padding: 14px;
-  }
-
-  .metric-icon {
-    flex-basis: 48px;
-    width: 48px;
-    height: 48px;
-    font-size: 25px;
-  }
-
   .filter-grid {
     grid-template-columns: repeat(3, minmax(100px, 1fr));
   }
@@ -1524,9 +1612,6 @@ button:disabled {
     grid-column: 1 / -1;
   }
 
-  .metrics-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 /* FEATURE: Responsive mobile layout */
@@ -1610,14 +1695,6 @@ button:disabled {
 
   .date-card {
     padding: 10px 12px;
-  }
-
-  .metrics-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .metric-card {
-    min-height: 105px;
   }
 
   .panel-tabs-row {
@@ -2544,5 +2621,47 @@ button:disabled {
     font-size: 13px;
   }
 }
+
+
+/* Account Applications - Chevron arrow */
+
+.nav-item .chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  padding: 0;
+  color: #6485a8;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  line-height: 1;
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.nav-item .chevron svg {
+  display: block;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-item:hover .chevron {
+  color: #1769c2;
+}
+
+.nav-item .chevron.expanded {
+  color: #1769c2;
+  background: transparent;
+  transform: rotate(180deg);
+}
+
 
 

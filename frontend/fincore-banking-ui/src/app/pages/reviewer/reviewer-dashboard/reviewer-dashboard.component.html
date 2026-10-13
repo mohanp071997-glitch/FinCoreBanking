@@ -27,7 +27,12 @@
         (click)="applicationsMenuExpanded = !applicationsMenuExpanded; setMenu('Account Applications')">
         <span class="nav-icon">▤</span>
         <span>Account Applications</span>
-        <span class="chevron">{{ applicationsMenuExpanded ? '⌄' : '›' }}</span>
+        <span class="chevron" [class.expanded]="applicationsMenuExpanded">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </span>
+
       </button>
 
       <div class="subnav" *ngIf="applicationsMenuExpanded">
@@ -268,51 +273,98 @@
         </div>
       </section>
 
+
       <section class="metrics-grid">
-        <button class="metric-card metric-blue"
+
+        <button
+          type="button"
+          class="metric-card metric-blue"
           (click)="setTab('Pending Review')">
-          <span class="metric-icon">▤</span>
+
+          <span class="metric-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+              <path d="M8 8h8M8 12h8M8 16h5"></path>
+            </svg>
+          </span>
+
           <span class="metric-copy">
             <small>Pending Review</small>
             <strong>{{ pendingCount }}</strong>
             <em>Awaiting your review</em>
           </span>
-          <span class="metric-arrow">›</span>
         </button>
 
-        <button class="metric-card metric-green"
+        <button
+          type="button"
+          class="metric-card metric-green"
           (click)="setTab('Verified')">
-          <span class="metric-icon">✓</span>
+
+          <span class="metric-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="m5 12 5 5L20 6"></path>
+            </svg>
+          </span>
+
+
           <span class="metric-copy">
             <small>Verified Today</small>
-            <strong>{{ verifiedCount }}</strong>
-            <em>+2 from yesterday</em>
+            <strong>{{ dashboardStatistics.verifiedTodayCount }}</strong>
+            <em *ngIf="verifiedCount > 0">
+              Applications successfully verified
+            </em>
           </span>
-          <span class="metric-arrow">›</span>
+
         </button>
 
-        <button class="metric-card metric-red"
+        <button
+          type="button"
+          class="metric-card metric-red"
           (click)="setTab('Rejected')">
-          <span class="metric-icon">×</span>
+
+          <span class="metric-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </span>
+
           <span class="metric-copy">
             <small>Rejected Today</small>
-            <strong>{{ rejectedCount }}</strong>
-            <em>Requires re-submission</em>
+            <strong>{{ dashboardStatistics.rejectedTodayCount }}</strong>
+            <em>Applications requiring correction</em>
           </span>
-          <span class="metric-arrow">›</span>
         </button>
 
-        <button class="metric-card metric-purple"
+        <button
+          type="button"
+          class="metric-card metric-purple"
           (click)="showToast('Average review time is a demo KPI.', 'info')">
-          <span class="metric-icon">◷</span>
+
+          <span class="metric-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+          </span>
+
           <span class="metric-copy">
             <small>Avg. Review Time</small>
-            <strong>18 mins</strong>
-            <em>Target: &lt; 30 mins</em>
+            
+          <strong *ngIf="averageReviewTimeMinutes !== null">
+            {{ averageReviewTimeMinutes }} mins
+          </strong>
+
+          <strong *ngIf="averageReviewTimeMinutes === null">
+            --
+          </strong>
+
+          <em>Average time to complete a review</em>
+
           </span>
-          <span class="metric-arrow">›</span>
         </button>
+
       </section>
+
 
       <section class="dashboard-columns">
         <section class="applications-panel">

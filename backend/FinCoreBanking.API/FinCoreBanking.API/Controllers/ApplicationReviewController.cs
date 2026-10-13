@@ -200,7 +200,112 @@ public class ApplicationReviewController : ControllerBase
             application.Status
         });
     }
+
+
+    // FEATURE: Get reviewer dashboard statistics.
+
+    [HttpGet("statistics")]
+    public async Task<IActionResult> GetDashboardStatistics()
+    {
+        var todayUtc = DateTime.UtcNow.Date;
+        var tomorrowUtc = todayUtc.AddDays(1);
+
+        var todayReviews = _context.ApplicationReviews
+            .AsNoTracking()
+            .Where(x =>
+                x.ReviewedAtUtc >= todayUtc &&
+                x.ReviewedAtUtc < tomorrowUtc);
+
+        var pendingCount = await _context.AccountOpeningApplications
+            .AsNoTracking()
+            .CountAsync(x => x.Status == "Pending Approval");
+
+        var verifiedTodayCount = await todayReviews
+            .CountAsync(x => x.ReviewDecision == "Verified");
+
+        var rejectedTodayCount = await todayReviews
+            .CountAsync(x => x.ReviewDecision == "Rejected");
+
+        // Get completed reviews that have a recorded start time.
+        var completedReviews = await (
+            from review in _context.ApplicationReviews.AsNoTracking()
+            join application in _context.AccountOpeningApplications.AsNoTracking()
+                on review.AccountOpeningApplicationId
+                equals application.AccountOpeningApplicationId
+            where application.ReviewStartedAtUtc.HasValue
+            select new
+            {
+                ReviewStartedAtUtc = application.ReviewStartedAtUtc,
+                review.ReviewedAtUtc
+            }
+        ).ToListAsync();
+
+        // Calculate each review duration in minutes.
+        var durations = completedReviews
+            .Where(x =>
+                x.ReviewStartedAtUtc.HasValue &&
+                x.ReviewedAtUtc.HasValue)
+            .Select(x =>
+                (x.ReviewedAtUtc.Value -
+                 x.ReviewStartedAtUtc.Value).TotalMinutes)
+            .Where(minutes => minutes >= 0)
+            .ToList();
+
+        double? averageReviewTimeMinutes = durations.Count > 0
+            ? Math.Round(durations.Average(), 1)
+            : null;
+
+
+
+
+        return Ok(new
+        {
+            pendingCount,
+            verifiedTodayCount,
+            rejectedTodayCount,
+            averageReviewTimeMinutes
+        });
+    }
+
+
+
+    [HttpPost("{id:long}/start")]
+    public async Task<IActionResult> StartReview(long id)
+    {
+        var application = await _context.AccountOpeningApplications
+            .FirstOrDefaultAsync(x =>
+                x.AccountOpeningApplicationId == id);
+
+        if (application == null)
+        {
+            return NotFound(new
+            {
+                message = "Application not found."
+            });
+        }
+
+        if (application.Status != "Pending Approval")
+        {
+            return BadRequest(new
+            {
+                message = "Application is not pending review."
+            });
+        }
+
+        application.ReviewStartedAtUtc = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            message = "Review started successfully.",
+            reviewStartedAtUtc = application.ReviewStartedAtUtc
+        });
+    }
+
+
 }
+
+
 
 // FEATURE: Request DTO for reviewer decision.
 public class SubmitApplicationReviewRequest

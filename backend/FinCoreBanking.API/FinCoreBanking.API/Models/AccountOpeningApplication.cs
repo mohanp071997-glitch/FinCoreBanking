@@ -29,4 +29,6 @@ public class AccountOpeningApplication
     public string Status { get; set; } = "Pending Approval";
 
     public DateTime SubmittedAt { get; set; }
+
+    public DateTime? ReviewStartedAtUtc { get; set; }
 }

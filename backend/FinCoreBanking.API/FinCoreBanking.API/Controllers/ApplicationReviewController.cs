@@ -23,25 +23,68 @@ public class ApplicationReviewController : ControllerBase
     }
 
     // FEATURE: Get pending applications for reviewer.
+
+
     [HttpGet("pending")]
     public async Task<IActionResult> GetPendingApplications()
     {
         var applications = await _context.AccountOpeningApplications
             .AsNoTracking()
-            .Where(x => x.Status == "Pending Approval")
-            .OrderBy(x => x.SubmittedAt)
+            .OrderByDescending(x => x.SubmittedAt)
             .Select(x => new
             {
                 x.AccountOpeningApplicationId,
                 x.ApplicationRequestId,
                 x.Email,
-                x.Status,
-                x.SubmittedAt
+                x.ApplicationData,
+                x.SubmittedAt,
+                Status = x.Status == "Pending Approval"
+                    ? "Pending Review"
+                    : x.Status == "Pending Final Approval" ||
+                      x.Status == "Approved"
+                        ? "Verified"
+                        : x.Status
             })
             .ToListAsync();
 
-        return Ok(applications);
+        var result = applications.Select(application =>
+        {
+            var customerName = application.Email;
+
+            try
+            {
+                using var document =
+                    JsonDocument.Parse(application.ApplicationData);
+
+                if (document.RootElement.TryGetProperty(
+                        "PersonalDetails", out var personalDetails) &&
+                    personalDetails.TryGetProperty(
+                        "fullName", out var fullName))
+                {
+                    customerName =
+                        fullName.GetString() ?? application.Email;
+                }
+            }
+            catch (JsonException)
+            {
+                // Fall back to email if JSON is invalid.
+            }
+
+            return new
+            {
+                application.AccountOpeningApplicationId,
+                application.ApplicationRequestId,
+                application.Email,
+                CustomerName = customerName,
+                application.SubmittedAt,
+                application.Status
+            };
+        });
+
+        return Ok(result);
     }
+
+
 
     // FEATURE: Get application details for review.
     [HttpGet("{id:long}")]
@@ -292,8 +335,11 @@ public class ApplicationReviewController : ControllerBase
             });
         }
 
-        application.ReviewStartedAtUtc = DateTime.UtcNow;
-        await _context.SaveChangesAsync();
+        if (!application.ReviewStartedAtUtc.HasValue)
+        {
+            application.ReviewStartedAtUtc = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
 
         return Ok(new
         {
@@ -301,6 +347,67 @@ public class ApplicationReviewController : ControllerBase
             reviewStartedAtUtc = application.ReviewStartedAtUtc
         });
     }
+
+
+
+    [HttpGet("activities")]
+    public async Task<IActionResult> GetReviewActivities()
+    {
+        var reviews = await (
+            from review in _context.ApplicationReviews.AsNoTracking()
+            join application in _context.AccountOpeningApplications.AsNoTracking()
+                on review.AccountOpeningApplicationId
+                equals application.AccountOpeningApplicationId
+            orderby review.ReviewedAtUtc descending
+            select new
+            {
+                application.AccountOpeningApplicationId,
+                application.ApplicationRequestId,
+                application.Email,
+                application.ApplicationData,
+                review.ReviewDecision,
+                review.Comments,
+                review.ReviewedAtUtc
+            }
+        ).ToListAsync();
+
+        var activities = reviews.Select(review =>
+        {
+            string customerName = review.Email;
+
+            try
+            {
+                using var document =
+                    System.Text.Json.JsonDocument.Parse(review.ApplicationData);
+
+                if (document.RootElement.TryGetProperty(
+                    "PersonalDetails", out var personalDetails) &&
+                    personalDetails.TryGetProperty(
+                        "fullName", out var fullName))
+                {
+                    customerName = fullName.GetString() ?? review.Email;
+                }
+            }
+            catch (System.Text.Json.JsonException)
+            {
+                // Use email when ApplicationData is invalid JSON.
+            }
+
+            return new
+            {
+                review.AccountOpeningApplicationId,
+                review.ApplicationRequestId,
+                CustomerName = customerName,
+                review.Email,
+                review.ReviewDecision,
+                review.Comments,
+                review.ReviewedAtUtc
+            };
+        });
+
+        return Ok(activities);
+    }
+
 
 
 }

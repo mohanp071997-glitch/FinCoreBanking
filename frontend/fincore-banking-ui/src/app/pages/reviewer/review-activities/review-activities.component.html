@@ -1,0 +1,379 @@
+
+<div class="activity-page">
+
+  <!-- Page heading -->
+
+    <header class="page-heading">
+    <div class="heading-left">
+
+        <div class="heading-actions">
+        <button
+            type="button"
+            class="back-button"
+            (click)="goBackToDashboard()">
+            <span class="back-arrow">←</span>
+            Back to Dashboard
+        </button>
+
+        <button
+            type="button"
+            class="refresh-button"
+            [disabled]="isLoading"
+            (click)="loadActivities()">
+            <span class="refresh-icon">↻</span>
+            {{ isLoading ? 'Loading...' : 'Refresh Data' }}
+        </button>
+        </div>
+
+        <div class="heading-title-row">
+        <div class="heading-icon">▤</div>
+        <div>
+            <h1>Review Activity</h1>
+            <p>Track and manage application review decisions and history.</p>
+        </div>
+        </div>
+
+    </div>
+    </header>
+
+
+  <!-- Summary cards -->
+  <section class="summary-grid">
+
+    <article class="summary-card total-card">
+      <div class="summary-icon blue-icon">▤</div>
+      <div class="summary-content">
+        <p>Total Reviews</p>
+        <h2>{{ totalCount }}</h2>
+        <span class="summary-caption">Matching review records</span>
+      </div>
+      <div class="summary-decoration"></div>
+    </article>
+
+    <article class="summary-card verified-card">
+      <div class="summary-icon green-icon">✓</div>
+      <div class="summary-content">
+        <p>Verified</p>
+        <h2>{{ verifiedCount }}</h2>
+        <span class="summary-caption">Verified applications</span>
+      </div>
+      <div class="summary-decoration"></div>
+    </article>
+
+    <article class="summary-card rejected-card">
+      <div class="summary-icon red-icon">×</div>
+      <div class="summary-content">
+        <p>Rejected</p>
+        <h2>{{ rejectedCount }}</h2>
+        <span class="summary-caption">Rejected applications</span>
+      </div>
+      <div class="summary-decoration"></div>
+    </article>
+
+  </section>
+
+  <!-- Filters -->
+  <section class="filter-card">
+
+    <div class="filter-heading">
+      <div>
+        <h2>Find Review Records</h2>
+        <p>Search and filter your application history.</p>
+      </div>
+      <span class="filter-label">FILTERS</span>
+    </div>
+
+    <div class="filter-grid">
+
+      <div class="filter-field search-field">
+        <label for="activitySearch">Search</label>
+
+        <div class="input-with-icon">
+          <span class="search-icon">⌕</span>
+          <input
+            id="activitySearch"
+            type="text"
+            [(ngModel)]="searchText"
+            (ngModelChange)="onFilterChange()"
+            placeholder="Request ID, customer name or email..." />
+        </div>
+      </div>
+
+      <div class="filter-field">
+        <label for="decisionFilter">Decision</label>
+
+        <select
+          id="decisionFilter"
+          [(ngModel)]="selectedDecision"
+          (ngModelChange)="onFilterChange()">
+
+          <option value="All">All Decisions</option>
+          <option value="Verified">Verified</option>
+          <option value="Rejected">Rejected</option>
+
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="dateFilter">Date Range</label>
+
+        <select
+          id="dateFilter"
+          [(ngModel)]="selectedDateRange"
+          (ngModelChange)="onFilterChange()">
+
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+          <option value="90">Last 90 Days</option>
+          <option value="All">All Time</option>
+
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button
+          type="button"
+          class="reset-button"
+          (click)="resetFilters()">
+          Reset
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Review history table -->
+  <section class="table-card">
+
+    <div class="table-heading">
+      <div class="table-title-group">
+        <div class="table-title-icon">▤</div>
+
+        <div>
+          <h2>Application Review History</h2>
+          <p>Review decisions recorded in FinCore Banking.</p>
+        </div>
+      </div>
+
+      <span class="record-count">
+        {{ totalCount }} records
+      </span>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="state-message">
+      <span class="loader"></span>
+      <p>Loading review history...</p>
+    </div>
+
+    <!-- Error state -->
+    <div
+      *ngIf="!isLoading && apiError"
+      class="state-message error-state">
+
+      <div class="state-icon">!</div>
+      <h3>Unable to load review history</h3>
+      <p>{{ apiError }}</p>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="loadActivities()">
+        Try Again
+      </button>
+    </div>
+
+    <!-- Empty state -->
+    <div
+      *ngIf="!isLoading && !apiError && totalCount === 0"
+      class="state-message">
+
+      <div class="empty-icon">▤</div>
+      <h3>No review activities found</h3>
+      <p>Try changing your search or filter options.</p>
+
+      <button
+        type="button"
+        class="reset-button"
+        (click)="resetFilters()">
+        Clear Filters
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div
+      *ngIf="!isLoading && !apiError && totalCount > 0"
+      class="table-scroll">
+
+      <table>
+        <thead>
+          <tr>
+            <th class="number-column">#</th>
+            <th>Request ID</th>
+            <th>Customer Name</th>
+            <th>Email</th>
+            <th>Decision</th>
+            <th>Review Date &amp; Time</th>
+            <th>Comments</th>
+            <th class="action-column">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="
+              let item of pagedActivities;
+              let i = index;
+              trackBy: trackByActivity
+            ">
+
+            <td class="number-column">
+              {{ (currentPage - 1) * pageSize + i + 1 }}
+            </td>
+
+            <td class="request-id">
+              {{ item.applicationRequestId }}
+            </td>
+
+            <td class="customer-name">
+              {{ item.customerName || '—' }}
+            </td>
+
+            <td class="email-cell">
+              {{ item.email || '—' }}
+            </td>
+
+            <td>
+              <span
+                class="decision-badge"
+                [class.verified-badge]="item.reviewDecision === 'Verified'"
+                [class.rejected-badge]="item.reviewDecision === 'Rejected'">
+
+                <span class="badge-dot"></span>
+                {{ item.reviewDecision }}
+
+              </span>
+            </td>
+
+            <td class="review-date">
+              <span class="date-value">
+                {{
+                  item.reviewedAtUtc
+                    ? (item.reviewedAtUtc | date:'dd MMM yyyy')
+                    : '—'
+                }}
+              </span>
+
+              <span class="time-value">
+                {{
+                  item.reviewedAtUtc
+                    ? (item.reviewedAtUtc | date:'h:mm:ss a')
+                    : ''
+                }}
+              </span>
+            </td>
+
+            <td class="comments-cell">
+              <span
+                class="comment-text"
+                [title]="item.comments || 'No comments'">
+                {{ item.comments || 'No comments provided' }}
+              </span>
+            </td>
+
+
+            <td class="action-column">
+            <button
+                type="button"
+                class="view-button"
+                title="View Application Details"
+                aria-label="View Application Details"
+                (click)="viewApplication(item.accountOpeningApplicationId)">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/>
+                <circle cx="12" cy="12" r="3"/>
+                </svg>
+            </button>
+            </td>
+
+
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <!-- Pagination -->
+    <footer
+      class="table-footer"
+      *ngIf="!isLoading && !apiError && totalCount > 0">
+
+      <div class="pagination-info">
+        Showing
+        <strong>{{ pageStart }}–{{ pageEnd }}</strong>
+        of
+        <strong>{{ totalCount }}</strong>
+        activities
+      </div>
+
+      <div class="pagination-controls">
+
+        <label for="pageSize">Rows per page</label>
+
+        <select
+          id="pageSize"
+          [ngModel]="pageSize"
+          (ngModelChange)="changePageSize($event)">
+
+          <option [ngValue]="5">5</option>
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+
+        </select>
+
+        <button
+          type="button"
+          class="page-button"
+          aria-label="Previous page"
+          [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)">
+          ‹
+        </button>
+
+        <span class="page-indicator">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+
+        <button
+          type="button"
+          class="page-button"
+          aria-label="Next page"
+          [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)">
+          ›
+        </button>
+
+      </div>
+    </footer>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="bank-footer">
+    <span class="footer-brand-mark">F</span>
+    <span>FinCore Bank</span>
+    <span class="footer-separator">•</span>
+    <span>Secure Banking. Trusted Service.</span>
+  </footer>
+
+</div>

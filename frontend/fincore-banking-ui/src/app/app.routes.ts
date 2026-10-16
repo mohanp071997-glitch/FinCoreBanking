@@ -150,6 +150,12 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/reviewer/reviewer-dashboard/reviewer-dashboard.component')
       .then(m => m.ReviewerDashboardComponent)
+},
+{
+  path: 'reviewer/activities',
+  loadComponent: () =>
+    import('./pages/reviewer/review-activities/review-activities.component')
+      .then(m => m.ReviewActivitiesComponent)
 }
 
 ];

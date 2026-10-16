@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize, Subscription } from 'rxjs';
-import { ApplicationDetails, PendingApplication, ReviewerService, SubmitReviewRequest, SubmitReviewResponse } from '../../../services/reviewer.service';
+import { ApplicationDetails, ReviewerService, SubmitReviewRequest, SubmitReviewResponse } from '../../../services/reviewer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../services/auth.service';
 import { AppNotification, NotificationService } from '../../../services/notification.service';
 import { ReviewDashboardStatistics } from '../../../interfaces/ReviewDashboardStatistics.interface';
+import { PendingApplication } from '../../../interfaces/PendingApplication.interface';
+import { Router } from '@angular/router';
 
 
 // FEATURE: Application status and sorting models.
@@ -57,7 +59,7 @@ export class ReviewerDashboardComponent implements OnInit {
 
   constructor(
     private readonly reviewerService: ReviewerService,private readonly authService: AuthService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,private readonly router: Router
   ) {}
 
   // FEATURE: Dashboard header and reviewer profile.
@@ -116,6 +118,7 @@ export class ReviewerDashboardComponent implements OnInit {
   // FEATURE: Toast messages.
   toastMessage = '';
   toastType: 'success' | 'info' = 'info';
+  private toastTimeout?: ReturnType<typeof setTimeout>;
 
   // FEATURE: Selected application IDs.
   selectedIds: number[] = [];
@@ -142,6 +145,8 @@ export class ReviewerDashboardComponent implements OnInit {
     averageReviewTimeMinutes: null
   };
 
+  showAllActivities = false;
+
 
   // FEATURE: Load pending applications when the page opens.
   ngOnInit(): void {
@@ -151,6 +156,8 @@ export class ReviewerDashboardComponent implements OnInit {
     this.loadNotifications();
     this.startSignalRNotifications();
     this.loadDashboardStatistics();
+      // Keep your existing initialization calls.
+    this.loadReviewActivities();
   }
 
     private loadNotificationCount(): void {
@@ -192,7 +199,7 @@ export class ReviewerDashboardComponent implements OnInit {
             return {
               id: item.accountOpeningApplicationId,
               requestId: item.applicationRequestId,
-              customerName: item.email,
+              customerName: item.customerName || item.email,
               email: item.email,
               mobile: '',
               accountType: 'Account Application',
@@ -214,7 +221,18 @@ export class ReviewerDashboardComponent implements OnInit {
                 : '',
               documentsVerified: 0,
               totalDocuments: 4,
-              status: 'Pending Review' as ApplicationStatus
+              status: (
+                item.status === 'Pending Approval' ||
+                item.status === 'Pending Review'
+                  ? 'Pending Review'
+                  : item.status === 'Verified' ||
+                    item.status === 'Pending Final Approval' ||
+                    item.status === 'Approved'
+                      ? 'Verified'
+                      : item.status === 'Rejected'
+                        ? 'Rejected'
+                        : 'Pending Review'
+              ) as ApplicationStatus
             };
           });
 
@@ -322,7 +340,7 @@ export class ReviewerDashboardComponent implements OnInit {
             app.sortDate !== '' &&
             applicationDate >= cutoff &&
             applicationDate <= now;
-        } else if (this.selectedDateRange === 'Last 30 Days') {
+        } else if (this.selectedDateRange === 'All Time') {
           const cutoff = new Date(now);
           cutoff.setDate(now.getDate() - 30);
 
@@ -756,7 +774,13 @@ export class ReviewerDashboardComponent implements OnInit {
   }
 
   // FEATURE: Export filtered applications as CSV.
+
   exportApplications(): void {
+    if (this.filteredApplications.length === 0) {
+      this.showToast('No applications available to export.', 'info');
+      return;
+    }
+
     const headers = [
       'Request ID',
       'Customer Name',
@@ -764,6 +788,7 @@ export class ReviewerDashboardComponent implements OnInit {
       'Mobile',
       'Account Type',
       'Application Date',
+      'Application Time',
       'Documents Verified',
       'Total Documents',
       'Status',
@@ -777,23 +802,26 @@ export class ReviewerDashboardComponent implements OnInit {
       app.mobile,
       app.accountType,
       app.applicationDate,
+      app.applicationTime,
       app.documentsVerified,
       app.totalDocuments,
       app.status,
       app.comments ?? ''
     ]);
 
-    const csv = [headers, ...rows]
-      .map(row =>
-        row
-          .map(value =>
-            `"${String(value).replace(/"/g, '""')}"`
-          )
-          .join(',')
-      )
-      .join('\r\n');
+    // Escape commas, quotes and line breaks for valid CSV.
+    const escapeCsv = (value: unknown): string => {
+      const text = String(value ?? '');
+      return `"${text.replace(/"/g, '""')}"`;
+    };
 
-    const blob = new Blob(['\uFEFF' + csv], {
+    const csv = [
+      headers.map(escapeCsv).join(','),
+      ...rows.map(row => row.map(escapeCsv).join(','))
+    ].join('\r\n');
+
+    // UTF-8 BOM helps Excel display text correctly.
+    const blob = new Blob(['\uFEFF', csv], {
       type: 'text/csv;charset=utf-8;'
     });
 
@@ -801,25 +829,43 @@ export class ReviewerDashboardComponent implements OnInit {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = 'fincore-review-applications.csv';
+    link.download =
+      `FinCoreBanking_Applications_${new Date()
+        .toISOString()
+        .slice(0, 10)}.csv`;
+
+    document.body.appendChild(link);
     link.click();
+    link.remove();
 
     URL.revokeObjectURL(url);
 
     this.showToast(
-      'CSV export generated successfully.',
+      'Applications exported successfully.',
       'success'
     );
   }
 
+
   // FEATURE: Display UI feedback.
+
   showToast(
     message: string,
     type: 'success' | 'info' = 'info'
   ): void {
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+    }
+
     this.toastMessage = message;
     this.toastType = type;
+
+    this.toastTimeout = setTimeout(() => {
+      this.toastMessage = '';
+      this.toastTimeout = undefined;
+    }, 3000);
   }
+
 
 
   // FEATURE: Load logged-in user profile
@@ -890,6 +936,11 @@ export class ReviewerDashboardComponent implements OnInit {
   ngOnDestroy(): void {
     this.notificationSubscription?.unsubscribe();
     void this.notificationService.stopConnection();
+
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+      this.toastTimeout = undefined;
+    }
   }
 
     private startSignalRNotifications(): void {
@@ -989,6 +1040,40 @@ markAllNotificationsAsRead(): void {
       }
     });
   }
+
+  
+
+  get displayedActivities(): ReviewActivity[] {
+    return this.activities.slice(0, 3);
+  }
+
+  viewAllActivities(): void {
+    this.router.navigate(['/reviewer/activities']);
+  }
+
+
+
+  loadReviewActivities(): void {
+    this.reviewerService.getReviewActivities().subscribe({
+      next: response => {
+        this.activities = response.map(item => ({
+          title: item.reviewDecision === 'Verified'
+            ? 'Application verified'
+            : 'Application rejected',
+          requestId: item.applicationRequestId,
+          customerName: item.customerName,
+          timeAgo: new Date(item.reviewedAtUtc).toLocaleString('en-IN'),
+          type: item.reviewDecision === 'Verified'
+            ? 'verified'
+            : 'rejected'
+        }));
+      },
+      error: error => {
+        console.error('Failed to load review activities:', error);
+      }
+    });
+  }
+
 
 
 

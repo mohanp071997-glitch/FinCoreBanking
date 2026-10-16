@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { environment } from '../../environments/environment.development';
@@ -9,10 +9,14 @@ import { MobileLoginResponse, MobileVerifyOtpResponse } from '../interfaces/mobi
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private apiUrl = `${environment.apiUrl}/Auth`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.startTokenExpiryCheck();
+  }
+
+  private expirySubscription?: Subscription;
 
     private loginStateSubject = new BehaviorSubject<boolean>(
     this.isLoggedIn()
@@ -180,10 +184,22 @@ export class AuthService {
 
   // Logs out the current user.
   logout(): void {
+    this.expirySubscription?.unsubscribe();
+    this.expirySubscription = undefined;
+
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('authUser');
 
+    // Clear any other authentication-related values if used.
+    sessionStorage.removeItem('twoFactorUserId');
+    sessionStorage.removeItem('twoFactorEmail');
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('authUser');
+
     this.loginStateSubject.next(false);
+
+    window.location.replace('/login');
   }
 
     notifyLoginSuccess(): void {
@@ -259,6 +275,66 @@ export class AuthService {
       'authUser',
       JSON.stringify(response.userName)
     );
+
+    this.loginStateSubject.next(this.isLoggedIn());
+
+    this.startTokenExpiryCheck();
+  }
+
+  private startTokenExpiryCheck(): void {
+  this.expirySubscription?.unsubscribe();
+
+  const token = sessionStorage.getItem('token');
+
+  if (!token) {
+    this.loginStateSubject.next(false);
+    return;
+  }
+
+  const expiryTime = this.getTokenExpiry(token);
+
+  if (expiryTime === null || expiryTime <= Date.now()) {
+    this.logout();
+    return;
+  }
+
+  const remainingTime = expiryTime - Date.now();
+
+  this.expirySubscription = timer(remainingTime).subscribe(() => {
+    this.logout();
+  });
+}
+
+  private getTokenExpiry(token: string): number | null {
+    try {
+      const parts = token.split('.');
+
+      if (parts.length !== 3) {
+        return null;
+      }
+
+      const payload = parts[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+      const decoded = atob(
+        payload.padEnd(Math.ceil(payload.length / 4) * 4, '=')
+      );
+
+      const claims = JSON.parse(decoded);
+
+      if (typeof claims.exp !== 'number') {
+        return null;
+      }
+
+      return claims.exp * 1000;
+    } catch {
+      return null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.expirySubscription?.unsubscribe();
   }
 
 

@@ -310,8 +310,12 @@
           <span class="metric-copy">
             <small>Verified Today</small>
             <strong>{{ dashboardStatistics.verifiedTodayCount }}</strong>
-            <em *ngIf="verifiedCount > 0">
+            <em *ngIf="dashboardStatistics.verifiedTodayCount > 0">
               Applications successfully verified
+            </em>
+
+            <em *ngIf="dashboardStatistics.verifiedTodayCount === 0">
+              No applications verified today
             </em>
           </span>
 
@@ -396,7 +400,7 @@
             </div>
 
             <button class="export-button" (click)="exportApplications()">
-              <span>⇩</span> Export
+              <span>⤓</span> Export
             </button>
           </div>
 
@@ -553,27 +557,40 @@
         </section>
 
         <aside class="right-panels">
-          <section class="side-panel activity-panel">
-            <div class="side-panel-heading">
-              <h2>Review Activity</h2>
-              <button (click)="showToast('Showing latest activity.', 'info')">View All</button>
-            </div>
 
-            <div class="activity-list">
-              <div class="activity-item" *ngFor="let item of activities">
-                <span class="activity-mark"
-                  [class.activity-rejected]="item.type === 'rejected'">
-                  {{ item.type === 'verified' ? '✓' : '×' }}
-                </span>
+        <section class="side-panel activity-panel">
+          <div class="side-panel-heading">
+            <h2>Review Activity</h2>
 
-                <div>
-                  <strong>{{ item.title }}</strong>
-                  <span>{{ item.requestId }} - {{ item.customerName }}</span>
-                  <small>{{ item.timeAgo }}</small>
-                </div>
+            <button type="button" (click)="viewAllActivities()">
+              View All
+            </button>
+          </div>
+
+          <div class="activity-list" *ngIf="activities.length > 0; else noActivities">
+            <div class="activity-item" *ngFor="let item of displayedActivities">
+              <span
+                class="activity-mark"
+                [class.activity-rejected]="item.type === 'rejected'">
+                {{ item.type === 'verified' ? '✓' : '×' }}
+              </span>
+
+              <div class="activity-content">
+                <strong>{{ item.title }}</strong>
+                <span>{{ item.requestId }} · {{ item.customerName }}</span>
+                <small>{{ item.timeAgo }}</small>
               </div>
             </div>
-          </section>
+          </div>
+
+          <ng-template #noActivities>
+            <div class="empty-activity">
+              <p>No review activity yet.</p>
+              <span>Verified or rejected applications will appear here.</span>
+            </div>
+          </ng-template>
+        </section>
+
 
           <section class="side-panel document-panel">
             <h2>Document Verification Summary</h2>

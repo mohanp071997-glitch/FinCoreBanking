@@ -809,6 +809,19 @@ button:disabled {
   font-size: 23px;
 }
 
+.export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.export-icon {
+  font-size: inherit;
+  line-height: 1;
+}
+
 .filter-grid {
   display: grid;
   grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr) auto;

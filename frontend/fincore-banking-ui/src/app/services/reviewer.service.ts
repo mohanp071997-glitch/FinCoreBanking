@@ -3,15 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ReviewDashboardStatistics } from '../interfaces/ReviewDashboardStatistics.interface';
+import { ReviewActivityResponse } from '../interfaces/ReviewActivityResponse.interface';
+import { PendingApplication } from '../interfaces/PendingApplication.interface';
 
-// FEATURE: Pending application response
-export interface PendingApplication {
-  accountOpeningApplicationId: number;
-  applicationRequestId: string;
-  email: string;
-  status: string;
-  submittedAt: string;
-}
 
 // FEATURE: Application details response
 export interface ApplicationDetails extends PendingApplication {
@@ -89,5 +83,15 @@ export class ReviewerService {
       {}
     );
   }
+
+
+
+  getReviewActivities(): Observable<ReviewActivityResponse[]> {
+    return this.http.get<ReviewActivityResponse[]>(
+      `${this.apiUrl}/activities`
+    );
+  }
+
+
 
 }
